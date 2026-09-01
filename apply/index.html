@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="theme-color" content="#A50034"/>
+<title>LG Subscribe · จัดชุดสินค้า ในราคาพิเศษ</title>
+<meta name="description" content="เลือกเครื่องใช้ไฟฟ้า LG แบบ Subscribe จัดชุดเอง กรอกข้อมูลสมัครได้เลย"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.8/dist/cdn.min.js"></script>
+<style>
+  :root{
+    --ink:#111; --muted:#6b6b6b; --line:#ececec; --bg:#fff; --soft:#f6f6f6;
+    --lg:#A50034; --lg2:#C8102E; --dark:#111;
+    --cw:#A50034;
+    --max:1240px;
+    --nav-h:72px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; overflow-x:hidden; width:100%; max-width:100%}
+  body{
+    margin:0; color:var(--ink); background:var(--bg);
+    font-family:"Anuphan","Noto Sans Thai",system-ui,sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden; width:100%; max-width:100%; min-height:100dvh;
+  }
+  [x-cloak]{display:none!important}
+  a{color:inherit;text-decoration:none}
+  button,input,select,textarea{font:inherit}
+  img{max-width:100%;display:block}
+  .wrap{
+    width:min(var(--max), 100%);
+    margin:0 auto;
+    padding-left:max(20px, env(safe-area-inset-left));
+    padding-right:max(20px, env(safe-area-inset-right));
+  }
+  a[href^="tel"], .tel{color:var(--lg); font-weight:600}
+  a[href^="tel"]:hover, .tel:hover{color:var(--lg2)}
+
+  .topbar{
+    background:#f3f3f3; border-bottom:1px solid var(--line);
+    font-size:12px; color:#555;
+  }
+  .topbar-in{display:flex; justify-content:flex-end; gap:22px; min-height:34px; align-items:center}
+  .topbar a{color:#555}
+  .topbar a:hover{color:var(--cw)}
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,.94);
+    backdrop-filter:saturate(1.2) blur(10px);
+    -webkit-backdrop-filter:saturate(1.2) blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{display:flex; align-items:center; gap:18px; min-height:var(--nav-h)}
+  .brand{display:flex; align-items:center; gap:8px; font-weight:700}
+  .brand b{color:var(--lg); font-size:22px; letter-spacing:-.03em}
+  .brand span{font-size:13px; font-weight:500; color:#444}
+  .nav-menus{display:flex; align-items:center; gap:2px; margin-left:8px; flex:1}
+  .nav-item{position:relative}
+  .nav-item > button{
+    border:0; background:transparent; color:#222; font-size:14px; font-weight:400;
+    padding:22px 12px; cursor:pointer; white-space:nowrap;
+  }
+  .nav-item > button:hover, .nav-item.open > button{color:var(--cw)}
+  .nav-item.open > button{box-shadow:inset 0 -2px 0 var(--cw)}
+  .mega{
+    display:none; position:absolute; left:0; top:100%;
+    min-width:280px; max-height:min(62vh, 420px); overflow:auto;
+    background:#fff; border:1px solid var(--line);
+    box-shadow:0 16px 40px rgba(0,0,0,.08); padding:12px 8px 10px;
+  }
+  .nav-item.open .mega{display:block}
+  .mega a, .mega button{
+    display:block; width:100%; text-align:left; border:0; background:transparent;
+    padding:8px 16px; font-size:13px; color:#333; cursor:pointer; font-weight:400;
+  }
+  .mega a:hover, .mega button:hover{color:var(--cw); background:#fafafa}
+  .mega .g{font-size:11px; color:#999; padding:8px 16px 4px; font-weight:600}
+  .nav-right{margin-left:auto; display:flex; align-items:center; gap:4px}
+  .ico{
+    width:40px; height:40px; border:0; background:transparent; cursor:pointer;
+    display:grid; place-items:center; color:#222; position:relative;
+  }
+  .ico svg{width:20px; height:20px}
+  .ico .dot{
+    position:absolute; top:6px; right:6px; min-width:16px; height:16px; padding:0 4px;
+    background:var(--lg); color:#fff; border-radius:99px; font-size:10px; font-weight:700;
+    display:grid; place-items:center;
+  }
+  .ham{display:none}
+  .mob-draw{
+    display:none; border-top:1px solid var(--line); background:#fff; padding:8px 0 16px;
+  }
+  .mob-draw.open{display:block}
+  .mob-draw a, .mob-draw button{
+    display:block; width:100%; text-align:left; border:0; background:#fff;
+    padding:12px 20px; font-size:15px; font-weight:500; cursor:pointer;
+  }
+  .ribbon{
+    background:var(--lg); color:#fff; font-size:13px; text-align:center;
+    padding:8px 16px; letter-spacing:.01em;
+  }
+  .admin-bar{
+    background:#fff1f4; border-bottom:1px solid #f3d0d8;
+    font-size:13px; color:#7a0026;
+  }
+  .admin-bar-in{display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:40px}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    height:48px; padding:0 22px; border:0; border-radius:4px;
+    font-weight:500; font-size:14px; cursor:pointer;
+  }
+  .btn-dark{background:#111; color:#fff}
+  .btn-dark:hover{background:#2a2a2a}
+  .btn-lg{background:var(--lg); color:#fff}
+  .btn-lg:hover{background:#8b002b}
+  .btn-ghost{background:#fff; color:#111; border:1px solid #111}
+  .btn-line{background:#06C755; color:#fff}
+  .btn:disabled{opacity:.4; cursor:not-allowed}
+  .btn-sm{height:36px; padding:0 14px; font-size:13px}
+
+  .cl-blue,.cl-red{color:var(--lg)}
+  h1,h2,h3,h4,.brand,.btn,.chip,.card-name,.price{
+    font-family:"Anuphan","Noto Sans Thai",system-ui,sans-serif;
+    font-weight:500;
+  }
+
+  .home-hero{
+    position:relative; width:100%;
+    height:calc(100dvh - 34px); min-height:560px;
+    overflow:hidden; background:#f7f2f3;
+  }
+  .home-hero picture{position:absolute; inset:0; display:block}
+  .hero-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:68% center}
+  .hero-shade{
+    position:absolute; inset:0;
+    background:linear-gradient(90deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.32) 30%, rgba(255,255,255,0) 56%);
+  }
+  .hero-copy{
+    position:relative; z-index:1; height:100%;
+    display:flex; flex-direction:column; justify-content:center;
+    max-width:520px; padding:40px 0 28px;
+  }
+  .home-hero h1{margin:0 0 12px; font-size:clamp(28px, 4.4vw, 46px); line-height:1.25; font-weight:500}
+  .home-hero p{margin:0 0 18px; font-size:15px; color:#555; max-width:38ch; line-height:1.6}
+  .count{display:flex; gap:10px; margin:0 0 22px; flex-wrap:wrap}
+  .count b{
+    min-width:64px; background:#fff; color:#111; text-align:center;
+    padding:10px 8px 8px; border-radius:8px; border:1px solid #f3d0d8;
+  }
+  .count b em{display:block; font-style:normal; font-size:22px; font-weight:700; line-height:1; color:var(--cw)}
+  .count b small{font-size:10px; letter-spacing:.08em; color:#666}
+  .hero-cta{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .btn-view{display:inline-flex; align-items:center; gap:8px; color:var(--cw); font-weight:500; font-size:15px}
+
+  .sec{padding:56px 0}
+  .sec h2{margin:0 0 8px; font-size:clamp(22px, 3.2vw, 32px); font-weight:500}
+  .sec .lead{margin:0 0 28px; color:var(--muted); font-size:15px}
+  .sec-head{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:22px}
+  .sec-head .lead{margin:8px 0 0}
+  .bleed-banner{
+    display:block; width:100%; height:min(46vh, 420px);
+    object-fit:cover; object-position:center; margin:0;
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12px; letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--lg); font-weight:600;
+  }
+  .eyebrow::before{content:""; width:16px; height:2px; background:var(--lg); display:inline-block;}
+  .cat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+  .cat-card{
+    background:#fff; border:1px solid var(--line); border-radius:14px;
+    padding:26px 20px; text-align:left; cursor:pointer; width:100%;
+    transition:.2s border-color ease, .2s transform ease;
+  }
+  .cat-card:hover{border-color:var(--lg); transform:translateY(-3px)}
+  .cat-card.on{border-color:var(--lg); box-shadow:inset 0 0 0 1px var(--lg)}
+  .cat-card .icon{width:42px; height:42px; color:var(--lg); margin-bottom:16px}
+  .cat-card h4{margin:0 0 4px; font-size:15.5px; font-weight:600}
+  .cat-card span{display:block; font-size:12.5px; color:var(--muted)}
+  .cat-card em{display:block; margin-top:8px; font-style:normal; font-size:11px; color:#999}
+
+  .life-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px}
+  .life-card{
+    border:1px solid var(--line); background:#fff; padding:20px 18px; cursor:pointer; text-align:left;
+    transition:border-color .15s, transform .15s;
+  }
+  .life-card:hover{border-color:var(--cw); transform:translateY(-2px)}
+  .life-card strong{display:block; font-size:16px; margin-bottom:6px}
+  .life-card span{font-size:13px; color:var(--muted); line-height:1.45}
+
+  .strips{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  .strip{background:#fff; border:1px solid var(--line); padding:22px 20px}
+  .strip strong{display:block; font-size:15px; margin-bottom:6px}
+  .strip span{font-size:13px; color:var(--muted); line-height:1.45}
+
+  .prod-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
+  .card{
+    border:1px solid var(--line); background:#fff; cursor:pointer;
+    display:flex; flex-direction:column; min-height:100%;
+    transition:transform .15s, box-shadow .15s;
+    position:relative;
+  }
+  .card:hover{transform:translateY(-3px); box-shadow:0 14px 32px rgba(0,0,0,.07)}
+  .card-img{height:210px; background:#fafafa; display:grid; place-items:center; padding:16px}
+  .card-img img{max-height:178px; width:auto; object-fit:contain}
+  .card-b{padding:14px 16px 18px; display:flex; flex-direction:column; flex:1}
+  .card-cat{font-size:11px; color:var(--muted); margin-bottom:4px}
+  .card-name{font-size:15px; font-weight:500; line-height:1.35; min-height:40px}
+  .card-code{font-size:11px; color:#999; margin:4px 0 10px}
+  .price{font-size:20px; font-weight:600; color:var(--lg)}
+  .price small{font-size:12px; font-weight:500; color:#888}
+  .was{font-size:12px; color:#aaa; text-decoration:line-through; margin-left:6px}
+  .start{display:block; font-size:11px; color:#888; margin-bottom:2px}
+  .badge{
+    position:absolute; top:10px; left:10px;
+    background:var(--lg); color:#fff; font-size:11px; font-weight:600;
+    padding:4px 8px;
+  }
+  .badge.adv{left:auto; right:10px; background:#111}
+  .card-cta{margin-top:auto; padding-top:12px; font-size:13px; color:var(--lg); font-weight:500}
+
+  .shop-page{padding:28px 0 80px}
+  .crumbs{font-size:13px; color:#888; margin:0 0 14px}
+  .crumbs button{border:0; background:transparent; color:#888; cursor:pointer; padding:0}
+  .crumbs button:hover{color:var(--lg)}
+  .shop-layout{display:grid; grid-template-columns:220px 1fr; gap:28px; align-items:start}
+  .side{
+    position:sticky; top:90px;
+    border:1px solid var(--line); background:#fff; padding:8px 0 12px;
+  }
+  .side h3{margin:0; padding:12px 16px 8px; font-size:14px}
+  .side button{
+    display:flex; justify-content:space-between; gap:8px; width:100%;
+    border:0; background:transparent; text-align:left;
+    padding:8px 16px; font-size:13px; cursor:pointer; color:#333;
+  }
+  .side button:hover{color:var(--lg); background:#fafafa}
+  .side button.on{color:var(--lg); font-weight:600; box-shadow:inset 3px 0 0 var(--lg)}
+  .side .n{color:#999; font-size:11px}
+  .shop-head{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:16px; flex-wrap:wrap}
+  .shop-head h2{margin:0; font-size:26px}
+  .shop-tools{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+  .search{
+    width:min(320px, 100%); height:44px; border:1px solid var(--line); padding:0 14px; outline:none;
+  }
+  .search:focus{border-color:#111}
+  .sort{
+    height:44px; border:1px solid var(--line); padding:0 10px; background:#fff;
+  }
+  .more{display:flex; justify-content:center; margin-top:28px}
+
+  .empty{color:var(--muted); font-size:14px; padding:28px 0; text-align:center}
+  .load{padding:80px 20px; text-align:center; color:var(--muted)}
+
+  .apply-page{padding:32px 0 96px}
+  .apply-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:28px; align-items:start}
+  .panel{border:1px solid var(--line); background:#fff}
+  .panel h3{margin:0; padding:16px 20px; border-bottom:1px solid var(--line); font-size:16px}
+  .panel-b{padding:18px 20px}
+  .form{display:grid; gap:12px}
+  .form label{font-size:12px; font-weight:500}
+  .form input,.form textarea{
+    width:100%; border:1px solid var(--line); padding:11px 12px; outline:none; background:#fff;
+  }
+  .form input:focus,.form textarea:focus{border-color:#111}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .cust{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px}
+  .cust button{
+    border:1px solid var(--line); background:#fff; padding:10px 8px; cursor:pointer; font-size:13px; font-weight:600;
+  }
+  .cust button.on{background:#111; color:#fff; border-color:#111}
+  .item{display:grid; grid-template-columns:64px 1fr auto; gap:12px; padding:12px 0; border-bottom:1px solid #f0f0f0}
+  .item img{width:64px; height:64px; object-fit:contain; background:#fafafa}
+  .item .t{font-size:14px; font-weight:600; line-height:1.3}
+  .item .s{font-size:12px; color:#888; margin-top:2px}
+  .qty{display:inline-flex; align-items:center; border:1px solid var(--line); margin-top:8px}
+  .qty button{width:28px; height:28px; border:0; background:#fff; cursor:pointer}
+  .qty span{min-width:26px; text-align:center; font-size:13px}
+  .sum{margin-top:14px}
+  .sum div{display:flex; justify-content:space-between; gap:10px; font-size:14px; padding:6px 0}
+  .sum .big{font-size:17px; font-weight:600; padding-top:10px; border-top:1px solid var(--line); margin-top:6px}
+  .sum .save{color:var(--lg); font-weight:700}
+  .hint{font-size:12px; color:#888; line-height:1.5; margin:8px 0 0}
+  .done-box{background:#f6fff8; border:1px solid #b7e4c7; padding:12px; font-size:13px; line-height:1.5}
+  textarea.copy{width:100%; min-height:180px; font-size:12px; line-height:1.45; border:1px solid var(--line); padding:10px; background:#fafafa}
+
+  .faq{max-width:760px}
+  .faq details{border-bottom:1px solid var(--line); padding:14px 0}
+  .faq summary{cursor:pointer; font-weight:600}
+  .faq p{margin:8px 0 0; color:var(--muted); font-size:14px; line-height:1.6}
+
+  footer{border-top:1px solid var(--line); padding:32px 0 48px; color:#777; font-size:12px}
+  footer .foot-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px 16px}
+  footer a:hover{color:var(--lg)}
+
+  .toast{
+    position:fixed; bottom:88px; left:50%; transform:translateX(-50%);
+    background:#111; color:#fff; padding:10px 16px; font-size:13px; z-index:90;
+  }
+  .dock{
+    display:none; position:fixed; left:0; right:0; bottom:0; z-index:45;
+    background:#fff; border-top:1px solid var(--line);
+    padding:6px 8px calc(8px + env(safe-area-inset-bottom));
+  }
+  .dock-in{display:grid; grid-template-columns:repeat(4,1fr); gap:4px}
+  .dock button{
+    border:0; background:transparent; padding:8px 4px; cursor:pointer;
+    font-size:11px; color:#555; display:grid; place-items:center; gap:3px;
+  }
+  .dock button.on{color:var(--lg); font-weight:600}
+  .dock svg{width:20px; height:20px}
+  .dock .dot{
+    position:absolute; top:2px; right:22%; min-width:15px; height:15px;
+    background:var(--lg); color:#fff; border-radius:99px; font-size:9px; font-weight:700;
+    display:grid; place-items:center;
+  }
+  .dock .wrap-ico{position:relative}
+
+  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:70; display:grid; place-items:center; padding:16px}
+  .overlay.leftish{justify-content:flex-end; padding:0; align-items:stretch}
+  .pdp{
+    background:#fff; width:min(980px,100%); max-height:92vh; overflow:auto;
+    display:grid; grid-template-columns:1fr 1fr;
+  }
+  .pdp-visual{background:#f7f7f7; min-height:420px; display:grid; place-items:center; padding:28px}
+  .pdp-visual img{max-height:380px; width:auto; object-fit:contain}
+  .pdp-info{padding:22px 24px 24px; overflow:auto}
+  .pdp-info h3{margin:0 0 6px; font-size:22px; line-height:1.3}
+  .pdp-close{
+    position:absolute; top:10px; right:10px; width:36px; height:36px;
+    border:0; background:#fff; cursor:pointer; font-size:22px; line-height:1;
+  }
+  .pdp{position:relative}
+  .plan{border:1px solid var(--line); padding:12px; margin-bottom:8px; cursor:pointer}
+  .plan.on{border-color:#111; background:#fafafa}
+  .plan .rec{display:inline-block; margin-left:6px; font-size:11px; color:var(--lg); font-weight:700}
+  .bills{margin:10px 0 0; border-top:1px dashed #eee; padding-top:8px}
+  .bills div{display:flex; justify-content:space-between; font-size:12px; color:#555; padding:3px 0}
+  .pdp-pay{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:16px 0 12px}
+  .pdp-pay .n{font-size:12px; color:#888}
+  .pdp-pay .v{font-size:22px; font-weight:700; color:var(--lg)}
+
+  .drawer{
+    width:min(420px,100%); background:#fff; height:100%; overflow:auto;
+    box-shadow:-12px 0 40px rgba(0,0,0,.12); display:flex; flex-direction:column;
+  }
+  .drawer-h{display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--line)}
+  .drawer-h h3{margin:0; font-size:16px}
+  .drawer-b{padding:16px 18px; flex:1}
+  .drawer-f{padding:14px 18px calc(14px + env(safe-area-inset-bottom)); border-top:1px solid var(--line)}
+
+  @media (max-width:1100px){
+    .cat-grid{grid-template-columns:repeat(4,1fr)}
+    .prod-grid{grid-template-columns:repeat(3,1fr)}
+    .life-grid{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:980px){
+    .strips,.apply-grid,.pdp{grid-template-columns:1fr}
+    .shop-layout{grid-template-columns:1fr}
+    .side{position:static; display:flex; overflow:auto; padding:8px}
+    .side h3{display:none}
+    .side button{flex:0 0 auto; width:auto; box-shadow:none; border:1px solid var(--line); margin-right:6px; padding:8px 12px}
+    .side button.on{background:#111; color:#fff}
+    .side button.on .n{color:#ddd}
+    .home-hero{height:100dvh; min-height:100svh; margin-top:0}
+    .hero-bg{object-position:center 42%}
+    .hero-shade{background:linear-gradient(180deg, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 26%, rgba(255,255,255,.08) 58%, rgba(255,255,255,.88) 100%)}
+    .hero-copy{justify-content:flex-end; padding:72px 0 max(28px, env(safe-area-inset-bottom)); max-width:100%}
+    .home-hero h1{font-size:clamp(26px, 7vw, 38px)}
+    .home-hero p{max-width:none; color:#333}
+    .topbar{display:none}
+    .nav-menus{display:none}
+    .ham{display:grid}
+    .nav-in{min-height:60px}
+    .dock{display:block}
+    footer .foot-grid{grid-template-columns:1fr}
+    .pdp-visual{min-height:240px}
+    .pdp-visual img{max-height:220px}
+    .overlay{padding:0; align-items:end}
+    .pdp{max-height:94vh; width:100%}
+    .drawer{width:100%; height:auto; max-height:92vh}
+  }
+  @media (max-width:960px){
+    .cat-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:700px){
+    .cat-grid{grid-template-columns:1fr}
+    .prod-grid{grid-template-columns:1fr 1fr}
+    .card-img{height:150px}
+    .life-grid{grid-template-columns:1fr}
+    .row2,.cust{grid-template-columns:1fr}
+    .wrap{padding-left:14px; padding-right:14px}
+  }
+</style>
+</head>
+<body x-data="lgApply()" x-init="init()">
+
+<div class="topbar">
+  <div class="wrap topbar-in">
+    <a href="#apply" @click.prevent="go('#apply')">ชำระเงินค่าสินค้า / สมัคร Subscribe</a>
+    <a href="#support" @click.prevent="go('#support')">ค้นหาสาขา / ติดต่อเรา</a>
+    <a class="tel" href="tel:020575757">โทร 02-057-5757</a>
+  </div>
+</div>
+<header class="nav" @mouseleave="menu=null">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" @click.prevent="go('#top')">
+      <b>LG</b><span>Subscribe</span>
+    </a>
+    <nav class="nav-menus" aria-label="เมนูหลัก">
+      <div class="nav-item" :class="menu==='shop' && 'open'" @mouseenter="menu='shop'">
+        <button type="button" @click="go('#combo')">ซื้อสินค้า</button>
+        <div class="mega">
+          <div class="g">เลือกตามประเภท</div>
+          <button type="button" @click="clearShopFilter()">สินค้าทั้งหมด</button>
+          <template x-for="g in catGroups()" :key="'mn-'+g.id">
+            <button type="button" @click="pickGroup(g.id)" x-text="g.title"></button>
+          </template>
+        </div>
+      </div>
+      <div class="nav-item" :class="menu==='promo' && 'open'" @mouseenter="menu='promo'">
+        <button type="button" @click="go('#promo')">โปรโมชัน</button>
+        <div class="mega">
+          <div class="g">ข้อเสนอเดือนนี้</div>
+          <a href="#promo" @click.prevent="go('#promo')">Birthday Combo 15%</a>
+          <a href="#promo" @click.prevent="go('#promo')">คอมโบเดือนปกติ 10%</a>
+          <a href="#combo" @click.prevent="go('#combo')">โปรโมชันจัดชุดสินค้า</a>
+        </div>
+      </div>
+      <div class="nav-item" :class="menu==='service' && 'open'" @mouseenter="menu='service'">
+        <button type="button" @click="go('#service')">บริการ</button>
+        <div class="mega">
+          <div class="g">บริการ Subscribe</div>
+          <a href="#service" @click.prevent="go('#service')">Care Service ช่างถึงบ้าน</a>
+          <a href="#service" @click.prevent="go('#service')">ติดตั้งมาตรฐาน</a>
+          <a href="#service" @click.prevent="go('#service')">รับประกันตลอดสัญญา</a>
+          <a href="#support" @click.prevent="go('#support')">แจ้งซ่อม / ติดต่อ</a>
+        </div>
+      </div>
+      <div class="nav-item" :class="menu==='campaign' && 'open'" @mouseenter="menu='campaign'">
+        <button type="button" @click="go('#campaign')">แคมเปญ &amp; กิจกรรม</button>
+        <div class="mega">
+          <div class="g">กำลังจัดอยู่</div>
+          <a href="#campaign" @click.prevent="go('#campaign')">Birthday Combo 15–24 ส.ค.</a>
+          <a href="#combo" @click.prevent="go('#combo')">จัดชุดสินค้าเอง</a>
+        </div>
+      </div>
+      <div class="nav-item" :class="menu==='story' && 'open'" @mouseenter="menu='story'">
+        <button type="button" @click="go('#story')">เรื่องราวของเรา</button>
+        <div class="mega">
+          <a href="#story" @click.prevent="go('#story')">LG Subscribe คืออะไร</a>
+          <a href="#story" @click.prevent="go('#story')">จ่ายรายเดือน ไม่ต้องซื้อขาด</a>
+        </div>
+      </div>
+      <div class="nav-item" :class="menu==='support' && 'open'" @mouseenter="menu='support'">
+        <button type="button" @click="go('#support')">สนับสนุน</button>
+        <div class="mega">
+          <a href="#support" @click.prevent="go('#support')">คำถามที่พบบ่อย</a>
+          <a :href="lineUrl" target="_blank" rel="noopener">แชท LINE</a>
+          <a href="tel:020575757">ฝ่ายบริการลูกค้า 02-057-5757</a>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-right">
+      <a class="tel" href="tel:020575757" style="font-size:14px;padding:0 8px;white-space:nowrap">02-057-5757</a>
+      <button class="ico" type="button" title="ค้นหา" @click="goShop(); $nextTick(() => $refs.q && $refs.q.focus())">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.4-3.4"/></svg>
+      </button>
+      <button class="ico" type="button" title="ตะกร้า" @click="cartOpen=true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7L5 4H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/></svg>
+        <span class="dot" x-show="cartCount()>0" x-text="cartCount()"></span>
+      </button>
+      <button class="ico" type="button" title="สมัคร" @click="go('#apply')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.2"/><path d="M5 19c.8-3.2 3.4-5 7-5s6.2 1.8 7 5"/></svg>
+      </button>
+      <button class="ico ham" type="button" @click="mobOpen=!mobOpen" :aria-expanded="mobOpen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mob-draw" :class="mobOpen && 'open'">
+    <a href="#combo" @click.prevent="go('#combo')">ซื้อสินค้า</a>
+    <a href="#promo" @click.prevent="go('#promo')">โปรโมชัน</a>
+    <a href="#service" @click.prevent="go('#service')">บริการ</a>
+    <a href="#campaign" @click.prevent="go('#campaign')">แคมเปญ &amp; กิจกรรม</a>
+    <a href="#story" @click.prevent="go('#story')">เรื่องราวของเรา</a>
+    <a href="#support" @click.prevent="go('#support')">สนับสนุน</a>
+    <a class="tel" href="tel:020575757" @click="mobOpen=false">โทร 02-057-5757</a>
+  </div>
+</header>
+
+<div class="ribbon" x-show="specialOn()" x-cloak>
+  Birthday Combo 15% ถึง 24 ส.ค. 2569 · ลูกค้าใหม่จาก 2 ชิ้น · ลูกค้าเก่าจาก 1 ชิ้น
+</div>
+<div class="admin-bar" x-show="epId" x-cloak>
+  <div class="wrap admin-bar-in">
+    <span>ลิงก์แอดมิน Epromoter · <strong x-text="epName"></strong></span>
+    <button class="btn btn-ghost btn-sm" type="button" @click="copyMyLink()">คัดลอกลิงก์</button>
+  </div>
+</div>
+
+<template x-if="page==='home'">
+<div>
+<section class="home-hero" id="top">
+  <picture>
+    <source media="(max-width:760px)" srcset="assets/banner-hero-m.jpg?v=87"/>
+    <img class="hero-bg" src="assets/banner-hero.jpg?v=87" alt="สินค้า LG Subscribe" width="1920" height="1080"/>
+  </picture>
+  <div class="hero-shade"></div>
+  <div class="wrap hero-copy">
+    <h1>เติมเต็มครบ <span class="cl-blue">ทุกการ Subscribe</span></h1>
+    <p x-text="heroLine()">เลือกสินค้าเอง กรอกชื่อ นามสกุล เบอร์ และที่อยู่ติดตั้ง แล้วส่งใบสมัครได้เลย</p>
+    <div class="count" x-show="specialOn()">
+      <b><em x-text="cd.d">00</em><small>DAY</small></b>
+      <b><em x-text="cd.h">00</em><small>HOURS</small></b>
+      <b><em x-text="cd.m">00</em><small>MINUTES</small></b>
+      <b><em x-text="cd.s">00</em><small>SECONDS</small></b>
+    </div>
+    <div class="hero-cta">
+      <button class="btn btn-lg" type="button" @click="goShop()">ดูสินค้าทั้งหมด</button>
+      <a class="btn-view" href="#cats" @click.prevent="go('#cats')">เลือกตามหมวด →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="cats">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">หมวดสินค้า</span>
+        <h2>เลือกเครื่องใช้ไฟฟ้าที่ใช่สำหรับบ้านคุณ</h2>
+      </div>
+      <p class="lead">ครบทุกหมวดตั้งแต่ห้องครัวถึงห้องนั่งเล่น สมัครแบบ Subscribe พร้อมบริการดูแลตลอดสัญญา</p>
+    </div>
+    <div class="cat-grid">
+      <button class="cat-card" type="button" :class="group==='water' && 'on'" @click="pickGroup('water')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3c3 4 6 7.4 6 11a6 6 0 1 1-12 0c0-3.6 3-7 6-11Z"/></svg>
+        <h4>เครื่องกรองน้ำ</h4>
+        <span>Tankless · UVnano</span>
+        <em x-text="countInGroup('water')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='purifier' && 'on'" @click="pickGroup('purifier')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h5"/></svg>
+        <h4>เครื่องฟอกอากาศ</h4>
+        <span>H13 HEPA · PM2.5</span>
+        <em x-text="countInGroup('purifier')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='laundry' && 'on'" @click="pickGroup('laundry')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M8 6h.01M11 6h.01"/></svg>
+        <h4>เครื่องซักผ้า / อบผ้า</h4>
+        <span>WashTower · AI DD</span>
+        <em x-text="countInGroup('laundry')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='fridge' && 'on'" @click="pickGroup('fridge')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="2.5" width="14" height="19" rx="2"/><path d="M5 10h14"/></svg>
+        <h4>ตู้เย็น</h4>
+        <span>Multi Door · InstaView</span>
+        <em x-text="countInGroup('fridge')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='ac' && 'on'" @click="pickGroup('ac')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="8" rx="2"/><path d="M7 18h2M15 18h2"/></svg>
+        <h4>เครื่องปรับอากาศ</h4>
+        <span>DUALCOOL AI</span>
+        <em x-text="countInGroup('ac')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='tv' && 'on'" @click="pickGroup('tv')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M9 20h6M12 16v4"/></svg>
+        <h4>ทีวี</h4>
+        <span>OLED evo · QNED</span>
+        <em x-text="countInGroup('tv')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='dish' && 'on'" @click="pickGroup('dish')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 10h16v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8Z"/><path d="M4 10 6 4h12l2 6"/></svg>
+        <h4>เครื่องล้างจาน</h4>
+        <span>QuadWash · TrueSteam</span>
+        <em x-text="countInGroup('dish')+' รุ่น'"></em>
+      </button>
+      <button class="cat-card" type="button" :class="group==='av' && 'on'" @click="pickGroup('av')">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="12" rx="1.5"/><circle cx="17" cy="9" r="1.4"/></svg>
+        <h4>มอนิเตอร์ / ลำโพง</h4>
+        <span>UltraGear · xboom</span>
+        <em x-text="countInGroup('av')+' รุ่น'"></em>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>เลือกตาม <span class="cl-blue">ไลฟ์สไตล์</span></h2>
+        <p class="lead">ระบบกรองหมวดให้ตามการใช้งาน ไม่ใส่รุ่นที่ไม่มีในโปร</p>
+      </div>
+    </div>
+    <div class="life-grid">
+      <button class="life-card" type="button" @click="setLife('home')"><strong>บ้าน</strong><span>ตู้เย็น · ซักผ้า · กรองน้ำ · ฟอกอากาศ</span></button>
+      <button class="life-card" type="button" @click="setLife('condo')"><strong>คนเดียว / คอนโด</strong><span>แอร์ · ไมโครเวฟ · ดูดฝุ่น · ลดความชื้น</span></button>
+      <button class="life-card" type="button" @click="setLife('family')"><strong>ครอบครัวใหญ่</strong><span>Wash Tower · ตู้เย็น Multi · อบผ้า · ทีวี</span></button>
+      <button class="life-card" type="button" @click="setLife('office')"><strong>บริษัท / ออฟฟิศ</strong><span>แอร์ SAC · มอนิเตอร์ · ลำโพง / ซาวด์บาร์</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="promo" style="padding-top:0">
+  <img class="bleed-banner" src="assets/banner-studio.jpg?v=87" alt="สินค้า LG Subscribe"/>
+  <div class="wrap" style="padding-top:36px">
+    <h2><span class="cl-blue">โปรโมชัน</span> ส่วนลด และข้อเสนอสุดพิเศษ</h2>
+    <p class="lead">ข้อเสนอ LG Subscribe เดือนนี้ — คิดคอมโบอัตโนมัติตอนจัดชุด</p>
+    <div class="strips">
+      <div class="strip">
+        <strong>Birthday Combo 15%</strong>
+        <span>15–24 ส.ค. 2569 · ลูกค้าใหม่ 2 ชิ้นขึ้นไป · ลูกค้าเก่า 1 ชิ้นขึ้นไป</span>
+      </div>
+      <div class="strip">
+        <strong>คอมโบเดือนปกติ 10%</strong>
+        <span>ใช้เมื่อปิดคอมโบพิเศษ หรือหลัง 24 ส.ค. · ทั้งเดือนถึง 31 ส.ค.</span>
+      </div>
+      <div class="strip">
+        <strong>จัดชุดสินค้าเอง</strong>
+        <span>เลือกสินค้า ใส่ตะกร้า แล้วกรอกใบสมัครด้านขวาของชุด</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="featured" style="padding-top:8px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <h2>สินค้า <span class="cl-blue">แนะนำ</span></h2>
+        <p class="lead">รุ่นเด่นแต่ละหมวด จากโปรเดือนปัจจุบัน</p>
+      </div>
+      <button class="btn-view" type="button" @click="goShop()">ดูสินค้าทั้งหมด →</button>
+    </div>
+    <div class="prod-grid">
+      <template x-for="p in featured()" :key="'ft-'+p.code">
+        <article class="card" @click="openProduct(p)">
+          <span class="badge" x-show="bestRegular(p) > bestPrice(p)">โปรเดือนนี้</span>
+          <span class="badge adv" x-show="hasAdvance(p)">มีเงินล่วงหน้า</span>
+          <div class="card-img"><img :src="imgUrl(p)" :alt="p.code" loading="lazy" @error="$el.style.display='none'"/></div>
+          <div class="card-b">
+            <div class="card-cat" x-text="shortCat(p.category)"></div>
+            <div class="card-name" x-text="productTitle(p)"></div>
+            <div class="card-code" x-text="p.code"></div>
+            <span class="start">เริ่มต้น</span>
+            <div>
+              <span class="price">฿<span x-text="money(bestPrice(p))"></span> <small>/เดือน</small></span>
+              <span class="was" x-show="bestRegular(p) > bestPrice(p)" x-text="'฿'+money(bestRegular(p))"></span>
+            </div>
+            <div class="card-cta">ดูรายละเอียดและเลือกแพ็ค</div>
+          </div>
+        </article>
+      </template>
+    </div>
+  </div>
+</section>
+
+<section class="wrap sec" id="service" style="padding-top:8px">
+  <h2>บริการ</h2>
+  <p class="lead">บริการที่มากับสัญญา LG Subscribe</p>
+  <div class="strips">
+    <div class="strip"><strong>Care Service</strong><span>ช่างผู้เชี่ยวชาญถึงบ้าน หรือรับอะไหล่เปลี่ยนเอง ตามแพ็คที่เลือก</span></div>
+    <div class="strip"><strong>ติดตั้งมาตรฐาน</strong><span>ส่งพร้อมติดตั้งเบื้องต้นในพื้นที่มาตรฐานของบริษัท</span></div>
+    <div class="strip"><strong>รับประกันตลอดสัญญา</strong><span>ครอบคลุมค่าซ่อมตามเงื่อนไข LG Subscribe</span></div>
+  </div>
+</section>
+
+<section class="wrap sec" id="campaign" style="padding-top:8px">
+  <h2>แคมเปญ &amp; กิจกรรม</h2>
+  <p class="lead">กำลังจัดอยู่</p>
+  <div class="strips">
+    <div class="strip"><strong>Birthday Combo</strong><span>ลด 15% ถึง 24 ส.ค. 2569 เมื่อจัดชุดตามเงื่อนไขลูกค้าใหม่/ลูกค้าเก่า</span></div>
+    <div class="strip"><strong>จัดชุดเองบนเว็บนี้</strong><span>ลูกค้ากรอกชื่อ นามสกุล เบอร์ ที่อยู่ติดตั้ง แล้วส่งใบสมัครเอง</span></div>
+  </div>
+</section>
+
+<section class="sec" id="story" style="padding-top:8px">
+  <img class="bleed-banner" src="assets/banner-life.jpg?v=87" alt="ห้องนั่งเล่นกับสินค้า LG"/>
+  <div class="wrap" style="padding-top:36px">
+    <h2>เรื่องราวของเรา</h2>
+    <p class="lead">LG Subscribe คือการเป็นเจ้าของเครื่องใช้ไฟฟ้า LG แบบจ่ายรายเดือน พร้อมบริการดูแลตลอดสัญญา</p>
+    <div class="strips">
+      <div class="strip"><strong>ไม่ต้องซื้อขาด</strong><span>จ่ายเป็นรายเดือน เลือกสัญญา 5–7 ปี ตามรุ่น</span></div>
+      <div class="strip"><strong>Epromoter POND</strong><span>หน้านี้เป็นลิงก์สมัครของทีมงาน เพื่อส่งใบสมัครไปทำรายการต่อในระบบบริษัท</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap sec faq" id="support" style="padding-top:8px">
+  <h2>สนับสนุน</h2>
+  <details open>
+    <summary>หน้านี้สมัครสัญญาให้เสร็จเองหรือไม่</summary>
+    <p>หน้านี้ให้คุณเลือกสินค้าและกรอกข้อมูลสมัครเองได้ ใบสมัครจะส่งมาที่แอดมิน จากนั้นทีมงานทำรายการในระบบบริษัทต่อให้</p>
+  </details>
+  <details>
+    <summary>ต้องใช้อะไรบ้าง</summary>
+    <p>ชื่อ นามสกุล เบอร์โทร และที่อยู่ติดตั้ง ถ้าเป็นลูกค้าบริษัทใส่ชื่อบริษัทด้วยได้</p>
+  </details>
+  <details>
+    <summary>ราคาในหน้านี้มาจากไหน</summary>
+    <p>ดึงจากแคตตาล็อกโปรเดือนปัจจุบันของเครื่องคิดเลข LG Subscribe ไม่เดาราคา</p>
+  </details>
+</section>
+</div>
+</template>
+
+<template x-if="page==='shop'">
+<main class="wrap shop-page" id="combo">
+  <div class="crumbs">
+    <button type="button" @click="go('#top')">หน้าแรก</button>
+    <span> / </span>
+    <button type="button" @click="clearShopFilter()">สินค้า</button>
+    <template x-if="group">
+      <span> / <span x-text="activeGroupTitle()"></span></span>
+    </template>
+  </div>
+  <div class="load" x-show="!ready">กำลังโหลดสินค้า…</div>
+  <div class="shop-layout" x-show="ready" x-cloak>
+    <aside class="side" aria-label="หมวดหมู่">
+      <h3>หมวดหมู่</h3>
+      <button type="button" :class="!group && !cat && homeTab!=='life' && 'on'" @click="clearShopFilter()">
+        <span>ทั้งหมด</span><span class="n" x-text="products.length"></span>
+      </button>
+      <template x-for="g in catGroups()" :key="'side-'+g.id">
+        <button type="button" :class="group===g.id && 'on'" @click="pickGroup(g.id)">
+          <span x-text="g.title"></span>
+          <span class="n" x-text="countInGroup(g.id)"></span>
+        </button>
+      </template>
+    </aside>
+    <div>
+      <div class="shop-head">
+        <div>
+          <h2 x-text="shopTitle()"></h2>
+          <div class="hint" style="margin:6px 0 0" x-text="filtered().length + ' รุ่น'"></div>
+        </div>
+        <div class="shop-tools">
+          <input class="search" type="search" placeholder="ค้นหารุ่น / ชื่อสินค้า" x-model="q" x-ref="q"/>
+          <select class="sort" x-model="sort">
+            <option value="default">เรียงตามหมวด</option>
+            <option value="price">ราคาต่ำสุด</option>
+            <option value="name">ชื่อสินค้า</option>
+          </select>
+        </div>
+      </div>
+      <div class="prod-grid">
+        <template x-for="p in filteredPage()" :key="p.code">
+          <article class="card" @click="openProduct(p)">
+            <span class="badge" x-show="bestRegular(p) > bestPrice(p)">โปรเดือนนี้</span>
+            <span class="badge adv" x-show="hasAdvance(p)">มีเงินล่วงหน้า</span>
+            <div class="card-img"><img :src="imgUrl(p)" :alt="p.code" loading="lazy" @error="$el.style.display='none'"/></div>
+            <div class="card-b">
+              <div class="card-cat" x-text="shortCat(p.category)"></div>
+              <div class="card-name" x-text="productTitle(p)"></div>
+              <div class="card-code" x-text="p.code"></div>
+              <span class="start">เริ่มต้น</span>
+              <div>
+                <span class="price">฿<span x-text="money(bestPrice(p))"></span> <small>/เดือน</small></span>
+                <span class="was" x-show="bestRegular(p) > bestPrice(p)" x-text="'฿'+money(bestRegular(p))"></span>
+              </div>
+              <div class="card-cta">ดูรายละเอียดและเลือกแพ็ค</div>
+            </div>
+          </article>
+        </template>
+      </div>
+      <p class="empty" x-show="filtered().length===0">ไม่พบสินค้าในตัวกรองนี้</p>
+      <div class="more" x-show="filtered().length > shown">
+        <button class="btn btn-ghost" type="button" @click="shown += 24">ดูเพิ่มอีก</button>
+      </div>
+    </div>
+  </div>
+</main>
+</template>
+
+<template x-if="page==='apply'">
+<main class="wrap apply-page" id="apply">
+  <div class="crumbs">
+    <button type="button" @click="go('#top')">หน้าแรก</button>
+    <span> / </span>
+    <button type="button" @click="goShop()">สินค้า</button>
+    <span> / สมัคร Subscribe</span>
+  </div>
+  <h2 style="margin:0 0 8px">สมัคร Subscribe</h2>
+  <p class="lead">กรอกชื่อ นามสกุล เบอร์ และที่อยู่ติดตั้ง · ใบสมัครส่งทาง LINE ไปที่แอดมิน</p>
+  <div class="apply-grid">
+    <section class="panel">
+      <h3>ข้อมูลผู้สมัคร</h3>
+      <div class="panel-b">
+        <template x-if="step!=='done'">
+          <div class="form">
+            <div class="cust">
+              <button type="button" :class="customerType==='new' && 'on'" @click="customerType='new'">ลูกค้าใหม่</button>
+              <button type="button" :class="customerType==='exist' && 'on'" @click="customerType='exist'">ลูกค้าเก่า</button>
+            </div>
+            <div class="row2">
+              <div>
+                <label>ชื่อ *</label>
+                <input type="text" x-model="form.firstName" autocomplete="given-name" placeholder="ชื่อ"/>
+              </div>
+              <div>
+                <label>นามสกุล *</label>
+                <input type="text" x-model="form.lastName" autocomplete="family-name" placeholder="นามสกุล"/>
+              </div>
+            </div>
+            <div>
+              <label>เบอร์โทร *</label>
+              <input type="tel" x-model="form.phone" autocomplete="tel" placeholder="08x-xxx-xxxx"/>
+            </div>
+            <div>
+              <label>ที่อยู่ติดตั้ง *</label>
+              <textarea rows="3" x-model="form.address" placeholder="บ้านเลขที่ ถนน เขต จังหวัด"></textarea>
+            </div>
+            <div>
+              <label>ชื่อบริษัท (ถ้ามี)</label>
+              <input type="text" x-model="form.company" placeholder="ลูกค้าบริษัท"/>
+            </div>
+            <button class="btn btn-dark" style="width:100%" :disabled="cart.length===0" @click="submit()">สมัครเลย</button>
+            <p class="hint">ใบสมัครจะถูกคัดลอกแล้วเปิด LINE ให้ส่งหาแอดมิน · ยังไม่ใช่สัญญาในแอปบริษัท</p>
+          </div>
+        </template>
+        <template x-if="step==='done'">
+          <div>
+            <div class="done-box">ส่งใบสมัครพร้อมแล้ว — วางข้อความใน LINE แล้วส่งได้เลย</div>
+            <textarea class="copy" readonly x-model="lastText"></textarea>
+            <a class="btn btn-line" style="width:100%;margin-top:10px" :href="lineUrl" target="_blank" rel="noopener">เปิด LINE</a>
+            <button class="btn btn-ghost" style="width:100%;margin-top:8px" @click="copyLast()">คัดลอกอีกครั้ง</button>
+            <button class="btn btn-ghost" style="width:100%;margin-top:8px" @click="reset()">สมัครชุดใหม่</button>
+          </div>
+        </template>
+      </div>
+    </section>
+    <aside class="panel">
+      <h3>ชุดของคุณ</h3>
+      <div class="panel-b">
+        <div class="empty" style="padding:12px 0;text-align:left" x-show="cart.length===0">
+          ยังไม่มีสินค้าในชุด
+          <div style="margin-top:10px"><button class="btn btn-ghost btn-sm" type="button" @click="goShop()">เลือกสินค้า</button></div>
+        </div>
+        <template x-for="(it,i) in cart" :key="it.key">
+          <div class="item">
+            <img :src="imgUrl(it)" :alt="it.code"/>
+            <div>
+              <div class="t" x-text="it.title"></div>
+              <div class="s" x-text="it.code + ' · ' + planLabel(it)"></div>
+              <div class="qty">
+                <button type="button" @click="setQty(i, it.qty-1)">−</button>
+                <span x-text="it.qty"></span>
+                <button type="button" @click="setQty(i, it.qty+1)">+</button>
+              </div>
+            </div>
+            <div class="t" x-text="it.outright ? ('฿'+money(it.advancePayment*it.qty)) : ('฿'+money(it.effectiveMonthly*it.qty))"></div>
+          </div>
+        </template>
+        <div class="sum" x-show="cart.length">
+          <div><span>จำนวน</span><span x-text="cartCount()+' ชิ้น'"></span></div>
+          <div><span>ยอดชำระครั้งแรก</span><span x-text="'฿'+money(cartFirstTotal())"></span></div>
+          <div><span>ค่าเช่า/เดือน ก่อนคอมโบ</span><span x-text="'฿'+money(cartMonthly())"></span></div>
+          <div class="save" x-show="comboRate()>0">
+            <span x-text="'ส่วนลดคอมโบ '+comboRate()+'%'"></span>
+            <span x-text="'-฿'+money(comboDisc())"></span>
+          </div>
+          <div class="big"><span>ค่าเช่าสุทธิ/เดือน</span><span x-text="'฿'+money(netMonthly())"></span></div>
+          <p class="hint" x-show="comboRate()===0" x-text="comboHint()"></p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+</template>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div>
+      <strong style="color:#111">ซื้อสินค้า</strong>
+      <div style="margin-top:8px"><a href="#combo" @click.prevent="goShop()">สินค้าทั้งหมด</a></div>
+      <div><a href="#apply" @click.prevent="go('#apply')">สมัคร Subscribe</a></div>
+    </div>
+    <div>
+      <strong style="color:#111">โปรโมชัน / แคมเปญ</strong>
+      <div style="margin-top:8px"><a href="#promo" @click.prevent="go('#promo')">Birthday Combo 15%</a></div>
+      <div><a href="#campaign" @click.prevent="go('#campaign')">แคมเปญ &amp; กิจกรรม</a></div>
+    </div>
+    <div>
+      <strong style="color:#111">สนับสนุน</strong>
+      <div style="margin-top:8px"><a href="#support" @click.prevent="go('#support')">คำถามที่พบบ่อย</a></div>
+      <div><a href="tel:020575757">02-057-5757</a></div>
+      <div><a :href="lineUrl" target="_blank" rel="noopener">LINE</a></div>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:22px">
+    LG Subscribe · Epromoter <span x-text="epName || 'POND'"></span>
+    · โปร <span x-text="promoLabel()"></span>
+    · <span x-text="buildVersion"></span>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="เมนูล่าง">
+  <div class="dock-in">
+    <button type="button" :class="page==='home' && 'on'" @click="go('#top')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11l8-7 8 7v9H4z"/></svg>
+      หน้าแรก
+    </button>
+    <button type="button" :class="page==='shop' && 'on'" @click="goShop()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg>
+      สินค้า
+    </button>
+    <button type="button" @click="cartOpen=true">
+      <span class="wrap-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7L5 4H2"/></svg>
+        <span class="dot" x-show="cartCount()>0" x-text="cartCount()"></span>
+      </span>
+      ชุด
+    </button>
+    <button type="button" :class="page==='apply' && 'on'" @click="go('#apply')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5 19c.8-3.2 3.4-5 7-5s6.2 1.8 7 5"/></svg>
+      สมัคร
+    </button>
+  </div>
+</nav>
+
+<div class="overlay" x-show="pdp" x-cloak @click.self="pdp=null">
+  <div class="pdp" @click.stop x-show="pdp">
+    <button class="pdp-close" type="button" @click="pdp=null" aria-label="ปิด">×</button>
+    <div class="pdp-visual">
+      <img :src="pdp && imgUrl(pdp)" :alt="pdp && pdp.code" @error="$el.style.opacity=.2"/>
+    </div>
+    <div class="pdp-info">
+      <div class="card-cat" x-text="pdp && shortCat(pdp.category)"></div>
+      <h3 x-text="pdp ? productTitle(pdp) : ''"></h3>
+      <div class="card-code" x-text="pdp && pdp.code"></div>
+      <div style="margin:10px 0 16px">
+        <span class="start">เริ่มต้น</span>
+        <span class="price">฿<span x-text="pdp ? money(bestPrice(pdp)) : ''"></span> <small>/เดือน</small></span>
+      </div>
+      <div style="font-weight:600;margin-bottom:8px">เลือกแพ็คเกจ</div>
+      <template x-for="(plan,idx) in (pdp && pdp.plans) || []" :key="idx">
+        <div class="plan" :class="planIdx===idx && 'on'" @click="planIdx=idx">
+          <div style="display:flex;justify-content:space-between;gap:10px">
+            <div>
+              <strong x-text="planLabel(plan)"></strong>
+              <span class="rec" x-show="pdp && isRecommended(pdp, plan)">แนะนำ</span>
+              <div class="s" x-text="serviceLabel(plan)"></div>
+            </div>
+            <strong x-text="plan.outright ? ('฿'+money(plan.advancePayment)) : ('฿'+money(plan.effectiveMonthly)+'/ด.')"></strong>
+          </div>
+          <div class="hint" x-show="plan.promo" x-text="plan.promo"></div>
+          <div class="hint" x-show="!plan.outright && plan.regular > plan.effectiveMonthly">
+            ราคาปกติ ฿<span x-text="money(plan.regular)"></span>/เดือน
+            <span x-show="plan.totalSaving"> · ประหยัด ฿<span x-text="money(plan.totalSaving)"></span></span>
+          </div>
+          <div class="bills" x-show="planIdx===idx && plan.billSchedule && plan.billSchedule.length">
+            <template x-for="(row,ri) in plan.billSchedule" :key="ri">
+              <div>
+                <span x-text="row.range + (row.note ? ' · '+row.note : '')"></span>
+                <span x-text="'฿'+money(row.price)"></span>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+      <div class="pdp-pay">
+        <div class="qty">
+          <button type="button" @click="qty=Math.max(1,qty-1)">−</button>
+          <span x-text="qty"></span>
+          <button type="button" @click="qty=Math.min(99,qty+1)">+</button>
+        </div>
+        <div style="text-align:right">
+          <div class="n">ยอดชำระครั้งแรก (ประมาณ)</div>
+          <div class="v" x-text="'฿'+money(firstPay(selectedPlan())*qty)"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" style="flex:1" @click="pdp=null">ปิด</button>
+        <button class="btn btn-dark" style="flex:1.4" @click="addToCart()">เพิ่มในชุด</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay leftish" x-show="cartOpen" x-cloak @click.self="cartOpen=false">
+  <div class="drawer" @click.stop>
+    <div class="drawer-h">
+      <h3>ชุดของคุณ</h3>
+      <button class="pdp-close" type="button" @click="cartOpen=false" style="position:static">×</button>
+    </div>
+    <div class="drawer-b">
+      <div class="cust">
+        <button type="button" :class="customerType==='new' && 'on'" @click="customerType='new'">ลูกค้าใหม่</button>
+        <button type="button" :class="customerType==='exist' && 'on'" @click="customerType='exist'">ลูกค้าเก่า</button>
+      </div>
+      <div class="empty" style="text-align:left" x-show="cart.length===0">ยังไม่มีสินค้า — เลือกจากหน้าร้านได้เลย</div>
+      <template x-for="(it,i) in cart" :key="'c-'+it.key">
+        <div class="item">
+          <img :src="imgUrl(it)" :alt="it.code"/>
+          <div>
+            <div class="t" x-text="it.title"></div>
+            <div class="s" x-text="it.code + ' · ' + planLabel(it)"></div>
+            <div class="qty">
+              <button type="button" @click="setQty(i, it.qty-1)">−</button>
+              <span x-text="it.qty"></span>
+              <button type="button" @click="setQty(i, it.qty+1)">+</button>
+            </div>
+          </div>
+          <div class="t" x-text="it.outright ? ('฿'+money(it.advancePayment*it.qty)) : ('฿'+money(it.effectiveMonthly*it.qty))"></div>
+        </div>
+      </template>
+      <div class="sum" x-show="cart.length">
+        <div><span>จำนวน</span><span x-text="cartCount()+' ชิ้น'"></span></div>
+        <div><span>ยอดชำระครั้งแรก</span><span x-text="'฿'+money(cartFirstTotal())"></span></div>
+        <div><span>ค่าเช่า/เดือน ก่อนคอมโบ</span><span x-text="'฿'+money(cartMonthly())"></span></div>
+        <div class="save" x-show="comboRate()>0">
+          <span x-text="'ส่วนลดคอมโบ '+comboRate()+'%'"></span>
+          <span x-text="'-฿'+money(comboDisc())"></span>
+        </div>
+        <div class="big"><span>ค่าเช่าสุทธิ/เดือน</span><span x-text="'฿'+money(netMonthly())"></span></div>
+        <p class="hint" x-show="comboRate()===0" x-text="comboHint()"></p>
+      </div>
+    </div>
+    <div class="drawer-f">
+      <button class="btn btn-lg" style="width:100%" :disabled="cart.length===0" @click="cartOpen=false; go('#apply')">ไปกรอกใบสมัคร</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" x-show="toast.show" x-text="toast.msg" x-cloak></div>
+
+<script>
+function lgApply(){
+  return {
+    ready:false,
+    buildVersion:'2026.08.24-v1-apply',
+    products:[], categories:[],
+    promo:{name:'August Combo', dateStart:'2569-08-01', dateEnd:'2569-08-31'},
+    special:{start:'2569-08-15', end:'2569-08-24', rate:15},
+    lineUrl:'https://lin.ee/RIw7X1w',
+    epId:'', epName:'',
+    page:'home',
+    q:'', cat:'', group:'',
+    sort:'default',
+    shown:24,
+    homeTab:'product',
+    life:'',
+    menu:null,
+    mobOpen:false,
+    cartOpen:false,
+    customerType:'new',
+    pdp:null, planIdx:0, qty:1,
+    cart:[],
+    step:'form',
+    form:{firstName:'', lastName:'', phone:'', address:'', company:''},
+    lastText:'',
+    toast:{show:false, msg:''},
+    cd:{d:'00',h:'00',m:'00',s:'00'},
+    _tick:null,
+
+    async init(){
+      try{
+        const res = await fetch('../store/catalog.json?v=' + Date.now());
+        if(!res.ok) throw new Error('catalog');
+        const data = await res.json();
+        this.products = data.products || [];
+        this.categories = data.categories || [];
+        this.promo = data.promo || this.promo;
+        if(data.lineUrl) this.lineUrl = data.lineUrl;
+        this.ready = true;
+      }catch(e){
+        this.showToast('โหลดสินค้าไม่สำเร็จ — เปิดผ่านเว็บเซิร์ฟเวอร์');
+      }
+      const u = new URL(location.href);
+      const ep = (u.searchParams.get('ep') || '').trim();
+      if(ep){ this.epId = ep.toUpperCase(); this.epName = this.epId; }
+      const hash = u.hash || '#top';
+      if(hash==='#combo' || hash==='#shop') this.page = 'shop';
+      else if(hash==='#apply') this.page = 'apply';
+      else this.page = 'home';
+      try{
+        const saved = localStorage.getItem('lgApplyCart');
+        if(saved) this.cart = JSON.parse(saved) || [];
+      }catch(_){}
+      this.tick();
+      this._tick = setInterval(() => this.tick(), 1000);
+      this.$watch('cat', () => this.shown = 24);
+      this.$watch('group', () => this.shown = 24);
+      this.$watch('q', () => this.shown = 24);
+      this.$watch('life', () => this.shown = 24);
+      this.$watch('sort', () => this.shown = 24);
+      window.addEventListener('keydown', (e) => {
+        if(e.key === 'Escape'){ this.pdp = null; this.cartOpen = false; this.menu = null; }
+      });
+    },
+
+    parseBE(s){
+      const p = String(s||'').split('-').map(Number);
+      if(p.length!==3 || p.some(n => Number.isNaN(n))) return null;
+      return new Date(p[0]-543, p[1]-1, p[2]);
+    },
+    specialOn(){
+      const a = this.parseBE(this.special.start);
+      const b = this.parseBE(this.special.end);
+      if(!a || !b) return false;
+      b.setHours(23,59,59,999);
+      const n = new Date();
+      return n>=a && n<=b;
+    },
+    tick(){
+      const b = this.parseBE(this.special.end);
+      if(!b) return;
+      b.setHours(23,59,59,999);
+      let ms = b - new Date();
+      if(ms < 0) ms = 0;
+      const d = Math.floor(ms/86400000);
+      const h = Math.floor(ms%86400000/3600000);
+      const m = Math.floor(ms%3600000/60000);
+      const s = Math.floor(ms%60000/1000);
+      const z = n => String(n).padStart(2,'0');
+      this.cd = {d:z(d), h:z(h), m:z(m), s:z(s)};
+    },
+    heroLine(){
+      if(this.specialOn()) return 'Birthday Combo 15% ถึง 24 ส.ค. 2569 · เลือกสินค้าเองแล้วกรอกสมัครได้เลย';
+      return 'จัดชุด Subscribe แล้วกรอกชื่อ นามสกุล เบอร์ ที่อยู่ติดตั้ง ส่งใบสมัครได้เลย';
+    },
+    promoLabel(){
+      const p = this.promo || {};
+      return (p.name||'โปร') + ' ' + (p.dateStart||'') + ' – ' + (p.dateEnd||'');
+    },
+    comboRate(){
+      const n = this.cartCount();
+      const min = this.customerType === 'exist' ? 1 : 2;
+      if(n < min) return 0;
+      return this.specialOn() ? 15 : 10;
+    },
+    comboHint(){
+      const need = (this.customerType==='exist'?1:2) - this.cartCount();
+      const r = this.specialOn()?15:10;
+      if(need<=0) return '';
+      return 'เพิ่มอีก ' + need + ' ชิ้น เพื่อรับส่วนลดคอมโบ ' + r + '%';
+    },
+    comboDisc(){
+      const x = this.cartMonthly() * this.comboRate() / 100;
+      const f = Math.floor(x);
+      return (x-f) > 0.5 ? f+1 : f;
+    },
+    netMonthly(){ return Math.max(0, this.cartMonthly() - this.comboDisc()); },
+
+    imgUrl(p){
+      if(!p || !p.image) return '';
+      if(/^https?:\/\//i.test(p.image)) return p.image;
+      if(String(p.image).startsWith('assets/')) return '../' + p.image;
+      return p.image;
+    },
+    shortCat(c){
+      return String(c||'')
+        .replace('เครื่องปรับอากาศ ','แอร์ ')
+        .replace('โทรทัศน์ Life Style / OLED / QNED / NANO','ทีวี')
+        .replace('เครื่องซักผ้า Front Load','ซักผ้าฝาหน้า')
+        .replace('เครื่องซักผ้า Top Load','ซักผ้าฝาบน')
+        .replace('เครื่องอบผ้า / Styler / ล้างจาน','อบผ้า/Styler')
+        .replace('ตู้เย็น Side-by-Side','ตู้เย็น SBS')
+        .replace('ตู้เย็น Multi-Door','ตู้เย็น Multi')
+        .replace('ตู้เย็น Top/Bottom Freezer','ตู้เย็น TF/BF')
+        .replace('ลำโพง / ซาวด์บาร์','ลำโพง')
+        .replace('เครื่องฟอกอากาศ','ฟอกอากาศ')
+        .replace('เครื่องลดความชื้น','ลดความชื้น')
+        .replace('แอร์เชิงพาณิชย์ SAC','แอร์ SAC')
+        .replace('เครื่องดูดฝุ่น','ดูดฝุ่น')
+        .replace('เครื่องกรองน้ำ','กรองน้ำ');
+    },
+    productTitle(p){
+      const name = (p.name||'').trim();
+      if(name && !/^\(.*\)$/.test(name)) return name;
+      return this.shortCat(p.category) + (name ? ' ' + name : '');
+    },
+    bestPrice(p){
+      const plans = (p.plans||[]).filter(x => !x.outright);
+      if(!plans.length) return 0;
+      return Math.min(...plans.map(x => Number(x.effectiveMonthly)||0));
+    },
+    bestRegular(p){
+      const plans = (p.plans||[]).filter(x => !x.outright);
+      if(!plans.length) return 0;
+      return Math.min(...plans.map(x => Number(x.regular)||0));
+    },
+    hasAdvance(p){
+      return (p.plans||[]).some(x => !x.outright && (Number(x.advancePayment)||0) > 0);
+    },
+    countInCat(c){ return this.products.filter(p => p.category===c).length; },
+    catGroups(){
+      return [
+        { id:'water', title:'เครื่องกรองน้ำ', note:'Tankless · UVnano', cats:['เครื่องกรองน้ำ'] },
+        { id:'purifier', title:'เครื่องฟอกอากาศ', note:'H13 HEPA · PM2.5', cats:['เครื่องฟอกอากาศ'] },
+        { id:'laundry', title:'เครื่องซักผ้า / อบผ้า', note:'WashTower · AI DD', cats:['Wash Tower','เครื่องซักผ้า Front Load','เครื่องซักผ้า Top Load','เครื่องอบผ้า / Styler / ล้างจาน'], exclude:/ล้างจาน/ },
+        { id:'fridge', title:'ตู้เย็น', note:'Multi Door · InstaView', cats:['ตู้เย็น Side-by-Side','ตู้เย็น Multi-Door','ตู้เย็น Top/Bottom Freezer','ตู้เย็น Plumbing'] },
+        { id:'ac', title:'เครื่องปรับอากาศ', note:'DUALCOOL AI', cats:['เครื่องปรับอากาศ DUALCOOL AI','เครื่องปรับอากาศ ARTCOOL','เครื่องปรับอากาศ DUAL INVERTER','แอร์เชิงพาณิชย์ SAC'] },
+        { id:'tv', title:'ทีวี', note:'OLED evo · QNED', cats:['โทรทัศน์ Life Style / OLED / QNED / NANO'] },
+        { id:'dish', title:'เครื่องล้างจาน', note:'QuadWash · TrueSteam', cats:['เครื่องอบผ้า / Styler / ล้างจาน'], include:/ล้างจาน/ },
+        { id:'av', title:'มอนิเตอร์ / ลำโพง', note:'UltraGear · xboom', cats:['มอนิเตอร์','ลำโพง / ซาวด์บาร์'] }
+      ];
+    },
+    groupMatch(p, g){
+      if(!g || !g.cats.includes(p.category)) return false;
+      const blob = (p.name||'') + ' ' + (p.code||'');
+      if(g.include && !g.include.test(blob)) return false;
+      if(g.exclude && g.exclude.test(blob)) return false;
+      return true;
+    },
+    countInGroup(id){
+      const g = this.catGroups().find(x => x.id===id);
+      return g ? this.products.filter(p => this.groupMatch(p, g)).length : 0;
+    },
+    activeGroupTitle(){
+      const g = this.catGroups().find(x => x.id===this.group);
+      return g ? g.title : '';
+    },
+    catTiles(){
+      return this.categories.map(cat => {
+        const items = this.products.filter(p => p.category===cat);
+        const withImg = items.find(p => p.image);
+        return { cat, count: items.length, image: withImg ? withImg.image : '' };
+      });
+    },
+    featured(){
+      const want = ['เครื่องกรองน้ำ','ตู้เย็น Side-by-Side','เครื่องซักผ้า Front Load','Wash Tower','เครื่องปรับอากาศ DUALCOOL AI','โทรทัศน์ Life Style / OLED / QNED / NANO','เครื่องฟอกอากาศ','เครื่องดูดฝุ่น'];
+      const out = [];
+      want.forEach(c => {
+        const p = this.products.find(x => x.category === c && x.image);
+        if(p) out.push(p);
+      });
+      return out.slice(0, 8);
+    },
+    lifeCats(){
+      if(this.life==='home') return ['ตู้เย็น Side-by-Side','ตู้เย็น Multi-Door','เครื่องซักผ้า Front Load','เครื่องซักผ้า Top Load','เครื่องกรองน้ำ','เครื่องฟอกอากาศ'];
+      if(this.life==='condo') return ['เครื่องปรับอากาศ DUALCOOL AI','เครื่องปรับอากาศ ARTCOOL','ไมโครเวฟ','เครื่องดูดฝุ่น','เครื่องลดความชื้น'];
+      if(this.life==='family') return ['Wash Tower','ตู้เย็น Multi-Door','เครื่องอบผ้า / Styler / ล้างจาน','โทรทัศน์ Life Style / OLED / QNED / NANO'];
+      if(this.life==='office') return ['แอร์เชิงพาณิชย์ SAC','มอนิเตอร์','ลำโพง / ซาวด์บาร์'];
+      return [];
+    },
+    lifeLabel(){
+      return {home:'บ้าน', condo:'คนเดียว / คอนโด', family:'ครอบครัวใหญ่', office:'บริษัท / ออฟฟิศ'}[this.life] || '';
+    },
+    shopTitle(){
+      if(this.group) return this.activeGroupTitle();
+      if(this.cat) return this.shortCat(this.cat);
+      if(this.homeTab==='life' && this.life) return this.lifeLabel();
+      return 'สินค้าทั้งหมด';
+    },
+    setLife(key){
+      this.life = key;
+      this.cat = '';
+      this.group = '';
+      this.homeTab = 'life';
+      this.goShop();
+    },
+    filtered(){
+      const q = this.q.trim().toLowerCase();
+      const life = this.homeTab==='life' ? this.lifeCats() : [];
+      const g = this.group ? this.catGroups().find(x => x.id===this.group) : null;
+      let list = this.products.filter(p => {
+        if(this.homeTab==='life' && life.length && !life.includes(p.category)) return false;
+        if(g && !this.groupMatch(p, g)) return false;
+        if(this.cat && p.category !== this.cat) return false;
+        if(!q) return true;
+        return [p.code,p.name,p.category].join(' ').toLowerCase().includes(q);
+      });
+      if(this.sort==='price') list = list.slice().sort((a,b)=> this.bestPrice(a)-this.bestPrice(b));
+      if(this.sort==='name') list = list.slice().sort((a,b)=> this.productTitle(a).localeCompare(this.productTitle(b),'th'));
+      return list;
+    },
+    filteredPage(){ return this.filtered().slice(0, this.shown); },
+    money(n){
+      const x = Number(n)||0;
+      return x.toLocaleString('th-TH', {maximumFractionDigits:2});
+    },
+    isRecommended(p, plan){
+      if(!p || !plan || plan.outright) return false;
+      if(plan.term!=='6Y' || plan.serviceType!=='Visit') return false;
+      const c = p.category || '';
+      const n = p.name || '';
+      if(/ซักผ้า|Wash Tower/.test(c)) return true;
+      if(/อบผ้า|ล้างจาน/.test(c + ' ' + n) && !/Styler/i.test(n)) return true;
+      return false;
+    },
+    openProduct(p){
+      this.pdp = p;
+      this.qty = 1;
+      const plans = p.plans||[];
+      let idx = plans.findIndex(x => this.isRecommended(p, x));
+      if(idx<0) idx = plans.findIndex(x => !x.outright && x.term==='5Y' && x.serviceType==='Visit');
+      if(idx<0) idx = plans.findIndex(x => !x.outright);
+      this.planIdx = idx<0 ? 0 : idx;
+    },
+    selectedPlan(){ return this.pdp && (this.pdp.plans||[])[this.planIdx] || null; },
+    planLabel(plan){
+      if(!plan) return '';
+      if(plan.outright) return 'ซื้อขาด';
+      const y = Math.round((plan.totalContractMonths||60)/12);
+      return (plan.term||'') + ' · ' + y + ' ปี';
+    },
+    serviceLabel(plan){
+      if(!plan) return '';
+      if(plan.outright) return 'รวมบริการ 2 ปี';
+      if(plan.serviceType==='Visit') return 'ช่างถึงบ้าน ' + (plan.serviceCycle||'');
+      if(plan.serviceType==='Self') return 'รับอะไหล่เอง ' + (plan.serviceCycle||'');
+      return 'รับประกันตลอดสัญญา';
+    },
+    firstPay(plan){
+      if(!plan) return 0;
+      const adv = Number(plan.advancePayment)||0;
+      if(plan.outright || adv>0) return adv;
+      return Number(plan.effectiveMonthly)||0;
+    },
+    addToCart(){
+      const p = this.pdp, plan = this.selectedPlan();
+      if(!p || !plan) return;
+      const key = [p.code, plan.term, plan.serviceType, plan.outright?'O':'S', plan.effectiveMonthly, plan.advancePayment||0].join('|');
+      const addQty = Math.max(1, this.qty||1);
+      const hit = this.cart.find(x => x.key===key);
+      if(hit) hit.qty = Math.min(99, hit.qty+addQty);
+      else this.cart.push({
+        key, code:p.code, name:p.name, title:this.productTitle(p), category:p.category, image:p.image,
+        term:plan.term, serviceType:plan.serviceType, serviceCycle:plan.serviceCycle,
+        regular:plan.regular, effectiveMonthly:plan.effectiveMonthly,
+        advancePayment:plan.advancePayment||0, outright:!!plan.outright,
+        totalContractMonths:plan.totalContractMonths||60, qty:addQty
+      });
+      this.save(); this.pdp=null; this.showToast('เพิ่มในชุดแล้ว');
+    },
+    setQty(i,q){
+      q = Math.max(0, Math.min(99, Number(q)||0));
+      if(q<=0) this.cart.splice(i,1); else this.cart[i].qty=q;
+      this.save();
+    },
+    cartCount(){ return this.cart.reduce((s,x)=>s+(x.qty||0),0); },
+    cartMonthly(){
+      return this.cart.reduce((s,x)=> x.outright ? s : s + (Number(x.effectiveMonthly)||0)*(x.qty||0), 0);
+    },
+    cartFirstTotal(){ return this.cart.reduce((s,x)=> s + this.firstPay(x)*(x.qty||0), 0); },
+    save(){ try{ localStorage.setItem('lgApplyCart', JSON.stringify(this.cart)); }catch(_){ } },
+    scrollTop(){ window.scrollTo({top:0, behavior:'smooth'}); },
+    goShop(){
+      this.page = 'shop';
+      this.menu = null;
+      this.mobOpen = false;
+      this.cartOpen = false;
+      history.replaceState(null, '', '#combo');
+      this.scrollTop();
+    },
+    go(id){
+      this.menu = null;
+      this.mobOpen = false;
+      if(id==='#combo' || id==='#shop'){ this.goShop(); return; }
+      if(id==='#apply'){
+        this.page = 'apply';
+        this.cartOpen = false;
+        history.replaceState(null, '', '#apply');
+        this.scrollTop();
+        return;
+      }
+      if(id==='#top'){
+        this.page = 'home';
+        history.replaceState(null, '', '#top');
+        this.scrollTop();
+        return;
+      }
+      this.page = 'home';
+      history.replaceState(null, '', id);
+      this.$nextTick(() => {
+        const el = document.querySelector(id);
+        if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    },
+    pickCat(c){
+      this.cat = c || '';
+      this.group = '';
+      this.homeTab = 'product';
+      this.life = '';
+      this.goShop();
+    },
+    pickGroup(id){
+      this.group = id || '';
+      this.cat = '';
+      this.homeTab = 'product';
+      this.life = '';
+      this.goShop();
+    },
+    clearShopFilter(){
+      this.group = '';
+      this.cat = '';
+      this.life = '';
+      this.homeTab = 'product';
+      this.goShop();
+    },
+    showToast(msg){
+      this.toast = {show:true, msg};
+      setTimeout(()=>{ this.toast.show=false; }, 2200);
+    },
+    async copyMyLink(){
+      try{
+        await navigator.clipboard.writeText(location.href);
+        this.showToast('คัดลอกลิงก์แล้ว');
+      }catch(_){ this.showToast('คัดลอกไม่สำเร็จ'); }
+    },
+    orderText(){
+      const name = ((this.form.firstName||'') + ' ' + (this.form.lastName||'')).trim();
+      const lines = [];
+      lines.push('ใบสมัคร LG Subscribe');
+      lines.push('จากหน้าสมัครลูกค้า · ' + this.buildVersion);
+      lines.push('แอดมิน: ' + (this.epName || 'POND'));
+      lines.push('ประเภท: ' + (this.customerType==='exist' ? 'ลูกค้าเก่า' : 'ลูกค้าใหม่'));
+      if(this.comboRate()>0) lines.push('คอมโบ: ' + this.comboRate() + '%');
+      lines.push('');
+      lines.push('ชื่อ: ' + (this.form.firstName||'-'));
+      lines.push('นามสกุล: ' + (this.form.lastName||'-'));
+      lines.push('ชื่อเต็ม: ' + (name||'-'));
+      lines.push('เบอร์โทร: ' + (this.form.phone||'-'));
+      lines.push('ที่อยู่ติดตั้ง: ' + (this.form.address||'-'));
+      if(this.form.company) lines.push('บริษัท: ' + this.form.company);
+      lines.push('');
+      lines.push('รายการ (' + this.cartCount() + ' ชิ้น)');
+      this.cart.forEach((it,i)=>{
+        lines.push((i+1)+') '+it.title);
+        lines.push('   รุ่น: '+it.code+' × '+it.qty);
+        lines.push('   แพ็ค: '+this.planLabel(it)+' · '+this.serviceLabel(it));
+        if(it.outright) lines.push('   ซื้อขาด ฿'+this.money(it.advancePayment*it.qty));
+        else {
+          lines.push('   โปร ฿'+this.money(it.effectiveMonthly)+'/เดือน/ชิ้น');
+          if(it.advancePayment>0) lines.push('   ล่วงหน้า ฿'+this.money(it.advancePayment)+'/ชิ้น');
+        }
+      });
+      lines.push('');
+      lines.push('ยอดชำระครั้งแรก (ประมาณ) ฿'+this.money(this.cartFirstTotal()));
+      lines.push('ค่าเช่า/เดือน ก่อนคอมโบ ฿'+this.money(this.cartMonthly()));
+      if(this.comboRate()>0){
+        lines.push('ส่วนลดคอมโบ '+this.comboRate()+'% −฿'+this.money(this.comboDisc()));
+        lines.push('ค่าเช่าสุทธิ/เดือน ฿'+this.money(this.netMonthly()));
+      }
+      lines.push('');
+      lines.push('โปรดทำรายการต่อในระบบบริษัทตามข้อมูลนี้');
+      return lines.join('\n');
+    },
+    async submit(){
+      if(this.cart.length===0){ this.showToast('เลือกสินค้าก่อน'); return; }
+      if(!(this.form.firstName||'').trim() || !(this.form.lastName||'').trim()){
+        this.showToast('กรอกชื่อและนามสกุล'); return;
+      }
+      if(!(this.form.phone||'').trim()){ this.showToast('กรอกเบอร์โทร'); return; }
+      if(!(this.form.address||'').trim()){ this.showToast('กรอกที่อยู่ติดตั้ง'); return; }
+      const text = this.orderText();
+      this.lastText = text;
+      try{ await navigator.clipboard.writeText(text); }catch(_){}
+      try{ window.open('https://line.me/R/msg/text/?'+encodeURIComponent(text), '_blank'); }catch(_){}
+      setTimeout(()=>{ try{ window.open(this.lineUrl, '_blank'); }catch(_){ } }, 400);
+      this.step = 'done';
+      this.showToast('คัดลอกใบสมัครแล้ว');
+    },
+    async copyLast(){
+      try{ await navigator.clipboard.writeText(this.lastText||this.orderText()); this.showToast('คัดลอกแล้ว'); }
+      catch(_){ this.showToast('เลือกข้อความแล้ว copy เอง'); }
+    },
+    reset(){
+      this.cart=[]; this.save();
+      this.form={firstName:'', lastName:'', phone:'', address:'', company:''};
+      this.step='form'; this.lastText='';
+    }
+  };
+}
+</script>
+</body>
+</html>
