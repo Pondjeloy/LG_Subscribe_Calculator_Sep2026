@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.01-v3 · TV ADV 6M 50% ตาม Price list Sep V1 -->
+<!-- LG Subscribe Calculator build 2026.09.01-v4 · ระบุช่วงลด 50% เดือน 1–6 -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -955,8 +955,8 @@
  <div class="font-display font-bold text-lg price-highlight" x-show="entry.plan.outright" x-text="'฿' + entry.plan.advancePayment.toLocaleString()"></div>
  <div class="font-display font-bold text-lg price-highlight" x-show="!entry.plan.outright" x-text="'฿' + entry.plan.effectiveMonthly.toLocaleString()"></div>
  <div class="text-xs text-gray-500" x-show="entry.plan.outright">จ่ายครั้งเดียว</div>
- <!-- TV/จอ/ลำโพง (advance): ตัวเลขใหญ่ = ครึ่งราคาบิล 1-12 — ห้ามโชว์ "ราคา X บิลแรก" จาก promoMonths (โปร 50% อยู่หลังบิล 12) -->
- <div class="text-xs text-gray-500" x-show="!entry.plan.outright && entry.plan.advancePayment">ครึ่งราคา · บิล 1–12</div>
+ <!-- TV/จอ: ระบุช่วงลด 50% ตามโปร (6M = เดือน 1–6 · 12M = บิล 1–12) -->
+ <div class="text-xs text-gray-500" x-show="!entry.plan.outright && entry.plan.advancePayment" x-text="tvPromoShort(entry.plan)"></div>
  <div class="text-xs mt-1" style="color:var(--ink-2);font-weight:500" x-show="!entry.plan.outright && entry.plan.advancePayment" x-text="'ราคาปกติ ฿' + entry.plan.regular.toLocaleString() + '/เดือน'"></div>
  <div class="text-xs text-gray-500" x-show="!entry.plan.outright && !entry.plan.advancePayment && (!entry.plan.promoMonths || entry.plan.promoMonths >= entry.plan.totalContractMonths)">ราคา/เดือน</div>
  <div class="text-xs text-gray-500" x-show="!entry.plan.outright && !entry.plan.advancePayment && entry.plan.promoMonths > 0 && entry.plan.promoMonths < entry.plan.totalContractMonths">ราคา <span x-text="entry.plan.promoMonths"></span> บิลแรก</div>
@@ -1179,8 +1179,8 @@
  <div class="price-highlight text-xl" x-show="g.item.outright" x-text="'฿' + (g.item.advancePayment * g.qty).toLocaleString()"></div>
  <div class="price-highlight text-xl" x-show="!g.item.outright" x-text="'฿' + (g.item.effectiveMonthly * g.qty).toLocaleString()"></div>
  <div class="text-xs text-gray-500" x-show="g.item.outright">จ่ายครั้งเดียว<span x-show="g.qty > 1" x-text="' · ฿' + g.item.advancePayment.toLocaleString() + '/ชิ้น'"></span></div>
- <!-- Advance TV/จอ/ลำโพง: ตัวเลขใหญ่ = ครึ่งราคาบิล 1-12 ไม่ใช่ "โปร X บิลแรก" -->
- <div class="text-xs text-gray-500" x-show="!g.item.outright && g.item.advancePayment">/ เดือน (ครึ่งราคา บิล 1–12)<span x-show="g.qty > 1" x-text="' · ฿' + g.item.effectiveMonthly.toLocaleString() + '/ชิ้น'"></span></div>
+ <!-- Advance TV/จอ: ระบุช่วงลด 50% -->
+ <div class="text-xs text-gray-500" x-show="!g.item.outright && g.item.advancePayment"><span x-text="'/ เดือน · ' + tvPromoShort(g.item)"></span><span x-show="g.qty > 1" x-text="' · ฿' + g.item.effectiveMonthly.toLocaleString() + '/ชิ้น'"></span></div>
  <div class="text-xs mt-1" style="color:var(--ink-2);font-weight:500" x-show="!g.item.outright && g.item.advancePayment" x-text="'ราคาปกติ ฿' + (g.item.regular * g.qty).toLocaleString() + '/เดือน'"></div>
  <div class="text-xs text-gray-500" x-show="!g.item.outright && !g.item.advancePayment && g.item.promoMonths > 0 && g.item.promoMonths < g.item.totalContractMonths">/ เดือน (โปร)<span x-show="g.qty > 1" x-text="' · ฿' + g.item.effectiveMonthly.toLocaleString() + '/ชิ้น'"></span></div>
  <div class="text-xs text-gray-500" x-show="!g.item.outright && !g.item.advancePayment && (!g.item.promoMonths || g.item.promoMonths >= g.item.totalContractMonths)">/ เดือน<span x-show="g.qty > 1" x-text="' · ฿' + g.item.effectiveMonthly.toLocaleString() + '/ชิ้น'"></span></div>
@@ -1261,7 +1261,7 @@
  <span x-show="g.qty > 1" x-text="'฿' + fmtBillPrice(seg.price) + ' × ' + g.qty"></span>
  <span x-show="comboRate() > 0 && seg.base !== seg.price" x-text="(g.qty > 1 ? ' · ' : '') + 'ราคาเต็ม ฿' + fmtBillPrice(seg.base * g.qty) + ' − combo'"></span>
  <span x-show="comboRate() > 0 && seg.start === 1 && !g.item.advancePayment" style="color:var(--ink)">บิลแรกเก็บเต็ม*</span>
- <span x-show="comboRate() === 0" x-text="billRangeTotals(g.item).find(r => r.start === seg.start)?.isAdvanceHalf ? 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)' : (seg.base !== g.item.postPromoPrice ? 'ช่วงโปร' : 'ราคาปกติ')"></span>
+ <span x-show="comboRate() === 0" x-text="billRangeTotals(g.item).find(r => r.start === seg.start)?.isAdvanceHalf ? tvHalfPeriodNote(g.item) : (seg.base !== g.item.postPromoPrice ? 'ช่วงโปร' : 'ราคาปกติ')"></span>
  </div>
  </div>
  </template>
@@ -1380,6 +1380,7 @@
  <div class="text-xs text-gray-600 uppercase tracking-wider mb-1">เงินจ่ายก้อนแรก · Advance Payment</div>
  <div class="price-highlight text-2xl" x-text="'฿' + totalTvAdvance().toLocaleString()"></div>
  <div class="text-xs text-gray-600 mt-1" x-text="cartTvAdvanceLabel() + ' ตอนเริ่มสัญญา'"></div>
+ <div class="text-xs mt-1" style="color:var(--blood);font-weight:600" x-show="cartTvDiscountPeriodLabel()" x-text="cartTvDiscountPeriodLabel()"></div>
  <div class="mt-2" style="border-top:1px solid rgba(0,0,0,.08);padding-top:6px">
  <template x-for="(g, i) in tvAdvanceItemsGrouped()" :key="'adv-' + i">
  <div class="flex justify-between text-xs" style="padding:2px 0">
@@ -1682,7 +1683,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.01-v3',
+ buildVersion: '2026.09.01-v4',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1895,7 +1896,7 @@ function lgCalculator() {
  }
  this.billRangeTotals(item).forEach(r => {
  let note = '';
- if (r.isAdvanceHalf) note = 'ครึ่งราคา';
+ if (r.isAdvanceHalf) note = this.tvHalfPeriodNote(item);
  else if (r.isPromo) note = 'โปร';
  else note = 'ปกติ';
  lines.push({
@@ -3187,12 +3188,34 @@ function lgCalculator() {
    const n = this.advancePrepaidMonths(item);
    return n ? ('ชำระล่วงหน้า ' + n + ' เดือน 50%') : 'ชำระล่วงหน้า 50%';
  },
+ /** ช่วงที่ลด 50% ตามโปร — 6M = เดือน 1–6 · 12M ของแถม = บิล 1–12 */
+ tvDiscountPeriodLabel(item) {
+   const n = this.advancePrepaidMonths(item);
+   if (n === 6) return 'ลด 50% เดือน 1–6';
+   if (n === 12) return 'ลด 50% บิล 1–12';
+   return n ? ('ลด 50% ' + n + ' เดือนแรก') : '';
+ },
+ tvPromoShort(item) {
+   const disc = this.tvDiscountPeriodLabel(item);
+   if (this.advancePrepaidMonths(item) === 6) return disc + ' · บิล 1–12 ครึ่งราคา';
+   return disc ? (disc + ' (ครึ่งราคา)') : 'ครึ่งราคา · บิล 1–12';
+ },
+ tvHalfPeriodNote(item) {
+   const disc = this.tvDiscountPeriodLabel(item);
+   return disc ? ('ครึ่งราคา · ' + disc) : 'ครึ่งราคา';
+ },
  cartTvAdvanceLabel() {
    const months = [...new Set(
      (this.cart || []).filter(it => it.advancePayment > 0 && !it.outright).map(it => this.advancePrepaidMonths(it))
    )];
    if (months.length === 1) return 'ชำระล่วงหน้า ' + months[0] + ' เดือน 50% (TV/จอ/ลำโพง)';
    return 'ชำระล่วงหน้า 50% ตามจำนวนเดือนของแต่ละรุ่น (TV/จอ/ลำโพง)';
+ },
+ cartTvDiscountPeriodLabel() {
+   const labels = [...new Set(
+     (this.cart || []).filter(it => it.advancePayment > 0 && !it.outright).map(it => this.tvDiscountPeriodLabel(it)).filter(Boolean)
+   )];
+   return labels.join(' · ');
  },
  cartHasSubscribeItem() { return (this.cart || []).some(it => !it.outright); },
  cartHasRegularSubscribe() { return (this.cart || []).some(it => !it.outright && !(it.advancePayment > 0)); },
@@ -3205,7 +3228,11 @@ function lgCalculator() {
  },
  quotePaymentRemarkLines() {
    const lines = [];
-   if (this.hasTvAdvance()) lines.push(this.cartTvAdvanceLabel());
+   if (this.hasTvAdvance()) {
+     lines.push(this.cartTvAdvanceLabel());
+     const disc = this.cartTvDiscountPeriodLabel();
+     if (disc) lines.push(disc);
+   }
    if (this.cartHasSubscribeItem()) lines.push('โปรโมชันใช้ได้เฉพาะแบบ Subscribe');
    const bits = [];
    if (this.cartHasRegularSubscribe()) bits.push('สินค้าทั่วไป = งวดที่ 1');
@@ -3476,7 +3503,7 @@ function lgCalculator() {
           let label = r.rangeLabel;
           let tag = '';
           if (r.isAdvanceHalf) {
-            tag = ' <span style="color:#7c3aed;font-size:10px;font-weight:600">(ครึ่งราคา)</span>';
+            tag = ' <span style="color:#7c3aed;font-size:10px;font-weight:600">(' + this.tvHalfPeriodNote(it) + ')</span>';
           } else if (r.isPromo) {
             tag = ' <span style="color:#0f766e;font-size:10px;font-weight:600">(โปร)</span>';
           } else {
@@ -3746,8 +3773,17 @@ function lgCalculator() {
    return [];
  },
  planPromoDisplay(plan) {
-   // ข้อความโปรอย่างเดียว — หมายเหตุของแถมแยกบรรทัด (x-show hasFreeGift) ไม่ผูกเข้า promo
-   if (!plan || !plan.promo) return '';
+   if (!plan) return '';
+   if (plan.advancePayment > 0 && !plan.outright) {
+     const half = this.fmtBillPrice(plan.effectiveMonthly);
+     const reg = this.fmtBillPrice(plan.regular);
+     const disc = this.tvDiscountPeriodLabel(plan);
+     if (this.advancePrepaidMonths(plan) === 6) {
+       return disc + ' · บิล 1–12 ฿' + half + ' (ครึ่งราคา) · บิล 13–60 ฿' + reg;
+     }
+     return disc + ' ฿' + half + ' · บิล 13–60 ฿' + reg;
+   }
+   if (!plan.promo) return '';
    return String(plan.promo).replace(/\s*·\s*\*ของแถมรับประกัน 1 ปี/g, '').trim();
  },
  warrantyLineText(item, years) {
@@ -4262,11 +4298,13 @@ function lgCalculator() {
         } else {
           lines.push('ค่าเช่ารายงวด' + (qty > 1 ? (' (รวม ' + qty + ' ชิ้น)') : ''));
           if (advance > 0) {
-            lines.push('จ่ายล่วงหน้า ' + this.fmtMoney(advance * qty) + ' บาท' + (qty > 1 ? (' (฿' + this.fmtMoney(advance) + ' × ' + qty + ')') : '') + ' (ตอนเริ่มสัญญา)');
+            lines.push('จ่ายล่วงหน้า ' + this.fmtMoney(advance * qty) + ' บาท' + (qty > 1 ? (' (฿' + this.fmtMoney(advance) + ' × ' + qty + ')') : '') + ' (' + this.tvAdvanceLabel(it) + ')');
+            const promo = this.planPromoDisplay(it);
+            if (promo) lines.push(promo);
           }
           ranges.forEach(r => {
             let tag = '';
-            if (r.isAdvanceHalf) tag = '(ครึ่งราคา)';
+            if (r.isAdvanceHalf) tag = '(' + this.tvHalfPeriodNote(it) + ')';
             else if (r.isPromo) tag = '(โปร)';
             const unitPrice = r.pricePerMonth;
             const linePrice = unitPrice * qty;
