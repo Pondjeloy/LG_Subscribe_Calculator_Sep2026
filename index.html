@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.01-v6 · PromotionSep_26.xlsx · งด WT2116 -->
+<!-- LG Subscribe Calculator build 2026.09.01-v7 · Subscribe Day 15% 28 ส.ค.–6 ก.ย. -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1565,13 +1565,13 @@ function lgCalculator() {
  newTiers: [ {min:2, rate:10} ], // COMBO_NEW_K-HOUSE_(2 UNITS UP)
  existTiers: [ {min:1, rate:10} ] // COMBO_K-HOUSE_ADD_(1 UNIT UP)
  },
- // โปรพิเศษว่างไว้ — user สั่งเอา Birthday Combo ออกก่อน (จะใส่เมื่อมีอัปเดต)
+ // Subscribe Day — จาก 1022244.jpg (28 ส.ค.–6 ก.ย. 2569 · ลด 15% ทุกรอบบิล)
  special: {
- name: '',
- dateStart: '',
- dateEnd: '',
- newTiers: [],
- existTiers: []
+ name: 'Subscribe Day',
+ dateStart: '2569-08-28',
+ dateEnd: '2569-09-06',
+ newTiers: [ {min:2, rate:15} ],
+ existTiers: [ {min:1, rate:15} ]
  }
  },
 
@@ -1700,7 +1700,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.01-v6',
+ buildVersion: '2026.09.01-v7',
  quoteCustomer: {
    name: '',
    address: '',
@@ -2824,11 +2824,11 @@ function lgCalculator() {
  existTiers: [ {min:1, rate:10} ]
  },
  special: {
- name: '',
- dateStart: '',
- dateEnd: '',
- newTiers: [],
- existTiers: []
+ name: 'Subscribe Day',
+ dateStart: '2569-08-28',
+ dateEnd: '2569-09-06',
+ newTiers: [ {min:2, rate:15} ],
+ existTiers: [ {min:1, rate:15} ]
  }
  };
  this.showToast('รีเซ็ตเป็นค่าเริ่มต้นแล้ว');
