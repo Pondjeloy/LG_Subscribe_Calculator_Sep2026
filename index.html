@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.01-v2 · เอา Birthday Combo ออก · Price list Sep V1 -->
+<!-- LG Subscribe Calculator build 2026.09.01-v3 · TV ADV 6M 50% ตาม Price list Sep V1 -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -947,7 +947,7 @@
  <div class="text-xs text-gray-600" x-show="entry.plan.promo" x-text="planPromoDisplay(entry.plan)"></div>
  <div class="text-xs mt-1" style="color:var(--muted)" x-show="hasFreeGift(entry.plan)" x-text="freeGiftWarrantyNote()"></div>
  <div class="text-xs" style="color:var(--ink);margin-top:4px" x-show="entry.plan.outright && entry.plan.advancePayment" x-text="'จ่ายครั้งเดียว ฿' + entry.plan.advancePayment.toLocaleString() + ' (รวมเครื่อง + บริการ 2 ปี)'"></div>
- <div class="text-xs" style="color:var(--ink);margin-top:4px" x-show="entry.plan.advancePayment && !entry.plan.outright" x-text="'จ่ายก้อนแรก ฿' + entry.plan.advancePayment.toLocaleString() + ' (ชำระล่วงหน้า 12 เดือน 50%)'"></div>
+ <div class="text-xs" style="color:var(--ink);margin-top:4px" x-show="entry.plan.advancePayment && !entry.plan.outright" x-text="'จ่ายก้อนแรก ฿' + entry.plan.advancePayment.toLocaleString() + ' (' + tvAdvanceLabel(entry.plan) + ')'"></div>
  </div>
  <div class="text-right">
  <div class="text-xs text-gray-400 line-through" x-show="entry.plan.outright && entry.plan.regular > entry.plan.advancePayment" x-text="'฿' + entry.plan.regular.toLocaleString()"></div>
@@ -1379,7 +1379,7 @@
  <div class="summary-advance-box mb-3" x-show="hasTvAdvance()">
  <div class="text-xs text-gray-600 uppercase tracking-wider mb-1">เงินจ่ายก้อนแรก · Advance Payment</div>
  <div class="price-highlight text-2xl" x-text="'฿' + totalTvAdvance().toLocaleString()"></div>
- <div class="text-xs text-gray-600 mt-1">ชำระล่วงหน้า 12 เดือน 50% ตอนเริ่มสัญญา (TV/จอ/ลำโพง)</div>
+ <div class="text-xs text-gray-600 mt-1" x-text="cartTvAdvanceLabel() + ' ตอนเริ่มสัญญา'"></div>
  <div class="mt-2" style="border-top:1px solid rgba(0,0,0,.08);padding-top:6px">
  <template x-for="(g, i) in tvAdvanceItemsGrouped()" :key="'adv-' + i">
  <div class="flex justify-between text-xs" style="padding:2px 0">
@@ -1527,7 +1527,7 @@
  <li>สินค้าเครื่องกรองน้ำ พื้นที่บริการไม่ครอบคลุมทั่วประเทศ กรุณาตรวจสอบก่อนติดตั้ง</li>
  <li x-show="isSpecialComboEffective()" x-text="'โปร ' + (promoConfig.special.name || 'Combo') + ' มีผลถึง ' + fmtDate(promoConfig.special.dateEnd)"></li>
  <li x-show="!isSpecialComboEffective()" x-text="'โปรเดือนปกติมีผลถึง ' + fmtDate(promoConfig.normal.dateEnd)"></li>
- <li x-show="hasTvAdvance()">ชำระล่วงหน้า 12 เดือน 50% (TV/จอ/ลำโพง)</li>
+ <li x-show="hasTvAdvance()" x-text="cartTvAdvanceLabel()"></li>
  <li x-show="cart.length === 0 || cartHasSubscribeItem()">โปรโมชั่นใช้ได้เฉพาะแบบ Subscribe</li>
  <li x-show="cart.length > 0">ราคารวมค่าจัดส่งและค่าติดตั้งเบื้องต้นเรียบร้อยแล้ว (พื้นที่มาตรฐานตามบริษัท)</li>
  <li>เงื่อนไขเป็นไปตามที่บริษัทฯ กำหนด และราคาอาจเปลี่ยนแปลงโดยไม่ต้องแจ้งให้ทราบล่วงหน้า</li>
@@ -1682,7 +1682,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.01-v2',
+ buildVersion: '2026.09.01-v3',
  quoteCustomer: {
    name: '',
    address: '',
@@ -3173,6 +3173,27 @@ function lgCalculator() {
  hasAdvance() { return this.totalAdvance() > 0; },
  hasOutright() { return this.cart.some(it => it.outright); },
  hasTvAdvance() { return this.cart.some(it => it.advancePayment > 0 && !it.outright); },
+ /** จำนวนเดือนที่จ่ายล่วงหน้า 50% — ADV50%(6M)=6 · ADV50%(12M) ของแถม=12 */
+ advancePrepaidMonths(item) {
+   if (!item || !(item.advancePayment > 0) || item.outright) return 0;
+   const half = Number(item.effectiveMonthly) || ((Number(item.regular) || 0) / 2);
+   if (!(half > 0)) return 6;
+   const n = Math.round(Number(item.advancePayment) / half);
+   if (n >= 11) return 12;
+   if (n >= 5) return 6;
+   return n || 6;
+ },
+ tvAdvanceLabel(item) {
+   const n = this.advancePrepaidMonths(item);
+   return n ? ('ชำระล่วงหน้า ' + n + ' เดือน 50%') : 'ชำระล่วงหน้า 50%';
+ },
+ cartTvAdvanceLabel() {
+   const months = [...new Set(
+     (this.cart || []).filter(it => it.advancePayment > 0 && !it.outright).map(it => this.advancePrepaidMonths(it))
+   )];
+   if (months.length === 1) return 'ชำระล่วงหน้า ' + months[0] + ' เดือน 50% (TV/จอ/ลำโพง)';
+   return 'ชำระล่วงหน้า 50% ตามจำนวนเดือนของแต่ละรุ่น (TV/จอ/ลำโพง)';
+ },
  cartHasSubscribeItem() { return (this.cart || []).some(it => !it.outright); },
  cartHasRegularSubscribe() { return (this.cart || []).some(it => !it.outright && !(it.advancePayment > 0)); },
  firstPaymentHintText() {
@@ -3184,7 +3205,7 @@ function lgCalculator() {
  },
  quotePaymentRemarkLines() {
    const lines = [];
-   if (this.hasTvAdvance()) lines.push('ชำระล่วงหน้า 12 เดือน 50% (TV/จอ/ลำโพง)');
+   if (this.hasTvAdvance()) lines.push(this.cartTvAdvanceLabel());
    if (this.cartHasSubscribeItem()) lines.push('โปรโมชันใช้ได้เฉพาะแบบ Subscribe');
    const bits = [];
    if (this.cartHasRegularSubscribe()) bits.push('สินค้าทั่วไป = งวดที่ 1');
@@ -4606,7 +4627,7 @@ function lgCalculator() {
           });
         } else {
           if (advance > 0) {
-            // ชำระล่วงหน้า = ก้อนเดียว (TV/จอ/ลำโพง 50%×12) — ต้องใส่ตัวเลขในคอลัมน์ราคา
+            // ชำระล่วงหน้า = ก้อนเดียว (TV/จอ/ลำโพง 50%×6 หรือ ×12 ตามโปร) — ต้องใส่ตัวเลขในคอลัมน์ราคา
             // เดิม regular/promo ว่าง → ตารางโชว์ "—" ทั้งที่มียอด (แย่เมื่อตัดคอลัมน์ยอดสุทธิ)
             const advAmt = Math.round(advance * qty * 100) / 100;
             periods.push({ bill: 'ล่วงหน้า', regular: advAmt, promo: advAmt, total: advAmt });
