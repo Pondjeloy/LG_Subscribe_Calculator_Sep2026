@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.01-v1 · Price list Sep V1 · LGETH 2026.09.01 -->
+<!-- LG Subscribe Calculator build 2026.09.01-v2 · เอา Birthday Combo ออก · Price list Sep V1 -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -773,8 +773,8 @@
  </div>
  </section>
 
- <!-- Special Combo Promotion -->
- <section class="special-combo-banner" :class="specialCombo ? 'active' : ''">
+ <!-- Special Combo Promotion — ซ่อนจนกว่าจะมีโปรพิเศษที่ตั้งชื่อ/ช่วงวัน -->
+ <section class="special-combo-banner" x-show="hasSpecialComboConfigured()" :class="specialCombo ? 'active' : ''">
  <div class="special-combo-glow"></div>
  <div style="position:relative;z-index:2">
  <div class="flex items-center justify-between flex-wrap gap-3 mb-2">
@@ -1553,7 +1553,7 @@
 function lgCalculator() {
  return {
  customerType: 'new',
- specialCombo: true,
+ specialCombo: false,
  showComboSettings: false,
  // โปรปกติ + โปรพิเศษ — ตั้งค่าได้เอง
  promoConfig: {
@@ -1564,12 +1564,13 @@ function lgCalculator() {
  newTiers: [ {min:2, rate:10} ], // COMBO_NEW_K-HOUSE_(2 UNITS UP)
  existTiers: [ {min:1, rate:10} ] // COMBO_K-HOUSE_ADD_(1 UNIT UP)
  },
- // LG Special Birthday Combo 15% — 15–24 ส.ค. 69 (ลูกค้าเก่า 1+ · ลูกค้าใหม่ 2+)
+ // โปรพิเศษว่างไว้ — user สั่งเอา Birthday Combo ออกก่อน (จะใส่เมื่อมีอัปเดต)
  special: {
- name: 'LG Special Birthday Combo Promotion',
- dateStart: '2569-08-15', dateEnd: '2569-08-24',
- newTiers: [ {min:2, rate:15} ],
- existTiers: [ {min:1, rate:15} ]
+ name: '',
+ dateStart: '',
+ dateEnd: '',
+ newTiers: [],
+ existTiers: []
  }
  },
 
@@ -1681,7 +1682,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.01-v1',
+ buildVersion: '2026.09.01-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -2708,19 +2709,20 @@ function lgCalculator() {
  },
  resetPromoConfig() {
  localStorage.removeItem('lgPromoConfig');
+ this.specialCombo = false;
  this.promoConfig = {
  normal: {
- name: 'August Combo',
- dateStart: '2569-08-01', dateEnd: '2569-08-31',
+ name: 'Special Combo Promotion',
+ dateStart: '2569-09-01', dateEnd: '2569-09-30',
  newTiers: [ {min:2, rate:10} ],
  existTiers: [ {min:1, rate:10} ]
  },
- // LG Special Birthday Combo 15% · 15–24 ส.ค. 69 (อย่าสลับกับคอมโบปกติ 10%)
  special: {
- name: 'LG Special Birthday Combo Promotion',
- dateStart: '2569-08-15', dateEnd: '2569-08-24',
- newTiers: [ {min:2, rate:15} ],
- existTiers: [ {min:1, rate:15} ]
+ name: '',
+ dateStart: '',
+ dateEnd: '',
+ newTiers: [],
+ existTiers: []
  }
  };
  this.showToast('รีเซ็ตเป็นค่าเริ่มต้นแล้ว');
@@ -3034,8 +3036,13 @@ function lgCalculator() {
  if (p.length !== 3 || p.some(n => Number.isNaN(n))) return null;
  return new Date(p[0] - 543, p[1] - 1, p[2]);
  },
- // วันนี้ยังอยู่ในช่วง special combo หรือไม่ (เช่น Birthday Combo 15–24 ส.ค.)
+ hasSpecialComboConfigured() {
+ const sp = this.promoConfig && this.promoConfig.special;
+ return !!(sp && String(sp.name || '').trim() && sp.dateStart && sp.dateEnd);
+ },
+ // วันนี้ยังอยู่ในช่วง special combo หรือไม่
  isSpecialComboInPeriod() {
+ if (!this.hasSpecialComboConfigured()) return false;
  const sp = this.promoConfig && this.promoConfig.special;
  if (!sp || !sp.dateStart || !sp.dateEnd) return false;
  const start = this.parseBEDate(sp.dateStart);
@@ -3056,7 +3063,7 @@ function lgCalculator() {
  comboRate() {
  const n = this.cart.length;
  const promo = this.activePromo();
- const tiers = this.customerType === 'exist' ? promo.existTiers : promo.newTiers;
+ const tiers = (this.customerType === 'exist' ? promo?.existTiers : promo?.newTiers) || [];
  // หา tier สูงสุดที่ n ผ่านเกณฑ์ (min)
  let rate = 0;
  tiers.forEach(t => { if (n >= t.min && t.rate > rate) rate = t.rate; });
