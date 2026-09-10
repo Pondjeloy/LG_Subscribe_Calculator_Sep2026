@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.10-v1 · OBS 149 first-bill → 99 (9.9) -->
+<!-- LG Subscribe Calculator build 2026.09.10-v2 · eventPromo date-gated -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1526,7 +1526,7 @@
  <li>ราคานี้คำนวณจากเอกสารโปรโมชั่น OBS กันยายน 2569 (Double Day 8-11 Sep 2026.pdf · 9.9 Surprise Deal)</li>
  <li>เครื่องกรองน้ำ Subscribe: โปร 99.- รอบบิลที่ 1–9 มีผล 29 ส.ค.–30 ก.ย. 2569 (ยกเว้นซื้อขาด)</li>
  <li>สินค้าเครื่องกรองน้ำ พื้นที่บริการไม่ครอบคลุมทั่วประเทศ กรุณาตรวจสอบก่อนติดตั้ง</li>
- <li x-show="promoConfig.eventPromo">โปร 9.9 Surprise Deal (บิลแรก 99.-) มีผล 8–11 ก.ย. 2569</li>
+ <li x-show="isEventPromoActive()" x-text="(promoConfig.eventPromo.name || 'โปรอีเวนต์') + ' มีผล ' + fmtDate(promoConfig.eventPromo.dateStart) + ' – ' + fmtDate(promoConfig.eventPromo.dateEnd)"></li>
  <li x-show="isSpecialComboEffective()" x-text="'โปร ' + (promoConfig.special.name || 'Combo') + ' มีผลถึง ' + fmtDate(promoConfig.special.dateEnd)"></li>
  <li x-show="!isSpecialComboEffective()" x-text="'โปรเดือนปกติมีผลถึง ' + fmtDate(promoConfig.normal.dateEnd)"></li>
  <li x-show="hasTvAdvance()" x-text="cartTvAdvanceLabel()"></li>
@@ -1710,7 +1710,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.10-v1',
+ buildVersion: '2026.09.10-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -2698,16 +2698,22 @@ function lgCalculator() {
  }
  },
 
- // --- DOUBLE DAY 8.8 SHOCK PRICE (149 first-month → 88, date-gated) ---
- isShockPromoActive() {
- const sp = this.shockPromo;
- if (!sp || !sp.dateStart || !sp.dateEnd) return false;
- const start = this.parseBEDate(sp.dateStart);
- const end = this.parseBEDate(sp.dateEnd);
+ // --- event / shock date gate (พ.ศ. dateStart–dateEnd) ---
+ isBeRangeActive(cfg) {
+ if (!cfg || !cfg.dateStart || !cfg.dateEnd) return false;
+ const start = this.parseBEDate(cfg.dateStart);
+ const end = this.parseBEDate(cfg.dateEnd);
  if (!start || !end) return false;
  end.setHours(23, 59, 59, 999);
  const now = new Date();
  return now >= start && now <= end;
+ },
+ isEventPromoActive() {
+ return this.isBeRangeActive(this.promoConfig && this.promoConfig.eventPromo);
+ },
+ // --- DOUBLE DAY 8.8 SHOCK PRICE (149 first-month → 88, date-gated) ---
+ isShockPromoActive() {
+ return this.isBeRangeActive(this.shockPromo);
  },
  isShock149FirstMonthPlan(plan) {
  if (!plan || plan.outright || (plan.advancePayment > 0)) return false;
@@ -2725,15 +2731,17 @@ function lgCalculator() {
  if (!this.isShock149FirstMonthPlan(plan)) return plan;
  const from = this.shockPromo.fromPrice;
  const to = this.shockPromo.toPrice;
+ const tag = (this.shockPromo && this.shockPromo.name) || 'SHOCK';
  const delta = from - to;
  plan.effectiveMonthly = to;
  if (Array.isArray(plan.billSchedule)) {
  plan.billSchedule = plan.billSchedule.map(seg => {
  if (seg && seg.range === 'บิล 1' && Number(seg.price) === from) {
  let note = seg.note || '';
- note = note.replace(/ราคา 149\.-/g, 'ราคา 88.-');
- if (note === 'ราคาพิเศษ' || !note) note = 'ราคา 88.- · 8.8 SHOCK';
- else note = note.replace(/\b149\b/g, String(to));
+ const fromRe = new RegExp('ราคา ' + from + '\\.-', 'g');
+ note = note.replace(fromRe, 'ราคา ' + to + '.-');
+ if (note === 'ราคาพิเศษ' || !note) note = 'ราคา ' + to + '.- · ' + tag;
+ else note = note.replace(new RegExp('\\b' + from + '\\b', 'g'), String(to));
  return Object.assign({}, seg, { price: to, note: note });
  }
  return seg;
@@ -2741,11 +2749,11 @@ function lgCalculator() {
  }
  if (plan.promo) {
  plan.promo = String(plan.promo)
- .replace(/ราคา 149\.-/g, 'ราคา 88.-')
- .replace(/บิลแรก 149/g, 'บิลแรก 88');
- if (!/8\.8/.test(plan.promo)) plan.promo += ' · 8.8 SHOCK';
+ .replace(new RegExp('ราคา ' + from + '\\.-', 'g'), 'ราคา ' + to + '.-')
+ .replace(new RegExp('บิลแรก ' + from, 'g'), 'บิลแรก ' + to);
+ if (plan.promo.indexOf(tag) < 0) plan.promo += ' · ' + tag;
  } else {
- plan.promo = 'ราคา 88.- (1 รอบบิลแรก) · 8.8 SHOCK';
+ plan.promo = 'ราคา ' + to + '.- (1 รอบบิลแรก) · ' + tag;
  }
  if (typeof plan.totalSaving === 'number') plan.totalSaving = plan.totalSaving + delta;
  plan._shock88Applied = true;
@@ -2794,7 +2802,7 @@ function lgCalculator() {
  } catch(e) {}
  const shockN = this.applyShockPromoCatalog();
  if (shockN > 0) {
- try { console.info('[8.8 SHOCK] applied to', shockN, 'plans'); } catch(e) {}
+ try { console.info('[' + ((this.shockPromo && this.shockPromo.name) || 'SHOCK') + '] applied to', shockN, 'plans'); } catch(e) {}
  }
  this.refreshCategoryList();
  this.refreshModelList();
@@ -3172,14 +3180,7 @@ function lgCalculator() {
  // วันนี้ยังอยู่ในช่วง special combo หรือไม่
  isSpecialComboInPeriod() {
  if (!this.hasSpecialComboConfigured()) return false;
- const sp = this.promoConfig && this.promoConfig.special;
- if (!sp || !sp.dateStart || !sp.dateEnd) return false;
- const start = this.parseBEDate(sp.dateStart);
- const end = this.parseBEDate(sp.dateEnd);
- if (!start || !end) return false;
- end.setHours(23, 59, 59, 999);
- const now = new Date();
- return now >= start && now <= end;
+ return this.isBeRangeActive(this.promoConfig && this.promoConfig.special);
  },
  // ใช้คอมโบพิเศษจริงๆ เฉพาะเมื่อเปิดสวิตช์ + ยังไม่หมดช่วง
  // ปิดสวิตช์ หรือหมดโปร special → คอมโบเดือนปกติ (ใบเสนอ/สรุปด้วย)
@@ -4634,7 +4635,7 @@ function lgCalculator() {
       // วันหมดที่ใกล้สุด: โปรอีเวนต์ (9.9) / คอมโบพิเศษที่ยังเปิด / โปรเดือนปกติ
       const dates = [];
       const ev = this.promoConfig && this.promoConfig.eventPromo;
-      if (ev && ev.dateEnd) dates.push(String(ev.dateEnd));
+      if (this.isEventPromoActive() && ev && ev.dateEnd) dates.push(String(ev.dateEnd));
       if (this.isSpecialComboEffective()) {
         const sp = this.promoConfig && this.promoConfig.special;
         if (sp && sp.dateEnd) dates.push(String(sp.dateEnd));
@@ -4649,7 +4650,7 @@ function lgCalculator() {
       const dateTxt = this.quoteDateText(this.quoteValidToDate());
       const end = this.quoteValidPromoEnd();
       const ev = this.promoConfig && this.promoConfig.eventPromo;
-      if (ev && ev.name && ev.dateEnd && String(ev.dateEnd) === end) {
+      if (this.isEventPromoActive() && ev && ev.name && ev.dateEnd && String(ev.dateEnd) === end) {
         return 'สงวนสิทธิ์' + titleTh + 'ตามโปร ' + ev.name + ' ไว้จนถึงวันที่ ' + dateTxt;
       }
       if (this.isSpecialComboEffective()) {
@@ -4663,7 +4664,7 @@ function lgCalculator() {
       items.push({ type: 'text', text: this.quoteValidityLine(titleTh) });
       items.push({ type: 'text', text: 'ราคารวมค่าจัดส่งและค่าติดตั้งเบื้องต้นเรียบร้อยแล้ว (พื้นที่มาตรฐานตามบริษัท)' });
       const ev = this.promoConfig && this.promoConfig.eventPromo;
-      if (ev && ev.note) {
+      if (this.isEventPromoActive() && ev && ev.note) {
         items.push({ type: 'text', text: ev.name + ': ' + ev.note });
       }
       if ((this.cart || []).some(it => (it.category === 'เครื่องกรองน้ำ') && !it.outright)) {
