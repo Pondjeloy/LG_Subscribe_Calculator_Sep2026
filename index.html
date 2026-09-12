@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.12-v2 · Subscribe Day 15% 12-20 Sep -->
+<!-- LG Subscribe Calculator build 2026.09.12-v3 · auto-refresh live version -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -9,6 +9,32 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="0" />
 <title>LG Subscribe Calculator Sep 2026 | เครื่องคำนวณราคาสินค้า</title>
+<script>
+(function () {
+  if (location.protocol.indexOf('http') !== 0) return;
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  }
+  function checkLiveVersion() {
+    var m = document.documentElement.innerHTML.match(/buildVersion:\s*'([^']+)'/);
+    var local = m && m[1];
+    if (!local) return;
+    fetch('version.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || !j.buildVersion || j.buildVersion === local) return;
+        var key = 'lgReloaded:' + j.buildVersion;
+        try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
+        var u = new URL(location.href);
+        u.searchParams.set('v', j.buildVersion);
+        location.replace(u.toString());
+      })
+      .catch(function () {});
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', checkLiveVersion);
+  else checkLiveVersion();
+})();
+</script>
 
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -1725,7 +1751,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.12-v2',
+ buildVersion: '2026.09.12-v3',
  quoteCustomer: {
    name: '',
    address: '',
