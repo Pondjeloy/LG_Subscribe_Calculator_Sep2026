@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.12-v3 · auto-refresh live version -->
+<!-- LG Subscribe Calculator build 2026.09.12-v4 · cite Price list Sep_V4_2_1.pdf -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1549,7 +1549,7 @@
  <div class="text-xs text-gray-500 leading-relaxed px-2">
  <p class="mb-1"><strong>หมายเหตุ:</strong></p>
  <ol style="list-style:decimal;padding-left:18px;line-height:1.7">
- <li>ราคานี้คำนวณจากเอกสารโปรโมชั่น OBS กันยายน 2569 (Price list Sep_V4.pdf)</li>
+ <li>ราคานี้คำนวณจากเอกสารโปรโมชั่น OBS กันยายน 2569 · ไฟล์บริษัทล่าสุด: Price list Sep_V4_2_1.pdf (LGETH 12 ก.ย. 2569 · โปร 1–30 ก.ย.)</li>
  <li>เครื่องกรองน้ำ Subscribe: โปร 99.- รอบบิลที่ 1–9 มีผล 29 ส.ค.–30 ก.ย. 2569 (ยกเว้นซื้อขาด)</li>
  <li>สินค้าเครื่องกรองน้ำ พื้นที่บริการไม่ครอบคลุมทั่วประเทศ กรุณาตรวจสอบก่อนติดตั้ง</li>
  <li x-show="isEventPromoActive()" x-text="(promoConfig.eventPromo.name || 'โปรอีเวนต์') + ' มีผล ' + fmtDate(promoConfig.eventPromo.dateStart) + ' – ' + fmtDate(promoConfig.eventPromo.dateEnd)"></li>
@@ -1751,7 +1751,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.12-v3',
+ buildVersion: '2026.09.12-v4',
  quoteCustomer: {
    name: '',
    address: '',
@@ -4703,6 +4703,7 @@ function lgCalculator() {
     quoteRemarkItems(titleTh) {
       const items = [];
       items.push({ type: 'text', text: this.quoteValidityLine(titleTh) });
+      items.push({ type: 'text', text: 'ราคาอ้างอิงไฟล์บริษัทล่าสุด: Price list Sep_V4_2_1.pdf (โปร 1–30 ก.ย. 2569)' });
       items.push({ type: 'text', text: 'ราคารวมค่าจัดส่งและค่าติดตั้งเบื้องต้นเรียบร้อยแล้ว (พื้นที่มาตรฐานตามบริษัท)' });
       const ev = this.promoConfig && this.promoConfig.eventPromo;
       if (this.isEventPromoActive() && ev && ev.note) {
