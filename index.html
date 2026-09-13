@@ -1261,7 +1261,7 @@
  <span class="section-num">05 /</span>
  <h2 class="font-display font-bold text-lg">ตารางชำระเงินรายเดือน <span class="text-gray-400 font-normal text-sm">/ Payment Schedule</span></h2>
  </div>
- <div class="text-xs text-gray-500 mb-3" x-show="comboRate() > 0"> ราคาด้านล่างรวมส่วนลด Combo <strong x-text="Math.round(comboRate()*100)+'%'"></strong> แล้ว — บิลแรก/เงินจ่ายล่วงหน้าเก็บราคาเต็ม (ยังไม่หัก) · สินค้าไม่มี Advance นำ combo บิลแรกไปลดทั้งหมดที่งวดที่ 2 · สินค้า Advance หัก combo จากค่างวด · วนลด Advance ไปหักงวด 7–12
+ <div class="text-xs text-gray-500 mb-3" x-show="comboRate() > 0"> ราคาด้านล่างรวมส่วนลด Combo <strong x-text="Math.round(comboRate()*100)+'%'"></strong> แล้ว — บิลแรก/เงินจ่ายล่วงหน้าเก็บราคาเต็ม (ยังไม่หัก) · สินค้าไม่มี Advance นำ combo บิลแรกไปลดทั้งหมดที่งวดที่ 2 · สินค้า Advance: งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 ครึ่งราคา+วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ
  </div>
  <div class="text-xs text-gray-500 mb-3" x-show="comboRate() === 0"> ราคาต่อเดือนในแต่ละช่วงบิล (ยังไม่มีส่วนลด Combo — ต้องซื้อเพิ่มเพื่อรับส่วนลด)
  </div>
@@ -1285,8 +1285,8 @@
  <div class="bill-step-price" x-text="'฿' + fmtBillPrice(seg.price * g.qty)"></div>
  <div class="bill-step-note">
  <span x-show="g.qty > 1" x-text="'฿' + fmtBillPrice(seg.price) + ' × ' + g.qty"></span>
- <span x-show="comboRate() > 0 && seg.base !== seg.price" x-text="(g.qty > 1 ? ' · ' : '') + 'ราคาเต็ม ฿' + fmtBillPrice(seg.base * g.qty) + ' − combo'"></span>
- <span x-show="comboRate() > 0 && g.item.advancePayment && !g.item.outright && seg.start === 7" style="color:var(--ink)">วนลด Advance</span>
+ <span x-show="comboRate() > 0 && g.item.advancePayment && !g.item.outright" x-text="(g.qty > 1 ? ' · ' : '') + advanceComboPeriodNote(g.item, { start: seg.start, end: seg.end, isCycledAdvance: seg.start === 7 && seg.end === 12, isAdvanceHalf: seg.end <= 12 })"></span>
+ <span x-show="comboRate() > 0 && !g.item.advancePayment && seg.base !== seg.price" x-text="(g.qty > 1 ? ' · ' : '') + 'ราคาเต็ม ฿' + fmtBillPrice(seg.base * g.qty) + ' − combo'"></span>
  <span x-show="comboRate() > 0 && seg.start === 1 && !g.item.advancePayment" style="color:var(--ink)">บิลแรกเก็บเต็ม*</span>
  <span x-show="comboRate() === 0" x-text="billRangeTotals(g.item).find(r => r.start === seg.start)?.isAdvanceHalf ? tvHalfPeriodNote(g.item) : (seg.base !== g.item.postPromoPrice ? 'ช่วงโปร' : 'ราคาปกติ')"></span>
  </div>
@@ -1294,7 +1294,7 @@
  </template>
  </div>
  <div class="text-xs text-gray-400 mt-2" x-show="g.item.advancePayment && comboRate() > 0" style="font-style:italic">
- * เงินจ่ายล่วงหน้า ฿<span x-text="(g.item.advancePayment * g.qty).toLocaleString()"></span> เก็บเต็ม · วนลด Advance ไปหักงวด 7–12
+ * เงินจ่ายล่วงหน้า ฿<span x-text="(g.item.advancePayment * g.qty).toLocaleString()"></span> เก็บเต็ม · งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 ครึ่งราคา+วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ
  </div>
  <div class="text-xs text-gray-400 mt-2" x-show="!g.item.advancePayment && comboRate() > 0" style="font-style:italic">
  * บิลแรกเก็บเต็ม (ยังไม่หัก combo) แล้วนำ combo <span x-text="Math.round(comboRate()*100)+'%'"></span> ของบิลแรกไปลดทั้งหมดที่งวดที่ 2
@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.13-v1',
+ buildVersion: '2026.09.13-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1964,10 +1964,12 @@ function lgCalculator() {
  });
  }
  this.billRangeTotals(item).forEach(r => {
- let note = '';
+ let note = this.advanceComboPeriodNote(item, r);
+ if (!note) {
  if (r.isAdvanceHalf) note = this.tvHalfPeriodNote(item);
  else if (r.isPromo) note = 'โปร';
  else note = 'ปกติ';
+ }
  lines.push({
  kind: 'period',
  label: r.rangeLabel,
@@ -3375,6 +3377,20 @@ function lgCalculator() {
    const disc = this.tvDiscountPeriodLabel(item);
    return disc ? ('ครึ่งราคา · ' + disc) : 'ครึ่งราคา';
  },
+ /** ป้ายงวด TV+combo — ห้ามติด «ลด 50%» แบบโปร DC */
+ advanceComboPeriodNote(item, r) {
+   if (!item || !r || !(item.advancePayment > 0) || item.outright) return '';
+   const cr = Math.round(this.comboRate() * 100);
+   if (cr <= 0) return '';
+   const prepaid = this.advancePrepaidMonths(item) || 6;
+   if (r.isCycledAdvance || (r.start === 7 && r.end === 12)) {
+     return 'ครึ่งราคา + วนลด Advance (คอมโบ ' + cr + '% ของ ' + prepaid + ' เดือนที่จ่ายล่วงหน้า)';
+   }
+   if (r.isAdvanceHalf || r.end <= 12) {
+     return 'ครึ่งราคา + คอมโบ ' + cr + '% ของค่างวด';
+   }
+   return 'ราคาปกติหักคอมโบ ' + cr + '%';
+ },
  cartTvAdvanceLabel() {
    const months = [...new Set(
      (this.cart || []).filter(it => it.advancePayment > 0 && !it.outright).map(it => this.advancePrepaidMonths(it))
@@ -3680,7 +3696,10 @@ function lgCalculator() {
         ranges.forEach(r => {
           let label = r.rangeLabel;
           let tag = '';
-          if (r.isAdvanceHalf) {
+          const comboNote = this.advanceComboPeriodNote(it, r);
+          if (comboNote) {
+            tag = ' <span style="color:#7c3aed;font-size:10px;font-weight:600">(' + comboNote + ')</span>';
+          } else if (r.isAdvanceHalf) {
             tag = ' <span style="color:#7c3aed;font-size:10px;font-weight:600">(' + this.tvHalfPeriodNote(it) + ')</span>';
           } else if (r.isPromo) {
             tag = ' <span style="color:#0f766e;font-size:10px;font-weight:600">(โปร)</span>';
@@ -4485,7 +4504,8 @@ function lgCalculator() {
           }
           ranges.forEach(r => {
             let tag = '';
-            if (r.isCycledAdvance) tag = '(วนลด Advance)';
+            const comboNote = this.advanceComboPeriodNote(it, r);
+            if (comboNote) tag = '(' + comboNote + ')';
             else if (r.isAdvanceHalf) tag = '(' + this.tvHalfPeriodNote(it) + ')';
             else if (r.isPromo) tag = '(โปร)';
             const unitPrice = r.pricePerMonth;
