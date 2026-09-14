@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.12-v4 · cite Price list Sep_V4_2_1.pdf -->
+<!-- LG Subscribe Calculator build 2026.09.14-v1 · cite Price list Sep_V4_2_1.pdf · gift SKUs -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -971,7 +971,8 @@
  </div>
  <div class="text-xs" style="color:var(--ink-2);margin-top:2px" x-show="isRecommendedPlan(picker.category, entry.plan)" x-text="planRecommendNote(picker.category, entry.plan)"></div>
  <div class="text-xs text-gray-600" x-show="entry.plan.promo" x-text="planPromoDisplay(entry.plan)"></div>
- <div class="text-xs mt-1" style="color:var(--muted)" x-show="hasFreeGift(entry.plan)" x-text="freeGiftWarrantyNote()"></div>
+ <div class="text-xs mt-1" style="color:var(--blood);font-weight:600" x-show="freeGiftLine(entry.plan)" x-text="freeGiftLine(entry.plan)"></div>
+ <div class="text-xs mt-1" style="color:var(--muted)" x-show="hasFreeGift(entry.plan)" x-text="freeGiftWarrantyNote(entry.plan)"></div>
  <div class="text-xs" style="color:var(--ink);margin-top:4px" x-show="entry.plan.outright && entry.plan.advancePayment" x-text="'จ่ายครั้งเดียว ฿' + entry.plan.advancePayment.toLocaleString() + ' (รวมเครื่อง + บริการ 2 ปี)'"></div>
  <div class="text-xs" style="color:var(--ink);margin-top:4px" x-show="entry.plan.advancePayment && !entry.plan.outright" x-text="'จ่ายก้อนแรก ฿' + entry.plan.advancePayment.toLocaleString() + ' (' + tvAdvanceLabel(entry.plan) + ')'"></div>
  </div>
@@ -1023,7 +1024,7 @@
         <div class="compare-plan-box" x-show="hasModelSelected() && showComparePlans && (currentModel()?.plans?.length || 0) > 1">
           <div class="cp-head">เปรียบเทียบแพ็คเกจทุกสัญญา</div>
           <div class="cp-sub">
-            <span x-text="currentModel()?.code + ' — ' + currentModel()?.name"></span>
+            <span x-text="modelPickerLabel(currentModel())"></span>
             <span x-show="comboRate() > 0" style="color:var(--ink)"> · ราคารวมสัญญาหลัง combo <span x-text="Math.round(comboRate()*100)+'%'"></span> แล้ว</span>
           </div>
           <div class="compare-table-wrap">
@@ -1183,8 +1184,8 @@
  <span class="tag" style="background:var(--blood-soft);color:var(--blood)" x-show="g.qty > 1" x-text="'×' + g.qty"></span>
  </div>
  <div class="font-mono text-xs text-gray-700" x-text="g.item.code"></div>
- <div class="text-sm" x-text="g.item.name"></div>
- <div class="text-xs mt-0.5" style="color:var(--muted)" x-show="hasFreeGift(g.item)" x-text="freeGiftWarrantyNote()"></div>
+ <div class="text-sm" x-text="modelDisplayName(g.item)"></div>
+ <div class="text-xs mt-0.5" style="color:var(--muted)" x-show="hasFreeGift(g.item)" x-text="freeGiftWarrantyNote(g.item)"></div>
  <div class="flex gap-2 mt-2 flex-wrap items-center">
  <span class="tag" :class="'tag-' + g.item.serviceType.toLowerCase().replace(' ','')" x-text="termYearsOnly(g.item) + ' · ' + serviceTypeTag(g.item.serviceType)"></span>
  <span class="tag cycle-12-text" style="background:var(--cycle-12-soft);border-color:rgba(29,78,216,.22)" x-show="isCycle12(g.item.serviceCycle)" x-text="g.item.serviceCycle"></span>
@@ -1342,7 +1343,7 @@
  <span x-text="productTypeLabel(g.item)"></span>
  <span x-show="g.qty > 1" style="color:var(--blood);font-weight:700" x-text="' ×' + g.qty"></span>
  </div>
- <div class="truncate text-xs text-gray-600" x-text="g.item.name"></div>
+ <div class="truncate text-xs text-gray-600" x-text="modelDisplayName(g.item)"></div>
  <div class="text-xs text-gray-400 font-mono truncate" x-text="g.item.code"></div>
  <div class="text-xs text-gray-500" x-text="termYearsOnly(g.item) + ' · ' + serviceTypeTag(g.item.serviceType)"></div>
  </div>
@@ -1752,7 +1753,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.13-v2',
+ buildVersion: '2026.09.14-v1',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1792,7 +1793,7 @@ function lgCalculator() {
  // สเป็คพื้นฐานจากชื่อรุ่นใน catalog (เช่น ซัก xx กก. / BTU / คิว)
  productBasicSpec(item) {
    if (!item) return '';
-   return String(item.name || '').trim();
+   return this.modelDisplayName(item);
  },
  visitServiceLabel(withEnglish = false) {
  const label = 'ช่างผู้เชี่ยวชาญบริการถึงบ้าน';
@@ -2043,7 +2044,7 @@ function lgCalculator() {
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 24 เดือน', regular:499, effectiveMonthly:149, promoMonths:1, postPromoPrice:499, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 249, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 499, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (249) จากนั้น 499/เดือน', totalContractMonths:84, totalSaving:850 }
         ]}]},
  'ตู้เย็น Plumbing': { models: [
- { code:'GC-L24FFCBB.AEVPLM1', name:'Plumbing · L24 · แถมฟรีไมโครเวฟ MS2032', plans:[
+ { code:'GC-L24FFCBB.AEVPLM1', name:'Plumbing · L24', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 6 เดือน', regular:1249, effectiveMonthly:149, promoMonths:1, postPromoPrice:1249, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 624, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 1249, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (624) จากนั้น 1,249/เดือน', totalContractMonths:60, totalSaving:2350 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 6 เดือน', regular:999, effectiveMonthly:149, promoMonths:1, postPromoPrice:999, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 499, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 999, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (499) จากนั้น 999/เดือน', totalContractMonths:84, totalSaving:1850 }
         ]},
@@ -2156,7 +2157,7 @@ function lgCalculator() {
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:749, effectiveMonthly:149, promoMonths:1, postPromoPrice:749, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-8', 'price': 374, 'note': 'โปรลด 50%'}, {'range': 'บิล 9-84', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 7 รอบบิล (374) จากนั้น 749/เดือน', totalContractMonths:84, totalSaving:3225 },
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:649, effectiveMonthly:149, promoMonths:1, postPromoPrice:649, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-8', 'price': 324, 'note': 'โปรลด 50%'}, {'range': 'บิล 9-84', 'price': 649, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 7 รอบบิล (324) จากนั้น 649/เดือน', totalContractMonths:84, totalSaving:2775 }
         ]},
- { code:'DFC533FV.APYPETH', name:'เครื่องล้างจาน · สีเงิน · แถมฟรีไมโครเวฟ MS2032', plans:[
+ { code:'DFC533FV.APYPETH', name:'เครื่องล้างจาน · สีเงิน', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:749, effectiveMonthly:149, promoMonths:1, postPromoPrice:749, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-12', 'price': 374, 'note': 'โปรลด 50%'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 11 รอบบิล (374) จากนั้น 749/เดือน', totalContractMonths:60, totalSaving:4725 },
           { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:699, effectiveMonthly:149, promoMonths:1, postPromoPrice:699, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-12', 'price': 349, 'note': 'โปรลด 50%'}, {'range': 'บิล 13-60', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 11 รอบบิล (349) จากนั้น 699/เดือน', totalContractMonths:60, totalSaving:4400 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-12', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 13-84', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 11 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:84, totalSaving:3750 },
@@ -2221,13 +2222,13 @@ function lgCalculator() {
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 6 เดือน', regular:649, effectiveMonthly:149, promoMonths:1, postPromoPrice:649, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 324, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 649, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (324) จากนั้น 649/เดือน', totalContractMonths:84, totalSaving:1150 },
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:84, totalSaving:1050 }
         ]}]},
- 'เครื่องลดความชื้น': { models: [         { code:'DD23GMWE1S.ATH', name:'Dehumidifier 23 ลิตร · แถมฟรี AeroMini AS30GGW10', plans:[
+ 'เครื่องลดความชื้น': { models: [         { code:'DD23GMWE1S.ATH', name:'Dehumidifier 23 ลิตร', freeGift:'AeroMini AS30GGW10.ABAE', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:60, totalSaving:1050 },
           { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:549, effectiveMonthly:149, promoMonths:1, postPromoPrice:549, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 274, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (274) จากนั้น 549/เดือน', totalContractMonths:60, totalSaving:950 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:499, effectiveMonthly:149, promoMonths:1, postPromoPrice:499, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 249, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 499, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (249) จากนั้น 499/เดือน', totalContractMonths:84, totalSaving:850 },
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:449, effectiveMonthly:149, promoMonths:1, postPromoPrice:449, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 224, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 449, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (224) จากนั้น 449/เดือน', totalContractMonths:84, totalSaving:750 }
         ]},
- { code:'MD19GQGA1S.ATH', name:'Dehumidifier 19 ลิตร · แถมฟรี AeroMini AS30GGW10', plans:[
+ { code:'MD19GQGA1S.ATH', name:'Dehumidifier 19 ลิตร', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:449, effectiveMonthly:225, promoMonths:3, postPromoPrice:449, billSchedule:[{'range': 'บิล 1-3', 'price': 225, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 449, 'note': 'ราคาปกติ'}], promo:'ลด 50% 3 บิลแรก (225) จากนั้น 449/เดือน', totalContractMonths:60, totalSaving:672 },
           { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:399, effectiveMonthly:200, promoMonths:3, postPromoPrice:399, billSchedule:[{'range': 'บิล 1-3', 'price': 200, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 399, 'note': 'ราคาปกติ'}], promo:'ลด 50% 3 บิลแรก (200) จากนั้น 399/เดือน', totalContractMonths:60, totalSaving:597 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:399, effectiveMonthly:200, promoMonths:3, postPromoPrice:399, billSchedule:[{'range': 'บิล 1-3', 'price': 200, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 399, 'note': 'ราคาปกติ'}], promo:'ลด 50% 3 บิลแรก (200) จากนั้น 399/เดือน', totalContractMonths:84, totalSaving:597 },
@@ -2367,7 +2368,7 @@ function lgCalculator() {
 { code:'100QNED86BS.ATM', name:'LG QNED 100"', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:2599, effectiveMonthly:1299, promoMonths:0, postPromoPrice:2599, advancePayment:7794, billSchedule:[{'range': 'บิล 1-12', 'price': 1299, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 2599, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1299 → บิล 13-60: ฿2599', totalContractMonths:60, totalSaving:7797 }
         ]},
- { code:'27LX6TDGA.GRAB', name:'StanbyME 2 + GRAB', plans:[
+ { code:'27LX6TDGA.GRAB', name:'StanbyME 2 + GRAB', freeGift:'xboom GRAB.ATHALBK', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374.5, promoMonths:0, postPromoPrice:749, advancePayment:4494, billSchedule:[{'range': 'บิล 1-12', 'price': 374.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374.5 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'27LX6TDGA.ATM', name:'StanbyME 2', plans:[
@@ -2400,16 +2401,16 @@ function lgCalculator() {
  { code:'OLED48C6PSA.ATM', name:'LG OLED evo C6 · 48"', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374, promoMonths:0, postPromoPrice:749, advancePayment:2244, billSchedule:[{'range': 'บิล 1-12', 'price': 374, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:2247 }
         ]},
- { code:'OLED48C6PSA.BOUNCE', name:'LG OLED C6 48" + BOUNCE', plans:[
+ { code:'OLED48C6PSA.BOUNCE', name:'LG OLED C6 48" + BOUNCE', freeGift:'xboom BOUNCE.ATHALBK', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374.5, promoMonths:0, postPromoPrice:749, advancePayment:4494, billSchedule:[{'range': 'บิล 1-12', 'price': 374.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374.5 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:0 }
         ]},
- { code:'OLED55C6PSA.S30A', name:'LG OLED C6 55" + Soundbar', plans:[
+ { code:'OLED55C6PSA.S30A', name:'LG OLED C6 55" + Soundbar', freeGift:'Sound Bar S30A.ATHALLK', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1099, effectiveMonthly:549.5, promoMonths:0, postPromoPrice:1099, advancePayment:6594, billSchedule:[{'range': 'บิล 1-12', 'price': 549.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1099, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿549.5 → บิล 13-60: ฿1099', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'OLED65C6PSA.ATM', name:'LG OLED evo C6 · 65"', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1299, effectiveMonthly:649, promoMonths:0, postPromoPrice:1299, advancePayment:3894, billSchedule:[{'range': 'บิล 1-12', 'price': 649, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1299, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿649 → บิล 13-60: ฿1299', totalContractMonths:60, totalSaving:3897 }
         ]},
- { code:'OLED65C6PSA.S80TY', name:'LG OLED C6 65" + Soundbar', plans:[
+ { code:'OLED65C6PSA.S80TY', name:'LG OLED C6 65" + Soundbar', freeGift:'Sound Bar S80TY.DTHALLK', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1299, effectiveMonthly:649.5, promoMonths:0, postPromoPrice:1299, advancePayment:7794, billSchedule:[{'range': 'บิล 1-12', 'price': 649.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1299, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿649.5 → บิล 13-60: ฿1299', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'OLED77C6PSA.ATM', name:'LG OLED evo C6 · 77"', plans:[
@@ -2418,7 +2419,7 @@ function lgCalculator() {
  { code:'OLED83C6PSA.ATM', name:'LG OLED evo C6 · 83"', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:2999, effectiveMonthly:1499, promoMonths:0, postPromoPrice:2999, advancePayment:8994, billSchedule:[{'range': 'บิล 1-12', 'price': 1499, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 2999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1499 → บิล 13-60: ฿2999', totalContractMonths:60, totalSaving:8997 }
         ]},
- { code:'OLED77C6PSA.S80TY', name:'LG OLED C6 77" + Soundbar', plans:[
+ { code:'OLED77C6PSA.S80TY', name:'LG OLED C6 77" + Soundbar', freeGift:'Sound Bar S80TY.DTHALLK', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1999, effectiveMonthly:999.5, promoMonths:0, postPromoPrice:1999, advancePayment:11994, billSchedule:[{'range': 'บิล 1-12', 'price': 999.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿999.5 → บิล 13-60: ฿1999', totalContractMonths:60, totalSaving:0 }
         ]}
  ]},
@@ -2428,7 +2429,7 @@ function lgCalculator() {
  { code:'27GX704A-B.ATM', name:'UltraGear GX7 27"', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:349, effectiveMonthly:174.5, promoMonths:0, postPromoPrice:349, advancePayment:2094, billSchedule:[{'range': 'บิล 1-12', 'price': 174.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 349, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿174.5 → บิล 13-60: ฿349', totalContractMonths:60, totalSaving:0 }
         ]},
- { code:'32U889SA.GRAB', name:'UltraFine 32" + GRAB', plans:[
+ { code:'32U889SA.GRAB', name:'UltraFine 32" + GRAB', freeGift:'xboom GRAB.ATHALBK', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:699, effectiveMonthly:349.5, promoMonths:0, postPromoPrice:699, advancePayment:4194, billSchedule:[{'range': 'บิล 1-12', 'price': 349.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿349.5 → บิล 13-60: ฿699', totalContractMonths:60, totalSaving:2097 }
         ]},
  
@@ -2863,7 +2864,7 @@ function lgCalculator() {
  const models = this.catalog[this.picker.category]?.models || [];
  this.modelList = models.map((m, idx) => ({
  idx: String(idx),
- label: m.code + ' — ' + m.name,
+ label: this.modelPickerLabel(m),
  }));
  },
  onCategoryChange() {
@@ -2925,7 +2926,8 @@ function lgCalculator() {
  postPromoPrice: p.postPromoPrice, promo: p.promo,
  advancePayment: p.advancePayment || 0,
  billSchedule: p.billSchedule || null, outright: !!p.outright,
- totalContractMonths: p.totalContractMonths, totalSaving: p.totalSaving
+ totalContractMonths: p.totalContractMonths, totalSaving: p.totalSaving,
+ freeGift: model.freeGift || p.freeGift || ''
  };
  },
  comparePromoLabel(plan) {
@@ -3121,13 +3123,13 @@ function lgCalculator() {
  if (!m) return null;
  const plan = this.findPlanForCompareB(m, term, serviceType);
  if (!plan) {
- return { modelIdx: mi, code: m.code, name: m.name, unavailable: true, isBest: false };
+ return { modelIdx: mi, code: m.code, name: this.modelDisplayName(m), unavailable: true, isBest: false };
  }
  const item = this.planToItem(cat, m, plan);
  const grandTotal = this.itemTotalContract(item);
  return {
  modelIdx: mi, unavailable: false,
- code: m.code, name: m.name,
+ code: m.code, name: this.modelDisplayName(m),
  promoLabel: this.comparePromoLabel(plan),
  postPromoLabel: this.comparePostPromoLabel(plan),
  firstPayment: this.itemFirstPayment(item),
@@ -3860,7 +3862,7 @@ function lgCalculator() {
  // บรรทัดหัวข้อสินค้าในสรุป/คัดลอก — ประเภท · ชื่อ (รหัส)
  productSummaryTitle(item) {
  const type = this.productTypeLabel(item);
- const name = (item.name || '').trim();
+ const name = this.modelDisplayName(item);
  const code = item.code || '';
  let line = type || 'สินค้า';
  if (name) line += ' · ' + name;
@@ -3890,13 +3892,43 @@ function lgCalculator() {
  },
  // ของแถม (แถมฟรี) — รับประกัน 1 ปี แสดงเฉพาะเมื่อมีของแถมจริงเท่านั้น
  // ห้ามโชว์ *ของแถมรับประกัน 1 ปี ถ้าไม่มีแถม
+ freeGiftLabel(item) {
+   if (!item) return '';
+   const own = String(item.freeGift || '').trim();
+   if (own) return own;
+   if (item.code) return '';
+   const m = this.currentModel ? this.currentModel() : null;
+   return m ? String(m.freeGift || '').trim() : '';
+ },
+ freeGiftLine(item) {
+   const g = this.freeGiftLabel(item);
+   return g ? ('แถมฟรี ' + g) : '';
+ },
+ modelPickerLabel(m) {
+   if (!m) return '';
+   let label = (m.code || '') + (m.name ? (' — ' + m.name) : '');
+   const g = String(m.freeGift || '').trim();
+   if (g && label.indexOf(g) < 0) label += ' · แถมฟรี ' + g;
+   return label;
+ },
+ modelDisplayName(item) {
+   if (!item) return '';
+   const name = String(item.name || '').trim();
+   const g = this.freeGiftLabel(item);
+   if (!g) return name;
+   if (name.indexOf(g) >= 0 || name.indexOf('แถมฟรี') >= 0) return name;
+   return name ? (name + ' · แถมฟรี ' + g) : ('แถมฟรี ' + g);
+ },
  hasFreeGift(item) {
    if (!item) return false;
+   if (this.freeGiftLabel(item)) return true;
    const t = String(item.promo || '') + ' ' + String(item.name || '');
    // ต้องเป็นของแถมชัดเจน — อย่าจับแค่คำว่า "แถม" ลอยๆ (เช่น ซื้อ 2 แถม Aero)
    return /แถมฟรี|ของแถม|Free\s*xboom|Free\s*Sound|Free\s*Aero|Free\s*MS|Free\s*gift|รับฟรี/i.test(t);
  },
- freeGiftWarrantyNote() {
+ freeGiftWarrantyNote(item) {
+   const g = this.freeGiftLabel(item);
+   if (g) return '*ของแถมรับประกัน 1 ปี · ' + g;
    return '*ของแถมรับประกัน 1 ปี';
  },
  // เครื่องซักผ้า / อบผ้า / ล้างจาน — เงื่อนไขติดตั้ง (ทางการ)
@@ -4359,6 +4391,9 @@ function lgCalculator() {
         txt += '<div><span style="font-weight:700;color:#a50034">' + (i+1) + '.</span> <strong>' + this.productSummaryTitle(it) + (qty > 1 ? (' ×' + qty) : '') + '</strong></div>';
         txt += '<span style="font-size:0.75em;background:#f3f4f6;color:#374151;padding:2px 7px;border-radius:4px;white-space:nowrap">' + this.termYearsOnly(it) + (qty > 1 ? (' · ' + qty + ' ชิ้น') : '') + '</span>';
         txt += '</div>';
+        if (this.freeGiftLine(it)) {
+          txt += '<div style="font-size:0.8em;color:#a50034;font-weight:600;margin-bottom:4px">' + this.freeGiftLine(it) + '</div>';
+        }
         const months = it.totalContractMonths || 60;
         const years = Math.round(months / 12);
         txt += '<div style="font-size:0.78em;color:#6b7280;margin-bottom:6px">' + this.productTypeLabel(it) + ' · สัญญา ' + years + ' ปี (' + months + ' งวด)' + (qty > 1 ? (' · จำนวน ' + qty + ' ชิ้น') : '') + '</div>';
@@ -4483,6 +4518,7 @@ function lgCalculator() {
         lines.push('');
         // ชื่อรุ่นเต็ม: ประเภท · ความจุ/ชื่อ · (รหัส) — ไม่ใช้ name ดิบอย่างเดียว (เช่น "ซัก : 20 กก. อบ 10")
         lines.push((groups.length > 1 ? (i + 1) + '. ' : '') + this.productSummaryTitle(it) + (qty > 1 ? (' ×' + qty + ' ชิ้น') : ''));
+        if (this.freeGiftLine(it)) lines.push(this.freeGiftLine(it));
 
         // สัญญา + บริการ
         lines.push(
@@ -4558,7 +4594,7 @@ function lgCalculator() {
         lines.push('');
         lines.push(this.warrantyLineText(it, years));
         if (this.hasFreeGift(it)) {
-          lines.push(this.freeGiftWarrantyNote());
+          lines.push(this.freeGiftWarrantyNote(it));
         }
       });
 
@@ -4915,11 +4951,13 @@ function lgCalculator() {
         let detailLines = '';
         detailLines += '<div class="name">' + esc(imgSrc ? titleLine : headTitle.trim()) + '</div>';
         if (pname) detailLines += '<div class="spec">' + esc(pname) + '</div>';
+        if (this.freeGiftLine(it) && (!pname || pname.indexOf(this.freeGiftLabel(it)) < 0)) {
+          detailLines += '<div class="spec" style="margin-top:2px;color:#a50034;font-weight:600">' + esc(this.freeGiftLine(it)) + '</div>';
+        }
         detailLines += careLine;
         detailLines += '<div class="pkg">' + esc(pkgLine) + '</div>';
-        // ของแถมรับประกัน 1 ปี (ถ้าแพ็คมีแถมฟรี)
         if (this.hasFreeGift(it)) {
-          detailLines += '<div class="spec" style="margin-top:2px;color:#6b7280">' + esc(this.freeGiftWarrantyNote()) + '</div>';
+          detailLines += '<div class="spec" style="margin-top:2px;color:#6b7280">' + esc(this.freeGiftWarrantyNote(it)) + '</div>';
         }
 
         let descHtml = '';
