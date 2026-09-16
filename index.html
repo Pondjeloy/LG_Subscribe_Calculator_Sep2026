@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.16-v1 · cite Price list Sep_V4_2_1.pdf · FV1409H4W discontinued -->
+<!-- LG Subscribe Calculator build 2026.09.16-v2 · cite Price list Sep_V4_2_1.pdf · FV1409H4W discontinued -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1624,8 +1624,8 @@ function lgCalculator() {
  },
  picker: { category: '', model: '', plan: '', qty: 1 },
  modelImages: {
- 'OLED83C6PSA.ATM': 'assets/products/oled77c6psa.png',
- 'TX2726ST5J.APBPETH': 'assets/products/tx2315dt5g.png',
+ 'OLED83C6PSA.ATM': 'assets/products/oled83c6psa.png',
+ 'TX2726ST5J.APBPETH': 'assets/products/tx2726st5j.png',
  'ZVCQ36GM2A1.EWGHATH': 'assets/products/zvcq-concealed.png',
  'ZVCQ24GM1A1.EWGHATH': 'assets/products/zvcq-concealed.png',
  'ZVCQ18GM1A1.EWGHATH': 'assets/products/zvcq-concealed.png',
@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.16-v1',
+ buildVersion: '2026.09.16-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -2970,9 +2970,9 @@ function lgCalculator() {
  if (!rows.length) return rows;
  rows.forEach(r => { r.isBest = false; });
  if (this.isSixYearVisitRecommendTarget(this.picker.category, this.currentModel())) {
- const sixYVisit = rows.filter(r => r.plan?.term === '6Y' && r.plan?.serviceType === 'Visit');
- if (sixYVisit.length) {
- sixYVisit.forEach(r => { r.isBest = true; });
+ const recVisit = rows.filter(r => r.plan?.term === '7Y' && r.plan?.serviceType === 'Visit');
+ if (recVisit.length) {
+ recVisit.forEach(r => { r.isBest = true; });
  return rows;
  }
  }
