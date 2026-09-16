@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.16-v3 · cite Price list Sep_V4_2_1.pdf · AeroCat care slide Self -->
+<!-- LG Subscribe Calculator build 2026.09.16-v4 · Care Service 2026 latest · AeroCat Visit+Self -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.16-v3',
+ buildVersion: '2026.09.16-v4',
  quoteCustomer: {
    name: '',
    address: '',
@@ -2675,6 +2675,22 @@ function lgCalculator() {
  {label:'LG ส่งไส้กรอง H13 HEPA/Carbon ถึงบ้าน — ลูกค้าเปลี่ยนเอง', freq:'ทุก 12 เดือน'},
  {label:'ลูกค้าทำความสะอาดตัวเครื่องเอง', freq:'ตามต้องการ'},
  {label:'ลูกค้าตรวจสอบสัญญาณเตือนเปลี่ยน Filter ผ่าน ThinQ', freq:'ต่อเนื่อง'}
+ ], note:'LG จัดส่งอะไหล่ให้ ลูกค้าเปลี่ยนเองที่บ้าน'},
+ aerocatVisit: { title:'บริการดูแลเครื่องฟอกอากาศ AeroCat Tower – Visit', items:[
+ {label:'ทำความสะอาดภายในและภายนอกของผลิตภัณฑ์', freq:'ทุก 12 เดือน'},
+ {label:'ทำความสะอาดโดมแมว', freq:'ทุก 12 เดือน'},
+ {label:'ตรวจสอบสภาพการทำงานผลิตภัณฑ์', freq:'ทุก 12 เดือน'},
+ {label:'ตรวจสอบเซนเซอร์จับฝุ่น', freq:'ทุก 12 เดือน'},
+ {label:'เปลี่ยนไส้กรอง Aero Series V-Pet Filter (H13)', freq:'ทุก 12 เดือน'},
+ {label:'เปลี่ยนเบาะรองนั่ง : 1 ชิ้น', freq:'ครบ 36 เดือน'},
+ {label:'เปลี่ยนผ้าหุ้มผนัง : 1 ชุด', freq:'ครบ 36 เดือน'},
+ {label:'เปลี่ยนขึ้นบันไดสำหรับแมว : 1 ชิ้น', freq:'ครบ 36 เดือน'}
+ ], note:'ช่างผู้เชี่ยวชาญบริการถึงบ้าน ลูกค้าไม่ต้องดำเนินการเอง'},
+ aerocatSelf: { title:'ดูแลเครื่องฟอกอากาศ AeroCat Tower – Self (รับอะไหล่เปลี่ยนเอง)', items:[
+ {label:'จัดส่งไส้กรอง Aero Series V-Pet Filter (H13)', freq:'ทุก 12 เดือน'},
+ {label:'จัดส่งเบาะรองนั่ง : 1 ชิ้น', freq:'ครบ 36 เดือน'},
+ {label:'จัดส่งผ้าหุ้มผนัง : 1 ชุด', freq:'ครบ 36 เดือน'},
+ {label:'จัดส่งขึ้นบันไดสำหรับแมว : 1 ชิ้น', freq:'ครบ 36 เดือน'}
  ], note:'LG จัดส่งอะไหล่ให้ ลูกค้าเปลี่ยนเองที่บ้าน'}
  },
  'เครื่องลดความชื้น': {
@@ -4047,9 +4063,13 @@ function lgCalculator() {
  } else if (cat === 'เครื่องดูดฝุ่น') {
  info = this.serviceInfo['เครื่องดูดฝุ่น'].self;
  } else if (cat === 'เครื่องฟอกอากาศ') {
+ if (String(item.code || '').toUpperCase().includes('AS25')) {
+ info = this.serviceInfo['เครื่องฟอกอากาศ'][item.serviceType === 'Self' ? 'aerocatSelf' : 'aerocatVisit'];
+ } else {
  const apCycle = item.serviceCycle.includes('6') ? 'cycle6m' : 'cycle12m';
  const apMode = item.serviceType === 'Self' ? 'Self' : 'Visit';
  info = this.serviceInfo['เครื่องฟอกอากาศ'][apCycle + apMode];
+ }
  } else if (cat === 'เครื่องลดความชื้น') {
  info = this.serviceInfo['เครื่องลดความชื้น'][item.serviceType === 'Self' ? 'self' : 'visit'];
  } else if (cat.includes('DUALCOOL') || cat.includes('DUAL INVERTER') || cat.includes('ARTCOOL')) {
@@ -4148,9 +4168,9 @@ function lgCalculator() {
    if (cat === 'เครื่องดูดฝุ่น') return { page: '13', dual: false, only: 'Self' };
    // ฟอกอากาศ
    if (cat === 'เครื่องฟอกอากาศ') {
-     if (code.includes('AS35') || code.includes('AS35GGW')) return { page: '15', dual: true };
-     // AeroCat: เอกสาร Care มีแผ่นเดียว (Visit) — แนบทั้ง Visit และ Self ไม่งั้นใบสรุปว่าง
-     if (code.includes('AS25') || code.includes('AS25GC')) return { page: '21', dual: false };
+     // AeroCat Care 2026 ล่าสุด: หน้าเดียวมีทั้ง Visit และ Self
+     if (code.includes('AS25') || code.includes('AS25GC')) return { page: '21', dual: true };
+     // AS35 / รุ่นอื่น: หน้าฟอกอากาศรอบ 6 เดือน / 12 เดือน
      return { page: '14', dual: false, apCycle: true };
    }
    // ลดความชื้น
