@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.16-v2 · cite Price list Sep_V4_2_1.pdf · FV1409H4W discontinued -->
+<!-- LG Subscribe Calculator build 2026.09.16-v3 · cite Price list Sep_V4_2_1.pdf · AeroCat care slide Self -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.16-v2',
+ buildVersion: '2026.09.16-v3',
  quoteCustomer: {
    name: '',
    address: '',
@@ -4149,7 +4149,8 @@ function lgCalculator() {
    // ฟอกอากาศ
    if (cat === 'เครื่องฟอกอากาศ') {
      if (code.includes('AS35') || code.includes('AS35GGW')) return { page: '15', dual: true };
-     if (code.includes('AS25') || code.includes('AS25GC')) return { page: '21', dual: false, only: 'Visit' };
+     // AeroCat: เอกสาร Care มีแผ่นเดียว (Visit) — แนบทั้ง Visit และ Self ไม่งั้นใบสรุปว่าง
+     if (code.includes('AS25') || code.includes('AS25GC')) return { page: '21', dual: false };
      return { page: '14', dual: false, apCycle: true };
    }
    // ลดความชื้น
@@ -5229,6 +5230,7 @@ function lgCalculator() {
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .sheet { max-width: none; }
     .care-slides { page-break-before: auto; page-break-inside: avoid; break-inside: avoid; }
+    .care-slides.is-full { page-break-before: always; }
     .care-slide { page-break-before: auto; page-break-inside: avoid; break-inside: avoid; }
     .care-slide-img { max-height: 300px; }
     .care-slides.is-full .care-slide-img { max-height: none; width: 100%; }
