@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.17-v1',
+ buildVersion: '2026.09.17-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -4273,22 +4273,21 @@ function lgCalculator() {
      return rel === only;
    });
  },
- // โหมดความหนาแน่นของใบราคา — ย่อให้พอดี 1 หน้าเมื่อหลายชิ้น
- // normal | compact (≈3 ชิ้น) | dense (4+ ชิ้น / หลายแพ็ก Care)
+ // โหมดความหนาแน่นของใบราคา — ย่อเมื่อหลายรุ่น (รุ่นเดียวไม่ย่อ Care)
+ // normal | compact (2 รุ่น) | dense (3+ รุ่น / หลายแพ็ก Care)
  quoteDensityMode() {
-   const pieces = this.cart.length;
    const lines = this.quoteGroupedItems().length;
    const slides = this.careServiceSlidesForQuote().length;
-   if (pieces >= 4 || lines >= 3 || slides >= 3) return 'dense';
-   if (pieces >= 3 || lines >= 2 || slides >= 2) return 'compact';
+   if (lines >= 3 || slides >= 3) return 'dense';
+   if (lines >= 2 || slides >= 2) return 'compact';
    return 'normal';
  },
  careServiceSlidesHtml() {
    const slides = this.careServiceSlidesForQuote();
    if (!slides.length) return '';
    const density = this.quoteDensityMode();
-   // รูปเต็มแผ่นเฉพาะ 1–2 ชิ้น รุ่น+แพ็กเดียวกัน
-   const full = slides.length === 1 && this.isSingleCarePackageQuote() && this.cart.length <= 2 && density === 'normal';
+   // รุ่นเดียว (รุ่น+แพ็กเดียวกัน) → Care เต็มพื้นที่ ไม่ย่อ
+   const full = slides.length === 1 && this.isSingleCarePackageQuote() && this.quoteGroupedItems().length <= 1;
    let gridCls = 'care-slides-grid';
    if (!full && slides.length >= 2) gridCls += ' cols-2';
    if (!full && slides.length >= 3) gridCls += ' cols-multi';
@@ -5157,8 +5156,9 @@ function lgCalculator() {
   .care-slide-img { width: 100%; max-width: 100%; height: auto; max-height: 200px; object-fit: contain; object-position: top center; display: block; border: 1px solid #e0e0e0; border-radius: 3px; background: #fff; }
   .care-slides.is-full .care-slides-head { font-size: 11px; margin: 0 0 6px; }
   .care-slides.is-full .care-slide-cap { font-size: 10px; margin: 0 0 4px; }
+  /* รุ่นเดียว: ไม่ย่อ Care — JS ขยายเต็มพื้นที่ที่เหลือของหน้า A4 */
   .care-slides.is-full .care-slide-img {
-    max-height: 220px; width: 100%; height: auto;
+    max-height: none; width: 100%; height: auto;
     object-fit: contain; object-position: center top;
     border: 1px solid #d0d0d0; border-radius: 4px;
   }
@@ -5262,7 +5262,7 @@ function lgCalculator() {
     }
     .care-slides.is-full { page-break-before: auto !important; }
     .care-slide-img { max-height: 170px; }
-    .care-slides.is-full .care-slide-img { max-height: 190px; width: 100%; }
+    .care-slides.is-full .care-slide-img { max-height: none; width: 100%; }
     .care-slides.is-compact .care-slide-img { max-height: 140px; }
     .care-slides.is-dense .care-slide-img { max-height: 110px; }
     .care-slides.is-dense .care-slides-grid.cols-multi .care-slide-img { max-height: 100px; }
@@ -5369,10 +5369,29 @@ function lgFitQuoteToA4(){
   sheet.style.width='';
   wrap.style.height='';
   wrap.style.overflow='';
+  var care=document.querySelector('.care-slides.is-full .care-slide-img');
+  if(care){ care.style.maxHeight=''; care.style.height=''; }
   void sheet.offsetHeight;
   var pageH=297*96/25.4;
   var marginY=12*96/25.4;
-  var printable=(pageH-marginY)*0.96;
+  var printable=(pageH-marginY)*0.98;
+  if(care){
+    var imgH=care.offsetHeight||0;
+    var sheetH=Math.max(sheet.scrollHeight,sheet.offsetHeight);
+    var remain=Math.floor(printable-(sheetH-imgH));
+    if(remain<80) remain=80;
+    care.style.maxHeight=remain+'px';
+    care.style.width='100%';
+    care.style.height='auto';
+    care.style.objectFit='contain';
+    void sheet.offsetHeight;
+    var h2=Math.max(sheet.scrollHeight,sheet.offsetHeight);
+    if(h2>printable+2){
+      var next=Math.max(80, remain-(h2-printable));
+      care.style.maxHeight=next+'px';
+    }
+    return;
+  }
   var h=Math.max(sheet.scrollHeight,sheet.offsetHeight);
   if(h<=printable+2)return;
   var scale=Math.max(0.58, printable/h);
