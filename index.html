@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.16-v4',
+ buildVersion: '2026.09.17-v1',
  quoteCustomer: {
    name: '',
    address: '',
@@ -4856,6 +4856,7 @@ function lgCalculator() {
       if (this.cart.length === 0) return '';
       const isProposal = mode === 'proposal';
       const autoPrint = opts.autoPrint !== false && opts.autoPrint !== 0;
+      const skipFit = !!opts.exportCapture;
       const showGrand = opts.showGrandTotal !== undefined ? !!opts.showGrandTotal : !!this.quoteShowGrandTotal;
 
       const q = this.quoteCustomer;
@@ -5068,9 +5069,10 @@ function lgCalculator() {
 <title>${titleTh}</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap');
-  @page { size: A4 portrait; margin: 8mm 9mm 8mm 9mm; }
+  @page { size: A4 portrait; margin: 6mm 8mm 6mm 8mm; }
   * { box-sizing: border-box; }
   body { margin: 0; padding: 0; color: #1a1a1a; font-family: "Sarabun","TH Sarabun New","Tahoma","Microsoft Sans Serif",sans-serif; font-size: 11px; line-height: 1.45; background: #fff; }
+  .sheet-wrap { width: 100%; }
   .sheet { width: 100%; max-width: 192mm; margin: 0 auto; }
   .name { font-weight: 700; color: #1a1a1a; }
   .top { display: grid; grid-template-columns: 128px 1fr 210px; gap: 10px; align-items: center; padding-bottom: 6px; border-bottom: 2px solid #a50034; margin-bottom: 8px; }
@@ -5143,20 +5145,20 @@ function lgCalculator() {
   .sign .sig { margin-top: 14px; text-align: center; font-size: 10px; color: #1a1a1a; }
   .sign .sig small { display: block; margin-top: 2px; font-size: 9px; color: #444; }
   .foot { margin-top: 6px; padding-top: 4px; border-top: 1px solid #e0e0e0; text-align: center; font-size: 9px; color: #333; line-height: 1.35; }
-  .care-slides { margin-top: 8px; padding-top: 6px; border-top: 1px solid #e0e0e0; page-break-inside: avoid; break-inside: avoid; }
+  /* Care อยู่หน้าเดียวกับใบราคา — ห้าม page-break ไปหน้า 2 */
+  .care-slides { margin-top: 8px; padding-top: 6px; border-top: 1px solid #e0e0e0; }
   .care-slides-head { font-size: 10.5px; font-weight: 700; color: #a50034; margin: 0 0 5px; }
   .care-slides-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
   .care-slides-grid.cols-2 { grid-template-columns: 1fr 1fr; gap: 6px; }
   .care-slides-grid.cols-multi { gap: 4px; }
-  .care-slide { margin: 0; page-break-inside: avoid; break-inside: avoid; }
+  .care-slide { margin: 0; }
   .care-slide-cap { font-size: 9px; font-weight: 700; color: #1a1a1a; margin: 0 0 2px; line-height: 1.3; }
   .care-slide-cap .care-slide-code { font-weight: 600; color: #444; font-family: Consolas,"Courier New",monospace; font-size: 8.5px; }
-  .care-slide-img { width: 100%; max-width: 100%; height: auto; max-height: 320px; object-fit: contain; object-position: top center; display: block; border: 1px solid #e0e0e0; border-radius: 3px; background: #fff; }
-  /* 1–2 ชิ้น รุ่น+แพ็กเดียวกัน → รูปเต็มแผ่น */
+  .care-slide-img { width: 100%; max-width: 100%; height: auto; max-height: 200px; object-fit: contain; object-position: top center; display: block; border: 1px solid #e0e0e0; border-radius: 3px; background: #fff; }
   .care-slides.is-full .care-slides-head { font-size: 11px; margin: 0 0 6px; }
   .care-slides.is-full .care-slide-cap { font-size: 10px; margin: 0 0 4px; }
   .care-slides.is-full .care-slide-img {
-    max-height: none; width: 100%; height: auto;
+    max-height: 220px; width: 100%; height: auto;
     object-fit: contain; object-position: center top;
     border: 1px solid #d0d0d0; border-radius: 4px;
   }
@@ -5247,24 +5249,33 @@ function lgCalculator() {
   .no-print button.ghost { background: #fff; color: #a50034; border: 1px solid #a50034; }
   @media print {
     .no-print { display: none !important; }
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { height: auto !important; overflow: hidden !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .sheet { max-width: none; }
-    .care-slides { page-break-before: auto; page-break-inside: avoid; break-inside: avoid; }
-    .care-slides.is-full { page-break-before: always; }
-    .care-slide { page-break-before: auto; page-break-inside: avoid; break-inside: avoid; }
-    .care-slide-img { max-height: 300px; }
-    .care-slides.is-full .care-slide-img { max-height: none; width: 100%; }
-    .care-slides.is-compact .care-slide-img { max-height: 250px; }
-    .care-slides.is-dense .care-slide-img { max-height: 195px; }
-    .care-slides.is-dense .care-slides-grid.cols-multi .care-slide-img { max-height: 170px; }
+    .sheet-wrap { overflow: hidden; }
+    .care-slides, .care-slide {
+      page-break-before: auto !important;
+      page-break-after: auto !important;
+      page-break-inside: auto !important;
+      break-before: auto !important;
+      break-after: auto !important;
+      break-inside: auto !important;
+    }
+    .care-slides.is-full { page-break-before: auto !important; }
+    .care-slide-img { max-height: 170px; }
+    .care-slides.is-full .care-slide-img { max-height: 190px; width: 100%; }
+    .care-slides.is-compact .care-slide-img { max-height: 140px; }
+    .care-slides.is-dense .care-slide-img { max-height: 110px; }
+    .care-slides.is-dense .care-slides-grid.cols-multi .care-slide-img { max-height: 100px; }
+    .sign .box { min-height: 52px; }
   }
 ${'</'+'style>'}
 </head>
 <body>
   <div class="no-print">
-    <button onclick="window.print()">พิมพ์ / บันทึก PDF</button>
+    <button onclick="lgFitQuoteToA4();window.print()">พิมพ์ / บันทึก PDF</button>
     <button class="ghost" onclick="window.close()">ปิดหน้าต่าง</button>
   </div>
+  <div class="sheet-wrap">
   <div class="sheet${sheetDensityCls}">
     <div class="top">
       <div><img class="logo" src="${logo}" alt="LG"/></div>
@@ -5346,7 +5357,53 @@ ${'</'+'style>'}
       ติดต่อ: Line @Lgthailand (8.00-18.00) · ฝ่ายบริการลูกค้า 02-057-5757${sellerName ? ' · ผู้เสนอราคา <span class="name">' + sellerName + '</span>' : ''}${sellerLine ? ' · LINE ' + sellerLine : ''}
     </div>
   </div>
-  ${autoPrint ? `${'<'+'script>'}window.addEventListener('load',function(){var imgs=[].slice.call(document.images||[]);var left=imgs.length;function go(){setTimeout(function(){window.print()},220);}if(!left)return go();imgs.forEach(function(img){if(img.complete){if(--left===0)go();}else{img.onload=img.onerror=function(){if(--left===0)go();};}});});${'</'+'script>'}` : ''}
+  </div>
+  ${'<'+'script>'}
+function lgFitQuoteToA4(){
+  var wrap=document.querySelector('.sheet-wrap');
+  var sheet=document.querySelector('.sheet');
+  if(!wrap||!sheet)return;
+  var old=document.getElementById('lg-fit-print');
+  if(old) old.remove();
+  sheet.style.transform='';
+  sheet.style.width='';
+  wrap.style.height='';
+  wrap.style.overflow='';
+  void sheet.offsetHeight;
+  var pageH=297*96/25.4;
+  var marginY=12*96/25.4;
+  var printable=(pageH-marginY)*0.96;
+  var h=Math.max(sheet.scrollHeight,sheet.offsetHeight);
+  if(h<=printable+2)return;
+  var scale=Math.max(0.58, printable/h);
+  var ua=navigator.userAgent||'';
+  var useZoom=/Chrome|Edg|Safari|OPR/i.test(ua)&&!/Firefox/i.test(ua);
+  if(useZoom){
+    var st=document.createElement('style');
+    st.id='lg-fit-print';
+    st.textContent='@media print{html{zoom:'+scale+'}}';
+    document.head.appendChild(st);
+  }else{
+    sheet.style.transformOrigin='top left';
+    sheet.style.transform='scale('+scale+')';
+    sheet.style.width=(100/scale)+'%';
+    wrap.style.height=(h*scale)+'px';
+    wrap.style.overflow='hidden';
+  }
+}
+function lgQuoteReady(fn){
+  var imgs=[].slice.call(document.images||[]);
+  var left=imgs.length;
+  function go(){setTimeout(fn,120);}
+  if(!left)return go();
+  imgs.forEach(function(img){
+    if(img.complete){if(--left===0)go();}
+    else{img.onload=img.onerror=function(){if(--left===0)go();};}
+  });
+}
+window.addEventListener('beforeprint',lgFitQuoteToA4);
+lgQuoteReady(function(){${skipFit ? '' : 'lgFitQuoteToA4();'}${autoPrint ? 'window.print();' : ''}});
+${'</'+'script>'}
 ${'</'+'body>'}
 ${'</'+'html>'}`;
     },
