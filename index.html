@@ -1552,7 +1552,8 @@
  <p class="mb-1"><strong>หมายเหตุ:</strong></p>
  <ol style="list-style:decimal;padding-left:18px;line-height:1.7">
  <li>ราคานี้คำนวณจากเอกสารโปรโมชั่น OBS กันยายน 2569 · ไฟล์บริษัทล่าสุด: Price list Sep_V4_2_1.pdf (LGETH 12 ก.ย. 2569 · โปร 1–30 ก.ย.)</li>
- <li>เครื่องกรองน้ำ Subscribe: โปร 99.- รอบบิลที่ 1–9 มีผล 29 ส.ค.–30 ก.ย. 2569 (ยกเว้นซื้อขาด)</li>
+ <li>เครื่องกรองน้ำ WD516/WD518/WD110/WS523 Subscribe: โปร 99.- รอบบิลที่ 1–9 มีผล 29 ส.ค.–30 ก.ย. 2569 (ยกเว้นซื้อขาด)</li>
+ <li>เครื่องกรองน้ำ WS510SN: ตามโปรมิถุนายน 2569 · Visit ทุก 3 เดือน · บิล 1–6 ราคา 149.-</li>
  <li>สินค้าเครื่องกรองน้ำ พื้นที่บริการไม่ครอบคลุมทั่วประเทศ กรุณาตรวจสอบก่อนติดตั้ง</li>
  <li x-show="isEventPromoActive()" x-text="(promoConfig.eventPromo.name || 'โปรอีเวนต์') + ' มีผล ' + fmtDate(promoConfig.eventPromo.dateStart) + ' – ' + fmtDate(promoConfig.eventPromo.dateEnd)"></li>
  <li x-show="isSpecialComboEffective()" x-text="'โปร ' + (promoConfig.special.name || 'Combo') + ' มีผลถึง ' + fmtDate(promoConfig.special.dateEnd)"></li>
@@ -1752,7 +1753,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.18-v2',
+ buildVersion: '2026.09.18-v3',
  quoteCustomer: {
    name: '',
    address: '',
@@ -2475,6 +2476,10 @@ function lgCalculator() {
  { code:'WS523S.AEWPLTH', name:'เครื่องกรองน้ำ WS523 (New Sep)', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 3 เดือน', regular:1199, effectiveMonthly:99, promoMonths:9, postPromoPrice:1199, billSchedule:[{'range': 'บิล 1-9', 'price': 99, 'note': 'ราคา 99.-'}, {'range': 'บิล 10-60', 'price': 1199, 'note': 'ราคาปกติ'}], promo:'ราคา 99.- (9 รอบบิลแรก) จากนั้น 1,199/เดือน', totalContractMonths:60, totalSaving:9900 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 3 เดือน', regular:999, effectiveMonthly:99, promoMonths:9, postPromoPrice:999, billSchedule:[{'range': 'บิล 1-9', 'price': 99, 'note': 'ราคา 99.-'}, {'range': 'บิล 10-84', 'price': 999, 'note': 'ราคาปกติ'}], promo:'ราคา 99.- (9 รอบบิลแรก) จากนั้น 999/เดือน', totalContractMonths:84, totalSaving:8100 }
+        ]},
+ { code:'WS510SN.AWHPLMT', name:'เครื่องกรองน้ำแบบตั้งพื้น รุ่น WS510SN สีขาว', plans:[
+          { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 3 เดือน', regular:1099, effectiveMonthly:149, promoMonths:6, postPromoPrice:1099, billSchedule:[{'range': 'บิล 1-6', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 7-60', 'price': 1099, 'note': 'ราคาปกติ'}], promo:'ราคา 149.- (1-6 รอบบิลแรก) จากนั้น 1,099/เดือน', totalContractMonths:60, totalSaving:5700 },
+          { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 3 เดือน', regular:899, effectiveMonthly:149, promoMonths:6, postPromoPrice:899, billSchedule:[{'range': 'บิล 1-6', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 7-84', 'price': 899, 'note': 'ราคาปกติ'}], promo:'ราคา 149.- (1-6 รอบบิลแรก) จากนั้น 899/เดือน', totalContractMonths:84, totalSaving:4500 }
         ]},
  { code:'WD516AN.ACNPLMT', name:'ATOM 4D+ Calming Navy', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 6 เดือน', regular:799, effectiveMonthly:99, promoMonths:9, postPromoPrice:799, billSchedule:[{'range': 'บิล 1-9', 'price': 99, 'note': 'ราคา 99.-'}, {'range': 'บิล 10-60', 'price': 799, 'note': 'ราคาปกติ'}], promo:'ราคา 99.- (9 รอบบิลแรก) จากนั้น 799/เดือน', totalContractMonths:60, totalSaving:6300 },
@@ -4787,8 +4792,14 @@ function lgCalculator() {
       if (this.isEventPromoActive() && ev && ev.note) {
         items.push({ type: 'text', text: ev.name + ': ' + ev.note });
       }
-      if ((this.cart || []).some(it => (it.category === 'เครื่องกรองน้ำ') && !it.outright)) {
+      const waterSub = (this.cart || []).filter(it => (it.category === 'เครื่องกรองน้ำ') && !it.outright);
+      if (waterSub.some(it => String(it.code || '').includes('WS510'))) {
+        items.push({ type: 'text', text: 'เครื่องกรองน้ำ WS510SN: ตามโปรมิถุนายน 2569 · Visit ทุก 3 เดือน · บิล 1–6 ราคา 149.- จากนั้นราคาปกติ' });
+      }
+      if (waterSub.some(it => !String(it.code || '').includes('WS510'))) {
         items.push({ type: 'text', text: 'เครื่องกรองน้ำ Subscribe: โปร 99.- รอบบิลที่ 1–9 มีผล 29 ส.ค.–30 ก.ย. 2569' });
+      }
+      if (waterSub.length) {
         items.push({ type: 'text', text: 'สินค้าเครื่องกรองน้ำ พื้นที่บริการไม่ครอบคลุมทั่วประเทศ กรุณาตรวจสอบก่อนติดตั้ง' });
       }
       (this.installRemarkLinesForCart() || []).forEach((block) => {
