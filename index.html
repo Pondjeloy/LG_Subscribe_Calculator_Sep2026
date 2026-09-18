@@ -1752,7 +1752,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.17-v2',
+ buildVersion: '2026.09.18-v1',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1789,10 +1789,10 @@ function lgCalculator() {
    } catch (e) { /* ignore */ }
    return rel;
  },
- // สเป็คพื้นฐานจากชื่อรุ่นใน catalog (เช่น ซัก xx กก. / BTU / คิว)
+ // สเป็คพื้นฐานจากชื่อรุ่นใน catalog (เช่น ซัก xx กก. / BTU / คิว) — ไม่รวมของแถม (แถมแยกบรรทัด)
  productBasicSpec(item) {
    if (!item) return '';
-   return this.modelDisplayName(item);
+   return String(item.name || '').trim();
  },
  visitServiceLabel(withEnglish = false) {
  const label = 'ช่างผู้เชี่ยวชาญบริการถึงบ้าน';
@@ -2215,7 +2215,7 @@ function lgCalculator() {
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 6 เดือน', regular:649, effectiveMonthly:149, promoMonths:1, postPromoPrice:649, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 324, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 649, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (324) จากนั้น 649/เดือน', totalContractMonths:84, totalSaving:1150 },
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:84, totalSaving:1050 }
         ]}]},
- 'เครื่องลดความชื้น': { models: [         { code:'DD23GMWE1S.ATH', name:'Dehumidifier 23 ลิตร', freeGift:'AeroMini AS30GGW10.ABAE', plans:[
+ 'เครื่องลดความชื้น': { models: [         { code:'DD23GMWE1S.ATH', name:'Dehumidifier 23 ลิตร', freeGift:'เครื่องฟอกอากาศ LG PuriCare AeroMini รุ่น AS30GGW10', plans:[
           { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:60, totalSaving:1050 },
           { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:549, effectiveMonthly:149, promoMonths:1, postPromoPrice:549, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 274, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-60', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (274) จากนั้น 549/เดือน', totalContractMonths:60, totalSaving:950 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:499, effectiveMonthly:149, promoMonths:1, postPromoPrice:499, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-3', 'price': 249, 'note': 'โปรลด 50%'}, {'range': 'บิล 4-84', 'price': 499, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 2 รอบบิล (249) จากนั้น 499/เดือน', totalContractMonths:84, totalSaving:850 },
@@ -4965,7 +4965,7 @@ function lgCalculator() {
         let detailLines = '';
         detailLines += '<div class="name">' + esc(imgSrc ? titleLine : headTitle.trim()) + '</div>';
         if (pname) detailLines += '<div class="spec">' + esc(pname) + '</div>';
-        if (this.freeGiftLine(it) && (!pname || pname.indexOf(this.freeGiftLabel(it)) < 0)) {
+        if (this.freeGiftLine(it)) {
           detailLines += '<div class="spec" style="margin-top:2px;color:#a50034;font-weight:600">' + esc(this.freeGiftLine(it)) + '</div>';
         }
         detailLines += careLine;
