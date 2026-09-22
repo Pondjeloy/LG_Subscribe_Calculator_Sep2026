@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.21-v2 · 3Y all models from Updated_Price3Y.xlsx -->
+<!-- LG Subscribe Calculator build 2026.09.22-v1 · SUBSCRIBE DAY Special Deal 22–25 ก.ย. 2569 -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -808,6 +808,7 @@
  
  <div>
  <div class="font-display font-bold text-lg" style="color:var(--ink)" x-text="promoConfig.special.name"></div>
+ <div class="text-xs" style="color:var(--ink)" x-show="promoConfig.special.note" x-text="promoConfig.special.note"></div>
  <div class="text-xs" style="color:var(--muted)" x-text="'เฉพาะ ' + fmtDate(promoConfig.special.dateStart) + ' – ' + fmtDate(promoConfig.special.dateEnd) + ' เท่านั้น'"></div>
  </div>
  </div>
@@ -1321,6 +1322,7 @@
  <template x-if="isSpecialComboEffective()">
  <div>
  <div class="font-display font-bold text-lg" x-text="promoConfig.special.name"></div>
+ <div class="text-xs mt-1" x-show="promoConfig.special.note" x-text="promoConfig.special.note"></div>
  <div class="text-xs mt-1" x-text="fmtDate(promoConfig.special.dateStart) + ' – ' + fmtDate(promoConfig.special.dateEnd) + ' · ส่วนลดสูงสุด ' + Math.max(...promoConfig.special.newTiers.map(t=>t.rate), ...promoConfig.special.existTiers.map(t=>t.rate)) + '%'"></div>
  <div class="text-xs mt-1" style="opacity:.85">ใบเสนอ/สรุป: สงวนสิทธิ์ถึงวันหมดคอมโบพิเศษ</div>
  </div>
@@ -1595,11 +1597,12 @@ function lgCalculator() {
  newTiers: [ {min:2, rate:10} ], // COMBO_NEW_K-HOUSE_(2 UNITS UP)
  existTiers: [ {min:1, rate:10} ] // COMBO_K-HOUSE_ADD_(1 UNIT UP)
  },
- // Subscribe Day 15% — 12–20 ก.ย. 2569 · ใหม่ 2+ / เก่า 1+ · ลดทุกบิล
+ // SUBSCRIBE DAY Special Deal — 22–25 ก.ย. 2569 · ใหม่ 2+ / เก่า 1+ · ลด 15% ทุกบิล · โปรคอมโบ
  special: {
- name: 'Subscribe Day',
- dateStart: '2569-09-12',
- dateEnd: '2569-09-20',
+ name: 'SUBSCRIBE DAY Special Deal',
+ dateStart: '2569-09-22',
+ dateEnd: '2569-09-25',
+ note: 'ดีลพิเศษช่วงโค้งสุดท้าย · โปรคอมโบ',
  newTiers: [ {min:2, rate:15} ],
  existTiers: [ {min:1, rate:15} ]
  },
@@ -1759,7 +1762,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.21-v2',
+ buildVersion: '2026.09.22-v1',
  quoteCustomer: {
    name: '',
    address: '',
@@ -3018,7 +3021,8 @@ function lgCalculator() {
  const stale = parsed?.normal?.dateStart !== codeN.dateStart
    || parsed?.special?.dateStart !== codeS.dateStart
    || parsed?.special?.dateEnd !== codeS.dateEnd
-   || parsed?.special?.name !== codeS.name;
+   || parsed?.special?.name !== codeS.name
+   || (parsed?.special?.note || '') !== (codeS.note || '');
  if (stale) {
  localStorage.removeItem('lgPromoConfig');
  } else {
@@ -3035,6 +3039,7 @@ function lgCalculator() {
  if (shockN > 0) {
  try { console.info('[' + ((this.shockPromo && this.shockPromo.name) || 'SHOCK') + '] applied to', shockN, 'plans'); } catch(e) {}
  }
+ if (this.isSpecialComboInPeriod()) this.specialCombo = true;
  this.refreshCategoryList();
  this.refreshModelList();
  },
@@ -3077,7 +3082,6 @@ function lgCalculator() {
  },
  resetPromoConfig() {
  localStorage.removeItem('lgPromoConfig');
- this.specialCombo = false;
  this.promoConfig = {
  normal: {
  name: 'Special Combo Promotion',
@@ -3086,13 +3090,15 @@ function lgCalculator() {
  existTiers: [ {min:1, rate:10} ]
  },
  special: {
- name: 'Subscribe Day',
- dateStart: '2569-09-12',
- dateEnd: '2569-09-20',
+ name: 'SUBSCRIBE DAY Special Deal',
+ dateStart: '2569-09-22',
+ dateEnd: '2569-09-25',
+ note: 'ดีลพิเศษช่วงโค้งสุดท้าย · โปรคอมโบ',
  newTiers: [ {min:2, rate:15} ],
  existTiers: [ {min:1, rate:15} ]
  }
  };
+ this.specialCombo = this.isSpecialComboInPeriod();
  this.showToast('รีเซ็ตเป็นค่าเริ่มต้นแล้ว');
  },
  currentModel() {
