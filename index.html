@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.22-v3 · 12M advance combo cycle -->
+<!-- LG Subscribe Calculator build 2026.09.22-v4 · NU855 combo uses standard 7-12 cycle -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1764,7 +1764,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.22-v3',
+ buildVersion: '2026.09.22-v4',
  quoteCustomer: {
    name: '',
    address: '',
@@ -3584,9 +3584,10 @@ function lgCalculator() {
    if (!item || !r || !(item.advancePayment > 0) || item.outright) return '';
    const cr = Math.round(this.comboRate() * 100);
    if (cr <= 0) return '';
-   const prepaid = this.advancePrepaidMonths(item) || 6;
    if (r.isCycledAdvance || (r.start === 7 && r.end === 12)) {
-     return 'ครึ่งราคา + วนลด Advance (คอมโบ ' + cr + '% ของ ' + prepaid + ' เดือนที่จ่ายล่วงหน้า)';
+     const prepaid = this.advancePrepaidMonths(item) || 6;
+     if (prepaid <= 6) return 'ครึ่งราคา + วนลด Advance (คอมโบ ' + cr + '% ของ ' + prepaid + ' เดือนที่จ่ายล่วงหน้า)';
+     return 'ครึ่งราคา + วนลด Advance (หักคอมโบ ' + cr + '% ของราคาปกติ)';
    }
    if (r.isAdvanceHalf || r.end <= 12) {
      return 'ครึ่งราคา + คอมโบ ' + cr + '% ของค่างวด';
@@ -3724,24 +3725,14 @@ function lgCalculator() {
  // เก็บทศนิยม 2 ตำแหน่ง ไม่ปัดเป็นบาทเต็ม
  const regular = Number(item.regular) || Number(item.postPromoPrice) || 0;
  const monthlyCombo = cr > 0 ? snapBaht(regular * cr) : 0;
- // 6 เดือนล่วงหน้า (ก้อน = 6 × ครึ่งราคา): งวด 7-12 หัก snap(regular×cr)
- //   75QNED86BSA 5Y 15% → 382 / 314 / 764
- // 12 เดือนล่วงหน้า (ก้อน = 12 × ครึ่งราคา = 6 × regular):
- //   คอมโบของก้อนที่ยังไม่หัก ใหญ่กว่าอีกเท่าตัว ต้องบวกคอมโบของค่างวดครึ่งราคาเข้างวด 7-12
- //   75NU855BPSA 5Y 15% → 297.50 / 192.50 / 594
- const prepaid = this.advancePrepaidMonths(item);
+ // ทุกทีวี/จอที่ล่วงหน้าแล้วบิล 1-12 ครึ่งราคา ใช้สูตรเดียวกัน
+ // งวด 1-6 หักคอมโบของค่างวด · งวด 7-12 หัก snap(regular×cr) · งวด 13+ หักคอมโบของราคาปกติ
+ // ห้ามเอาคอมโบทั้งก้อน 12 เดือนไปยัดในงวด 7-12 (75NU855 จะกลายเป็น 192.50)
+ // 75QNED86BSA 5Y 15% → 382 / 314 / 764
+ // 75NU855BPSA 5Y 15% → 297.50 / 244.50 / 594
  for (let k = 1; k <= months; k++) {
  let disc = 0;
- if (cr > 0) {
- const billCombo = snapBaht(bills[k] * cr);
- if (k >= 7 && k <= 12 && prepaid >= 12 && bills[k] < regular - 0.01) {
- disc = monthlyCombo + billCombo;
- } else if (k >= 7 && k <= 12) {
- disc = monthlyCombo;
- } else {
- disc = billCombo;
- }
- }
+ if (cr > 0) disc = (k >= 7 && k <= 12) ? monthlyCombo : snapBaht(bills[k] * cr);
  const price = cr > 0 ? round2(Math.max(0, bills[k] - disc)) : bills[k];
  out.push({ bill: k, base: bills[k], price });
  }
