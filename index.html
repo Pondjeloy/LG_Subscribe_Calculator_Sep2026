@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.22-v1 · SUBSCRIBE DAY Special Deal 22–25 ก.ย. 2569 -->
+<!-- LG Subscribe Calculator build 2026.09.22-v2 · SUBSCRIBE DAY Special Deal 22–25 ก.ย. 2569 -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -220,7 +220,7 @@
   .qty-stepper.qty-sm button{width:30px;height:30px;font-size:16px}
   .qty-stepper.qty-sm .qty-val{min-width:32px;font-size:13px}
   .qty-add-row{
-    display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;
+    display:flex;align-items:center;justify-content:flex-end;gap:12px;flex-wrap:wrap;width:100%;
   }
   .qty-add-row .qty-label{font-size:13px;color:var(--ink-2);font-weight:500}
 
@@ -631,6 +631,8 @@
     .p-6{padding:18px}
     .p-5{padding:16px}
     .sticky-summary{position:static}
+    .qty-add-row{justify-content:stretch}
+    .qty-add-row .btn-primary{width:100%}
   }
 
   @media print{
@@ -1762,7 +1764,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.22-v1',
+ buildVersion: '2026.09.22-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -3096,6 +3098,12 @@ function lgCalculator() {
  note: 'ดีลพิเศษช่วงโค้งสุดท้าย · โปรคอมโบ',
  newTiers: [ {min:2, rate:15} ],
  existTiers: [ {min:1, rate:15} ]
+ },
+ eventPromo: {
+ name: '9.9 Surprise Deal',
+ dateStart: '2569-09-08',
+ dateEnd: '2569-09-11',
+ note: 'บิลแรก 99.- · บางรุ่นต่อด้วยลด 50% · 8–11 ก.ย. 2569'
  }
  };
  this.specialCombo = this.isSpecialComboInPeriod();
@@ -4285,7 +4293,7 @@ function lgCalculator() {
  const existMin = promo.existTiers.length ? Math.min(...promo.existTiers.map(t => t.min)) : 0;
  const newRate = promo.newTiers.find(t => t.min === newMin)?.rate || 0;
  const existRate = promo.existTiers.find(t => t.min === existMin)?.rate || 0;
- return 'ลูกค้าใหม่ Subscribe เพิ่ม ' + newMin + ' ชิ้นขึ้นไป เริ่มลด ' + newRate + '% · ลูกค้าเก่า Subscribe เพิ่ม ' + existMin + ' ชิ้นขึ้นไป เริ่มลด ' + existRate + '%';
+ return 'ลูกค้าใหม่ Subscribe ' + newMin + ' ชิ้นขึ้นไป ลด ' + newRate + '% · ลูกค้าเก่า Subscribe เพิ่ม ' + existMin + ' ชิ้นขึ้นไป ลด ' + existRate + '%';
  },
  promoDateText() {
  const promo = this.isSpecialComboEffective()
@@ -4561,7 +4569,8 @@ function lgCalculator() {
 
       // ─── Hero price card ───
       txt += '<div style="background:linear-gradient(135deg,#fff5f5,#fff);border:1.5px solid #fca5a5;border-radius:10px;padding:12px 14px;margin-bottom:12px">';
-      txt += '<div style="font-size:0.78em;color:#9ca3af;margin-bottom:1px">โปรเริ่มต้น (งวดที่ ' + lowest.bill + ')</div>';
+      const lowHead = lowest.bill <= 1 ? 'ค่างวดแรก' : ('ค่างวดต่ำสุด (งวดที่ ' + lowest.bill + ')');
+      txt += '<div style="font-size:0.78em;color:#9ca3af;margin-bottom:1px">' + lowHead + '</div>';
       txt += '<div style="font-size:1.6em;font-weight:700;color:#a50034;line-height:1.1">฿' + this.fmtMoney(lowest.price) + '<span style="font-size:0.5em;font-weight:400;color:#6b7280">/เดือน</span></div>';
       if (this.hasPromoFirstMonths()) {
         const maxM = Math.max(...this.cart.map(it => it.promoMonths));
