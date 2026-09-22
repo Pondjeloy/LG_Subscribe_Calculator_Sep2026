@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.22-v4 · NU855 combo uses standard 7-12 cycle -->
+<!-- LG Subscribe Calculator build 2026.09.22-v5 · 6M and 12M advance combo stay separate -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1265,8 +1265,7 @@
  <span class="section-num">05 /</span>
  <h2 class="font-display font-bold text-lg">ตารางชำระเงินรายเดือน <span class="text-gray-400 font-normal text-sm">/ Payment Schedule</span></h2>
  </div>
- <div class="text-xs text-gray-500 mb-3" x-show="comboRate() > 0"> ราคาด้านล่างรวมส่วนลด Combo <strong x-text="Math.round(comboRate()*100)+'%'"></strong> แล้ว — บิลแรก/เงินจ่ายล่วงหน้าเก็บราคาเต็ม (ยังไม่หัก) · สินค้าไม่มี Advance นำ combo บิลแรกไปลดทั้งหมดที่งวดที่ 2 · สินค้า Advance: งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 ครึ่งราคา+วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ
- </div>
+ <div class="text-xs text-gray-500 mb-3" x-show="comboRate() > 0" x-text="cartAdvanceComboIntro()"></div>
  <div class="text-xs text-gray-500 mb-3" x-show="comboRate() === 0"> ราคาต่อเดือนในแต่ละช่วงบิล (ยังไม่มีส่วนลด Combo — ต้องซื้อเพิ่มเพื่อรับส่วนลด)
  </div>
 
@@ -1298,7 +1297,7 @@
  </template>
  </div>
  <div class="text-xs text-gray-400 mt-2" x-show="g.item.advancePayment && comboRate() > 0" style="font-style:italic">
- * เงินจ่ายล่วงหน้า ฿<span x-text="(g.item.advancePayment * g.qty).toLocaleString()"></span> เก็บเต็ม · งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 ครึ่งราคา+วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ
+ * <span x-text="advanceComboFootnote(g.item, g.qty)"></span>
  </div>
  <div class="text-xs text-gray-400 mt-2" x-show="!g.item.advancePayment && comboRate() > 0" style="font-style:italic">
  * บิลแรกเก็บเต็ม (ยังไม่หัก combo) แล้วนำ combo <span x-text="Math.round(comboRate()*100)+'%'"></span> ของบิลแรกไปลดทั้งหมดที่งวดที่ 2
@@ -1764,7 +1763,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.22-v4',
+ buildVersion: '2026.09.22-v5',
  quoteCustomer: {
    name: '',
    address: '',
@@ -3584,15 +3583,30 @@ function lgCalculator() {
    if (!item || !r || !(item.advancePayment > 0) || item.outright) return '';
    const cr = Math.round(this.comboRate() * 100);
    if (cr <= 0) return '';
-   if (r.isCycledAdvance || (r.start === 7 && r.end === 12)) {
-     const prepaid = this.advancePrepaidMonths(item) || 6;
-     if (prepaid <= 6) return 'ครึ่งราคา + วนลด Advance (คอมโบ ' + cr + '% ของ ' + prepaid + ' เดือนที่จ่ายล่วงหน้า)';
-     return 'ครึ่งราคา + วนลด Advance (หักคอมโบ ' + cr + '% ของราคาปกติ)';
+   const prepaid = this.advancePrepaidMonths(item) || 6;
+   if (prepaid <= 6 && (r.isCycledAdvance || (r.start === 7 && r.end === 12))) {
+     return 'ครึ่งราคา + วนลด Advance (คอมโบ ' + cr + '% ของ ' + prepaid + ' เดือนที่จ่ายล่วงหน้า)';
    }
    if (r.isAdvanceHalf || r.end <= 12) {
      return 'ครึ่งราคา + คอมโบ ' + cr + '% ของค่างวด';
    }
    return 'ราคาปกติหักคอมโบ ' + cr + '%';
+ },
+ advanceComboFootnote(item, qty) {
+   const q = qty || 1;
+   const adv = ((item && item.advancePayment) || 0) * q;
+   const prepaid = this.advancePrepaidMonths(item);
+   const head = 'เงินจ่ายล่วงหน้า ฿' + adv.toLocaleString() + ' เก็บเต็ม';
+   if (prepaid >= 12) return head + ' · งวด 1–12 ครึ่งราคา+คอมโบของค่างวด · งวดถัดไปราคาปกติหักคอมโบ';
+   return head + ' · งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 ครึ่งราคา+วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ';
+ },
+ cartAdvanceComboIntro() {
+   const cr = Math.round(this.comboRate() * 100);
+   const bits = ['ราคาด้านล่างรวมส่วนลด Combo ' + cr + '% แล้ว — บิลแรก/เงินจ่ายล่วงหน้าเก็บราคาเต็ม (ยังไม่หัก) · สินค้าไม่มี Advance นำ combo บิลแรกไปลดทั้งหมดที่งวดที่ 2'];
+   const kinds = new Set((this.cart || []).filter(it => it.advancePayment > 0 && !it.outright).map(it => this.advancePrepaidMonths(it) >= 12 ? 12 : 6));
+   if (kinds.has(6)) bits.push('ล่วงหน้า 6 เดือน: งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ');
+   if (kinds.has(12)) bits.push('ล่วงหน้า 12 เดือน: งวด 1–12 ครึ่งราคา+คอมโบของค่างวดเท่ากันทั้งช่วง · งวดถัดไปราคาปกติหักคอมโบ');
+   return bits.join(' · ');
  },
  cartTvAdvanceLabel() {
    const months = [...new Set(
@@ -3725,14 +3739,17 @@ function lgCalculator() {
  // เก็บทศนิยม 2 ตำแหน่ง ไม่ปัดเป็นบาทเต็ม
  const regular = Number(item.regular) || Number(item.postPromoPrice) || 0;
  const monthlyCombo = cr > 0 ? snapBaht(regular * cr) : 0;
- // ทุกทีวี/จอที่ล่วงหน้าแล้วบิล 1-12 ครึ่งราคา ใช้สูตรเดียวกัน
- // งวด 1-6 หักคอมโบของค่างวด · งวด 7-12 หัก snap(regular×cr) · งวด 13+ หักคอมโบของราคาปกติ
- // ห้ามเอาคอมโบทั้งก้อน 12 เดือนไปยัดในงวด 7-12 (75NU855 จะกลายเป็น 192.50)
- // 75QNED86BSA 5Y 15% → 382 / 314 / 764
- // 75NU855BPSA 5Y 15% → 297.50 / 244.50 / 594
+ // ล่วงหน้า 6 เดือน (ก้อน = 6 × ครึ่งราคา): งวด 7-12 รับวนลด snap(regular×cr)
+ //   75QNED86BSA 5Y 15% → 382 / 314 / 764
+ // ล่วงหน้า 12 เดือน (ก้อน = 12 × ครึ่งราคา): งวด 1-12 หักคอมโบของค่างวดเท่ากัน ห้ามผ่า 7-12 แบบรุ่น 6 เดือน
+ //   75NU855BPSA 5Y 15% → งวด 1-12 = 297.50 · งวด 13-60 = 594
+ const twelve = this.advancePrepaidMonths(item) >= 12;
  for (let k = 1; k <= months; k++) {
  let disc = 0;
- if (cr > 0) disc = (k >= 7 && k <= 12) ? monthlyCombo : snapBaht(bills[k] * cr);
+ if (cr > 0) {
+  const billCombo = snapBaht(bills[k] * cr);
+  disc = (!twelve && k >= 7 && k <= 12) ? monthlyCombo : billCombo;
+ }
  const price = cr > 0 ? round2(Math.max(0, bills[k] - disc)) : bills[k];
  out.push({ bill: k, base: bills[k], price });
  }
