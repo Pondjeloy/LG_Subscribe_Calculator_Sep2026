@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.24-v1 · 3Y first on TV monitor audio -->
+<!-- LG Subscribe Calculator build 2026.09.24-v2 · RX10VHP3KR dryer promo 24-30 Sep -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -951,6 +951,7 @@
  <span x-show="isDryerModel(currentModel())">เครื่องอบผ้า สัญญา <strong>7 ปี Visit</strong> คุ้มที่สุด · ล้างใหญ่ 2 ครั้ง (เดือน 36 และ 72)</span>
  <span x-show="isDishwasherModel(currentModel())">เครื่องล้างจาน สัญญา <strong>7 ปี Visit</strong> คุ้มที่สุด</span>
  </div>
+ <div class="washer-rec-tip" x-show="currentModel() && currentModel().code === 'RX10VHP3KR.AEBPETH'">โปร 24–30 ก.ย. 2569 · ซื้อคู่ FV1413S4M.AMBPETH ได้ Dryer Stacking kit หรือจนกว่าของจะหมด</div>
  <div class="space-y-2">
  <template x-for="group in planPickerGroups()" :key="(currentModel()?.code || '') + '|' + group.key">
  <div class="plan-cycle-group" :class="[group.framed ? 'framed' : '', group.cycleClass]">
@@ -1629,6 +1630,7 @@ function lgCalculator() {
  },
  picker: { category: '', model: '', plan: '', qty: 1 },
  modelImages: {
+ 'RX10VHP3KR.AEBPETH': 'assets/products/rx10vhp3kr.png',
  'OLED83C6PSA.ATM': 'assets/products/oled83c6psa.png',
  'TX2726ST5J.APBPETH': 'assets/products/tx2726st5j.png',
  'ZVCQ36GM2A1.EWGHATH': 'assets/products/zvcq-concealed.png',
@@ -1763,7 +1765,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.24-v1',
+ buildVersion: '2026.09.24-v2',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1840,7 +1842,7 @@ function lgCalculator() {
  if (!model) return false;
  const code = model.code || '';
  const name = model.name || '';
- return code.includes('RV10') || name.includes('อบผ้า');
+ return code.includes('RV10') || code.includes('RX10') || name.includes('อบผ้า');
  },
  isDishwasherModel(model) {
  if (!model) return false;
@@ -2233,6 +2235,13 @@ function lgCalculator() {
           { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:699, effectiveMonthly:149, promoMonths:1, postPromoPrice:699, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-12', 'price': 349, 'note': 'โปรลด 50%'}, {'range': 'บิล 13-60', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 11 รอบบิล (349) จากนั้น 699/เดือน', totalContractMonths:60, totalSaving:4400 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-12', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 13-84', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 11 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:84, totalSaving:3750 },
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:549, effectiveMonthly:149, promoMonths:1, postPromoPrice:549, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-12', 'price': 274, 'note': 'โปรลด 50%'}, {'range': 'บิล 13-84', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 11 รอบบิล (274) จากนั้น 549/เดือน', totalContractMonths:84, totalSaving:3425 }
+        ]},
+ // เครื่องอบผ้า 10kg NEW — docs/S__6250518.png โปร 24–30 ก.ย. 2569 · RX10VHP3KR.AEBPETH · บิลแรก 149 + DC50% 5 บิล (2-6)
+ { code:'RX10VHP3KR.AEBPETH', name:'เครื่องอบผ้า Dual Inverter Heat Pump · 10 กก. · สีดำโลหะ', plans:[
+          { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:899, effectiveMonthly:149, promoMonths:1, postPromoPrice:899, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 449, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-60', 'price': 899, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (449) จากนั้น 899/เดือน', totalContractMonths:60, totalSaving:3000 },
+          { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:849, effectiveMonthly:149, promoMonths:1, postPromoPrice:849, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 424, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-60', 'price': 849, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (424) จากนั้น 849/เดือน', totalContractMonths:60, totalSaving:2825 },
+          { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:749, effectiveMonthly:149, promoMonths:1, postPromoPrice:749, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 374, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-84', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (374) จากนั้น 749/เดือน', totalContractMonths:84, totalSaving:2475 },
+          { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:699, effectiveMonthly:149, promoMonths:1, postPromoPrice:699, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 349, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-84', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (349) จากนั้น 699/เดือน', totalContractMonths:84, totalSaving:2300 }
         ]},
  // เครื่องอบผ้า 10kg — Price list Aug V3 (13-31 ส.ค. 2569): RV10VHP2B.BBLPETH · บิลแรก 149 + DC50% 7M
  { code:'RV10VHP4B.BMBPETH', name:'เครื่องอบผ้า Heat Pump · 10 กก. · สีดำ', plans:[
@@ -4190,7 +4199,7 @@ function lgCalculator() {
      const code = String(item.code || '');
      const name = String(item.name || '');
      if (code.includes('DFC') || name.includes('ล้างจาน')) return true;
-     if (code.includes('RV10') || name.includes('อบผ้า')) return true;
+     if (code.includes('RV10') || code.includes('RX10') || name.includes('อบผ้า')) return true;
      if (/FV|FV1|TX|WT|F2520|DFC/i.test(code) && (name.includes('ซัก') || name.includes('Wash') || name.includes('อบ'))) return true;
    }
    return false;
@@ -5036,6 +5045,9 @@ function lgCalculator() {
       }
       if (waterSub.length) {
         items.push({ type: 'text', text: 'สินค้าเครื่องกรองน้ำ พื้นที่บริการไม่ครอบคลุมทั่วประเทศ กรุณาตรวจสอบก่อนติดตั้ง' });
+      }
+      if ((this.cart || []).some(it => String(it.code || '') === 'RX10VHP3KR.AEBPETH')) {
+        items.push({ type: 'text', text: 'เครื่องอบผ้า RX10VHP3KR โปร 24–30 ก.ย. 2569: ซื้อคู่ FV1413S4M.AMBPETH รับฟรี Dryer Stacking kit หรือจนกว่าของแถมจะหมด' });
       }
       (this.installRemarkLinesForCart() || []).forEach((block) => {
         if (block && block.length) items.push({ type: 'block', lines: block });
