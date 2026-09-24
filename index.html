@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.24-v2 · RX10VHP3KR dryer promo 24-30 Sep -->
+<!-- LG Subscribe Calculator build 2026.09.24-v4 -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1661,9 +1661,6 @@ function lgCalculator() {
  'GV-V25FFGRB.ABMPLMT': 'assets/products/gv-v25ffgrb.png',
  'FV1409H4W.ABWPETH': 'assets/products/fv1409h4w.png',
  'TX2723ST5J.APBPETH': 'assets/products/tx2723st5j.png',
- 'RV10VHP4B.BMBPETH': 'assets/products/rv10vhp4b.png',
- '34GX90SA-W.ATM': 'assets/products/34gx90sa-w.png',
- '32U731SA-W.ATM': 'assets/products/32u731sa-w.png',
  'GC-B48FPGAM.ADBPLMT': 'assets/products/gc-b48fpgam.png',
  'GC-J257SQZW.AEPPLMT': 'assets/products/gc-j257sqzw.png',
  'GC-B257SQYL.AMCPLMT': 'assets/products/gc-b257sqyl.png',
@@ -1744,7 +1741,6 @@ function lgCalculator() {
  '32U889SA.GRAB': 'assets/products/32u889sa-w.png',
  'MS4295DIS.BBKPETH': 'assets/products/ms4295dis.png',
  'S3MFC.ALBPETH': 'assets/products/s3mfc.png',
- 'RV10VHP2B.BBLPETH': 'assets/products/rv10vhp2b.png',
  'A9T-CORE.DCGPETH': 'assets/products/a9t-core.png',
  'A9T-ULTRA.DCBPETH': 'assets/products/a9t-ultra.png',
  
@@ -1765,7 +1761,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.24-v3',
+ buildVersion: '2026.09.24-v4',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1993,9 +1989,9 @@ function lgCalculator() {
  if (adv > 0) {
  lines.push({
  kind: 'advance',
- label: 'จ่ายล่วงหน้า',
+ label: 'จ่ายครั้งแรก (เงินล่วงหน้า)',
  priceText: '฿' + this.fmtMoney(adv),
- note: 'ตอนเริ่มสัญญา',
+ note: 'ไม่รวมค่างวดที่ 1',
  });
  }
  this.billRangeTotals(item).forEach(r => {
@@ -2242,17 +2238,6 @@ function lgCalculator() {
           { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:849, effectiveMonthly:149, promoMonths:1, postPromoPrice:849, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 424, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-60', 'price': 849, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (424) จากนั้น 849/เดือน', totalContractMonths:60, totalSaving:2825 },
           { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:749, effectiveMonthly:149, promoMonths:1, postPromoPrice:749, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 374, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-84', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (374) จากนั้น 749/เดือน', totalContractMonths:84, totalSaving:2475 },
           { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:699, effectiveMonthly:149, promoMonths:1, postPromoPrice:699, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-6', 'price': 349, 'note': 'โปรลด 50%'}, {'range': 'บิล 7-84', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 5 รอบบิล (349) จากนั้น 699/เดือน', totalContractMonths:84, totalSaving:2300 }
-        ]},
- // เครื่องอบผ้า 10kg — Price list Aug V3 (13-31 ส.ค. 2569): RV10VHP2B.BBLPETH · บิลแรก 149 + DC50% 7M
- { code:'RV10VHP4B.BMBPETH', name:'เครื่องอบผ้า Heat Pump · 10 กก. · สีดำ', plans:[
-          { term:'3Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:1299, effectiveMonthly:1299, promoMonths:0, postPromoPrice:1299, billSchedule:[{'range': 'บิล 1-36', 'price': 1299, 'note': 'ราคาปกติ'}], promo:'', totalContractMonths:36, totalSaving:0 },
-          { term:'3Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:1149, effectiveMonthly:1149, promoMonths:0, postPromoPrice:1149, billSchedule:[{'range': 'บิล 1-36', 'price': 1149, 'note': 'ราคาปกติ'}], promo:'', totalContractMonths:36, totalSaving:0 }
-        ]},
- { code:'RV10VHP2B.BBLPETH', name:'เครื่องอบผ้า Heat Pump · 10 กก. · สีดำ', plans:[
-          { term:'5Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:849, effectiveMonthly:149, promoMonths:1, postPromoPrice:849, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-8', 'price': 424, 'note': 'โปรลด 50%'}, {'range': 'บิล 9-60', 'price': 849, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 7 รอบบิล (424) จากนั้น 849/เดือน', totalContractMonths:60, totalSaving:3675 },
-          { term:'5Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:749, effectiveMonthly:149, promoMonths:1, postPromoPrice:749, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-8', 'price': 374, 'note': 'โปรลด 50%'}, {'range': 'บิล 9-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 7 รอบบิล (374) จากนั้น 749/เดือน', totalContractMonths:60, totalSaving:3225 },
-          { term:'7Y', serviceType:'Visit', serviceCycle:'ทุก 12 เดือน', regular:699, effectiveMonthly:149, promoMonths:1, postPromoPrice:699, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-8', 'price': 349, 'note': 'โปรลด 50%'}, {'range': 'บิล 9-84', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 7 รอบบิล (349) จากนั้น 699/เดือน', totalContractMonths:84, totalSaving:3000 },
-          { term:'7Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:599, effectiveMonthly:149, promoMonths:1, postPromoPrice:599, billSchedule:[{'range': 'บิล 1', 'price': 149, 'note': 'ราคา 149.-'}, {'range': 'บิล 2-8', 'price': 299, 'note': 'โปรลด 50%'}, {'range': 'บิล 9-84', 'price': 599, 'note': 'ราคาปกติ'}], promo:'บิลแรก 149 ต่อด้วยลด 50% 7 รอบบิล (299) จากนั้น 599/เดือน', totalContractMonths:84, totalSaving:2550 }
         ]},
  { code:'S3MFC.ALBPETH', name:'LG Styler', plans:[
           { term:'3Y', serviceType:'Self', serviceCycle:'ทุก 12 เดือน', regular:1199, effectiveMonthly:1199, promoMonths:0, postPromoPrice:1199, billSchedule:[{'range': 'บิล 1-36', 'price': 1199, 'note': 'ราคาปกติ'}], promo:'', totalContractMonths:36, totalSaving:0 },
@@ -2512,139 +2497,102 @@ function lgCalculator() {
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:4499, effectiveMonthly:2249, promoMonths:0, postPromoPrice:4499, advancePayment:13494, billSchedule:[{'range': 'บิล 1-12', 'price': 2249, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 4499, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿2249 → บิล 13-60: ฿4499', totalContractMonths:60, totalSaving:13497 }
         ]},
 { code:'100QNED86BS.ATM', name:'LG QNED 100"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:4199, effectiveMonthly:2099, promoMonths:0, postPromoPrice:4199, advancePayment:12594, billSchedule:[{'range': 'บิล 1-12', 'price': 2099, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 4199, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿2099 → บิล 13-36: ฿4199', totalContractMonths:36, totalSaving:12597 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:2599, effectiveMonthly:1299, promoMonths:0, postPromoPrice:2599, advancePayment:7794, billSchedule:[{'range': 'บิล 1-12', 'price': 1299, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 2599, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1299 → บิล 13-60: ฿2599', totalContractMonths:60, totalSaving:7797 }
         ]},
  { code:'27LX6TDGA.GRAB', name:'StanbyME 2 + GRAB', freeGift:'xboom GRAB.ATHALBK', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1249, effectiveMonthly:624.5, promoMonths:0, postPromoPrice:1249, advancePayment:7494, billSchedule:[{'range': 'บิล 1-12', 'price': 624.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1249, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿624.5 → บิล 13-36: ฿1249', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374.5, promoMonths:0, postPromoPrice:749, advancePayment:4494, billSchedule:[{'range': 'บิล 1-12', 'price': 374.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374.5 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'27LX6TDGA.ATM', name:'StanbyME 2', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1249, effectiveMonthly:624, promoMonths:0, postPromoPrice:1249, advancePayment:3744, billSchedule:[{'range': 'บิล 1-12', 'price': 624, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1249, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿624 → บิล 13-36: ฿1249', totalContractMonths:36, totalSaving:3747 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374, promoMonths:0, postPromoPrice:749, advancePayment:2244, billSchedule:[{'range': 'บิล 1-12', 'price': 374, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:2247 }
         ]},
  { code:'32LX6BDGA.ATM', name:'StanbyME 2 Max LX6 · 32" 4K', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1449, effectiveMonthly:724, promoMonths:0, postPromoPrice:1449, advancePayment:4344, billSchedule:[{'range': 'บิล 1-12', 'price': 724, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1449, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿724 → บิล 13-36: ฿1449', totalContractMonths:36, totalSaving:4347 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:849, effectiveMonthly:424, promoMonths:0, postPromoPrice:849, advancePayment:2544, billSchedule:[{'range': 'บิล 1-12', 'price': 424, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 849, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿424 → บิล 13-60: ฿849', totalContractMonths:60, totalSaving:2547 }
         ]},
  { code:'55QNED80BSA.ATM', name:'LG QNED 55"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:899, effectiveMonthly:449, promoMonths:0, postPromoPrice:899, advancePayment:2694, billSchedule:[{'range': 'บิล 1-12', 'price': 449, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 899, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿449 → บิล 13-36: ฿899', totalContractMonths:36, totalSaving:2697 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:549, effectiveMonthly:274, promoMonths:0, postPromoPrice:549, advancePayment:1644, billSchedule:[{'range': 'บิล 1-12', 'price': 274, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿274 → บิล 13-60: ฿549', totalContractMonths:60, totalSaving:1647 }
         ]},
  { code:'65NU855BPSA.ATM', name:'LG NANO 65"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:899, effectiveMonthly:449.5, promoMonths:0, postPromoPrice:899, advancePayment:5394, billSchedule:[{'range': 'บิล 1-12', 'price': 449.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 899, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿449.5 → บิล 13-36: ฿899', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:549, effectiveMonthly:274.5, promoMonths:0, postPromoPrice:549, advancePayment:3294, billSchedule:[{'range': 'บิล 1-12', 'price': 274.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿274.5 → บิล 13-60: ฿549', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'65QNED80BSA.ATM', name:'LG QNED 65"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:999, effectiveMonthly:499, promoMonths:0, postPromoPrice:999, advancePayment:2994, billSchedule:[{'range': 'บิล 1-12', 'price': 499, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿499 → บิล 13-36: ฿999', totalContractMonths:36, totalSaving:2997 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:649, effectiveMonthly:324, promoMonths:0, postPromoPrice:649, advancePayment:1944, billSchedule:[{'range': 'บิล 1-12', 'price': 324, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 649, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿324 → บิล 13-60: ฿649', totalContractMonths:60, totalSaving:1947 }
         ]},
  { code:'75NU855BPSA.ATM', name:'LG NANO 75"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:999, effectiveMonthly:499.5, promoMonths:0, postPromoPrice:999, advancePayment:5994, billSchedule:[{'range': 'บิล 1-12', 'price': 499.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿499.5 → บิล 13-36: ฿999', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:699, effectiveMonthly:349.5, promoMonths:0, postPromoPrice:699, advancePayment:4194, billSchedule:[{'range': 'บิล 1-12', 'price': 349.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿349.5 → บิล 13-60: ฿699', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'85QNED80BSA.ATM', name:'LG QNED 85"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1999, effectiveMonthly:999, promoMonths:0, postPromoPrice:1999, advancePayment:5994, billSchedule:[{'range': 'บิล 1-12', 'price': 999, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿999 → บิล 13-36: ฿1999', totalContractMonths:36, totalSaving:5997 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1349, effectiveMonthly:674, promoMonths:0, postPromoPrice:1349, advancePayment:4044, billSchedule:[{'range': 'บิล 1-12', 'price': 674, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1349, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿674 → บิล 13-60: ฿1349', totalContractMonths:60, totalSaving:4047 }
         ]},
  { code:'75QNED86BSA.ATM', name:'LG QNED 75"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1449, effectiveMonthly:724, promoMonths:0, postPromoPrice:1449, advancePayment:4344, billSchedule:[{'range': 'บิล 1-12', 'price': 724, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1449, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿724 → บิล 13-36: ฿1449', totalContractMonths:36, totalSaving:4347 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:899, effectiveMonthly:449, promoMonths:0, postPromoPrice:899, advancePayment:2694, billSchedule:[{'range': 'บิล 1-12', 'price': 449, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 899, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿449 → บิล 13-60: ฿899', totalContractMonths:60, totalSaving:2697 }
         ]},
  { code:'OLED55C6PSA.ATM', name:'LG OLED evo C6 · 55"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1699, effectiveMonthly:849, promoMonths:0, postPromoPrice:1699, advancePayment:5094, billSchedule:[{'range': 'บิล 1-12', 'price': 849, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1699, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿849 → บิล 13-36: ฿1699', totalContractMonths:36, totalSaving:5097 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1099, effectiveMonthly:549, promoMonths:0, postPromoPrice:1099, advancePayment:3294, billSchedule:[{'range': 'บิล 1-12', 'price': 549, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1099, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿549 → บิล 13-60: ฿1099', totalContractMonths:60, totalSaving:3297 }
         ]},
  { code:'OLED48C6PSA.ATM', name:'LG OLED evo C6 · 48"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1149, effectiveMonthly:574, promoMonths:0, postPromoPrice:1149, advancePayment:3444, billSchedule:[{'range': 'บิล 1-12', 'price': 574, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1149, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿574 → บิล 13-36: ฿1149', totalContractMonths:36, totalSaving:3447 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374, promoMonths:0, postPromoPrice:749, advancePayment:2244, billSchedule:[{'range': 'บิล 1-12', 'price': 374, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:2247 }
         ]},
  { code:'OLED48C6PSA.BOUNCE', name:'LG OLED C6 48" + BOUNCE', freeGift:'xboom BOUNCE.ATHALBK', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1149, effectiveMonthly:574.5, promoMonths:0, postPromoPrice:1149, advancePayment:6894, billSchedule:[{'range': 'บิล 1-12', 'price': 574.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1149, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿574.5 → บิล 13-36: ฿1149', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:749, effectiveMonthly:374.5, promoMonths:0, postPromoPrice:749, advancePayment:4494, billSchedule:[{'range': 'บิล 1-12', 'price': 374.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 749, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿374.5 → บิล 13-60: ฿749', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'OLED55C6PSA.S30A', name:'LG OLED C6 55" + Soundbar', freeGift:'Sound Bar S30A.ATHALLK', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1699, effectiveMonthly:849.5, promoMonths:0, postPromoPrice:1699, advancePayment:10194, billSchedule:[{'range': 'บิล 1-12', 'price': 849.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1699, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿849.5 → บิล 13-36: ฿1699', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1099, effectiveMonthly:549.5, promoMonths:0, postPromoPrice:1099, advancePayment:6594, billSchedule:[{'range': 'บิล 1-12', 'price': 549.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1099, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿549.5 → บิล 13-60: ฿1099', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'OLED65C6PSA.ATM', name:'LG OLED evo C6 · 65"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1999, effectiveMonthly:999, promoMonths:0, postPromoPrice:1999, advancePayment:5994, billSchedule:[{'range': 'บิล 1-12', 'price': 999, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿999 → บิล 13-36: ฿1999', totalContractMonths:36, totalSaving:5997 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1299, effectiveMonthly:649, promoMonths:0, postPromoPrice:1299, advancePayment:3894, billSchedule:[{'range': 'บิล 1-12', 'price': 649, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1299, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿649 → บิล 13-60: ฿1299', totalContractMonths:60, totalSaving:3897 }
         ]},
  { code:'OLED65C6PSA.S80TY', name:'LG OLED C6 65" + Soundbar', freeGift:'Sound Bar S80TY.DTHALLK', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1999, effectiveMonthly:999.5, promoMonths:0, postPromoPrice:1999, advancePayment:11994, billSchedule:[{'range': 'บิล 1-12', 'price': 999.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿999.5 → บิล 13-36: ฿1999', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1299, effectiveMonthly:649.5, promoMonths:0, postPromoPrice:1299, advancePayment:7794, billSchedule:[{'range': 'บิล 1-12', 'price': 649.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1299, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿649.5 → บิล 13-60: ฿1299', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'OLED77C6PSA.ATM', name:'LG OLED evo C6 · 77"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:3099, effectiveMonthly:1549, promoMonths:0, postPromoPrice:3099, advancePayment:9294, billSchedule:[{'range': 'บิล 1-12', 'price': 1549, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 3099, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1549 → บิล 13-36: ฿3099', totalContractMonths:36, totalSaving:9297 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1999, effectiveMonthly:999, promoMonths:0, postPromoPrice:1999, advancePayment:5994, billSchedule:[{'range': 'บิล 1-12', 'price': 999.0, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿999 → บิล 13-60: ฿1999', totalContractMonths:60, totalSaving:6000 }
         ]},
  { code:'OLED83C6PSA.ATM', name:'LG OLED evo C6 · 83"', plans:[
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:2999, effectiveMonthly:1499, promoMonths:0, postPromoPrice:2999, advancePayment:8994, billSchedule:[{'range': 'บิล 1-12', 'price': 1499, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 2999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1499 → บิล 13-60: ฿2999', totalContractMonths:60, totalSaving:8997 }
         ]},
  { code:'OLED77C6PSA.S80TY', name:'LG OLED C6 77" + Soundbar', freeGift:'Sound Bar S80TY.DTHALLK', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:3099, effectiveMonthly:1549.5, promoMonths:0, postPromoPrice:3099, advancePayment:18594, billSchedule:[{'range': 'บิล 1-12', 'price': 1549.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 3099, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1549.5 → บิล 13-36: ฿3099', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1999, effectiveMonthly:999.5, promoMonths:0, postPromoPrice:1999, advancePayment:11994, billSchedule:[{'range': 'บิล 1-12', 'price': 999.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿999.5 → บิล 13-60: ฿1999', totalContractMonths:60, totalSaving:0 }
         ]}
  ]},
  'มอนิเตอร์': { models: [ { code:'32U889SA-W.ATM', name:'UltraFine 32"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:999, effectiveMonthly:499.5, promoMonths:0, postPromoPrice:999, advancePayment:5994, billSchedule:[{'range': 'บิล 1-12', 'price': 499.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿499.5 → บิล 13-36: ฿999', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:649, effectiveMonthly:324.5, promoMonths:0, postPromoPrice:649, advancePayment:3894, billSchedule:[{'range': 'บิล 1-12', 'price': 324.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 649, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿324.5 → บิล 13-60: ฿649', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'27GX704A-B.ATM', name:'UltraGear GX7 27"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:549, effectiveMonthly:274.5, promoMonths:0, postPromoPrice:549, advancePayment:3294, billSchedule:[{'range': 'บิล 1-12', 'price': 274.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿274.5 → บิล 13-36: ฿549', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:349, effectiveMonthly:174.5, promoMonths:0, postPromoPrice:349, advancePayment:2094, billSchedule:[{'range': 'บิล 1-12', 'price': 174.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 349, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿174.5 → บิล 13-60: ฿349', totalContractMonths:60, totalSaving:0 }
         ]},
- { code:'34GX90SA-W.ATM', name:'UltraGear OLED 34" · 240Hz WQHD Curved', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1199, effectiveMonthly:599.5, promoMonths:0, postPromoPrice:1199, advancePayment:7194, billSchedule:[{'range': 'บิล 1-12', 'price': 599.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1199, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿599.5 → บิล 13-36: ฿1199', totalContractMonths:36, totalSaving:0 }
-        ]},
- { code:'32U731SA-W.ATM', name:'Smart Monitor 31.5" 4K UHD IPS', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:549, effectiveMonthly:274.5, promoMonths:0, postPromoPrice:549, advancePayment:3294, billSchedule:[{'range': 'บิล 1-12', 'price': 274.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿274.5 → บิล 13-36: ฿549', totalContractMonths:36, totalSaving:0 }
-        ]},
  { code:'32U889SA.GRAB', name:'UltraFine 32" + GRAB', freeGift:'xboom GRAB.ATHALBK', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1049, effectiveMonthly:524.5, promoMonths:0, postPromoPrice:1049, advancePayment:6294, billSchedule:[{'range': 'บิล 1-12', 'price': 524.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1049, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿524.5 → บิล 13-36: ฿1049', totalContractMonths:36, totalSaving:3147 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:699, effectiveMonthly:349.5, promoMonths:0, postPromoPrice:699, advancePayment:4194, billSchedule:[{'range': 'บิล 1-12', 'price': 349.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿349.5 → บิล 13-60: ฿699', totalContractMonths:60, totalSaving:2097 }
         ]},
  
  { code:'34U650A-B.ATM', name:'UltraWide 34"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:499, effectiveMonthly:249.5, promoMonths:0, postPromoPrice:499, advancePayment:2994, billSchedule:[{'range': 'บิล 1-12', 'price': 249.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 499, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿249.5 → บิล 13-36: ฿499', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:349, effectiveMonthly:174.5, promoMonths:0, postPromoPrice:349, advancePayment:2094, billSchedule:[{'range': 'บิล 1-12', 'price': 174.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 349, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿174.5 → บิล 13-60: ฿349', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'40U990A-W.ATM', name:'UltraFine 40"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1549, effectiveMonthly:774.5, promoMonths:0, postPromoPrice:1549, advancePayment:9294, billSchedule:[{'range': 'บิล 1-12', 'price': 774.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1549, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿774.5 → บิล 13-36: ฿1549', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:999, effectiveMonthly:499.5, promoMonths:0, postPromoPrice:999, advancePayment:5994, billSchedule:[{'range': 'บิล 1-12', 'price': 499.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 999, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿499.5 → บิล 13-60: ฿999', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'45GX950A-B.ATM', name:'UltraGear 45"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:2199, effectiveMonthly:1099.5, promoMonths:0, postPromoPrice:2199, advancePayment:13194, billSchedule:[{'range': 'บิล 1-12', 'price': 1099.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 2199, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿1099.5 → บิล 13-36: ฿2199', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1499, effectiveMonthly:749.5, promoMonths:0, postPromoPrice:1499, advancePayment:8994, billSchedule:[{'range': 'บิล 1-12', 'price': 749.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1499, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿749.5 → บิล 13-60: ฿1499', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'52G930B-B.ATM', name:'UltraGear 52"', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1799, effectiveMonthly:899.5, promoMonths:0, postPromoPrice:1799, advancePayment:10794, billSchedule:[{'range': 'บิล 1-12', 'price': 899.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 1799, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿899.5 → บิล 13-36: ฿1799', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:1199, effectiveMonthly:599.5, promoMonths:0, postPromoPrice:1199, advancePayment:7194, billSchedule:[{'range': 'บิล 1-12', 'price': 599.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 1199, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿599.5 → บิล 13-60: ฿1199', totalContractMonths:60, totalSaving:0 }
         ]}   ]},
  'ลำโพง / ซาวด์บาร์': { models: [
  { code:'BOUNCE.ATHALBK', name:'LG xboom Bounce', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:249, effectiveMonthly:124, promoMonths:0, postPromoPrice:249, advancePayment:744, billSchedule:[{'range': 'บิล 1-12', 'price': 124, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 249, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿124 → บิล 13-36: ฿249', totalContractMonths:36, totalSaving:747 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:139, effectiveMonthly:69, promoMonths:0, postPromoPrice:139, advancePayment:414, billSchedule:[{'range': 'บิล 1-12', 'price': 69, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 139, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿69 → บิล 13-60: ฿139', totalContractMonths:60, totalSaving:420 }
         ]},
  { code:'GRAB.ATHALBK', name:'LG xboom Grab', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:99, effectiveMonthly:49, promoMonths:0, postPromoPrice:99, advancePayment:294, billSchedule:[{'range': 'บิล 1-12', 'price': 49, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 99, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿49 → บิล 13-36: ฿99', totalContractMonths:36, totalSaving:297 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:109, effectiveMonthly:54, promoMonths:0, postPromoPrice:109, advancePayment:324, billSchedule:[{'range': 'บิล 1-12', 'price': 54, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 109, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿54 → บิล 13-60: ฿109', totalContractMonths:60, totalSaving:330 }
         ]},
  { code:'S70TY.ATHALLD', name:'Soundbar S70TY', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:349, effectiveMonthly:174.5, promoMonths:0, postPromoPrice:349, advancePayment:2094, billSchedule:[{'range': 'บิล 1-12', 'price': 174.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 349, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿174.5 → บิล 13-36: ฿349', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:189, effectiveMonthly:94.5, promoMonths:0, postPromoPrice:189, advancePayment:1134, billSchedule:[{'range': 'บิล 1-12', 'price': 94.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 189, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿94.5 → บิล 13-60: ฿189', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'S95TR.DTHALLK', name:'Soundbar S95TR', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:699, effectiveMonthly:349.5, promoMonths:0, postPromoPrice:699, advancePayment:4194, billSchedule:[{'range': 'บิล 1-12', 'price': 349.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 699, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿349.5 → บิล 13-36: ฿699', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:449, effectiveMonthly:224.5, promoMonths:0, postPromoPrice:449, advancePayment:2694, billSchedule:[{'range': 'บิล 1-12', 'price': 224.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 449, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿224.5 → บิล 13-60: ฿449', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'STAGE301.ATH', name:'LG xboom STAGE301', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:449, effectiveMonthly:224.5, promoMonths:0, postPromoPrice:449, advancePayment:2694, billSchedule:[{'range': 'บิล 1-12', 'price': 224.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 449, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿224.5 → บิล 13-36: ฿449', totalContractMonths:36, totalSaving:0 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:299, effectiveMonthly:149.5, promoMonths:0, postPromoPrice:299, advancePayment:1794, billSchedule:[{'range': 'บิล 1-12', 'price': 149.5, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 299, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿149.5 → บิล 13-60: ฿299', totalContractMonths:60, totalSaving:0 }
         ]},
  { code:'STAGE501.ATHALBK', name:'LG xboom STAGE501', plans:[
-          { term:'3Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:549, effectiveMonthly:274, promoMonths:0, postPromoPrice:549, advancePayment:1644, billSchedule:[{'range': 'บิล 1-12', 'price': 274, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'},{'range': 'บิล 13-36', 'price': 549, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿274 → บิล 13-36: ฿549', totalContractMonths:36, totalSaving:1647 },
           { term:'5Y', serviceType:'No Service', serviceCycle:'ไม่มีบริการ', regular:449, effectiveMonthly:224, promoMonths:0, postPromoPrice:449, advancePayment:1344, billSchedule:[{'range': 'บิล 1-12', 'price': 224, 'note': 'ครึ่งราคา (จ่ายล่วงหน้าแล้ว)'}, {'range': 'บิล 13-60', 'price': 449, 'note': 'ราคาปกติ'}], promo:'บิล 1-12: ฿224 → บิล 13-60: ฿449', totalContractMonths:60, totalSaving:1347 }
         ]}
  ]},
@@ -3606,48 +3554,37 @@ function lgCalculator() {
  },
  /** ช่วงที่ลด 50% ตามโปร — 6M = เดือน 1–6 · 12M ของแถม = บิล 1–12 */
  tvDiscountPeriodLabel(item) {
-   const n = this.advancePrepaidMonths(item);
-   if (n === 6) return 'ลด 50% เดือน 1–6';
-   if (n === 12) return 'ลด 50% บิล 1–12';
-   return n ? ('ลด 50% ' + n + ' เดือนแรก') : '';
+   return this.advancePrepaidMonths(item) ? 'งวด 1–12 ชำระค่างวดส่วนที่เหลือครึ่งราคา' : '';
  },
  tvPromoShort(item) {
-   const disc = this.tvDiscountPeriodLabel(item);
-   if (this.advancePrepaidMonths(item) === 6) return disc + ' · บิล 1–12 ครึ่งราคา';
-   return disc ? (disc + ' (ครึ่งราคา)') : 'ครึ่งราคา · บิล 1–12';
+   return 'จ่ายเงินล่วงหน้าครั้งแรก แล้วชำระรายเดือนตามตาราง';
  },
  tvHalfPeriodNote(item) {
-   const disc = this.tvDiscountPeriodLabel(item);
-   return disc ? ('ครึ่งราคา · ' + disc) : 'ครึ่งราคา';
+   return 'ค่างวดส่วนที่เหลือหลังชำระเงินล่วงหน้า';
  },
  /** ป้ายงวด TV+combo — ห้ามติด «ลด 50%» แบบโปร DC */
  advanceComboPeriodNote(item, r) {
    if (!item || !r || !(item.advancePayment > 0) || item.outright) return '';
    const cr = Math.round(this.comboRate() * 100);
    if (cr <= 0) return '';
-   const prepaid = this.advancePrepaidMonths(item) || 6;
-   if (prepaid <= 6 && (r.isCycledAdvance || (r.start === 7 && r.end === 12))) {
-     return 'ครึ่งราคา + วนลด Advance (คอมโบ ' + cr + '% ของ ' + prepaid + ' เดือนที่จ่ายล่วงหน้า)';
+   if (this.advancePrepaidMonths(item) === 6 && r.start === 7 && r.end === 12) {
+     return 'หักคอมโบ ' + cr + '% และส่วนลดจากเงินล่วงหน้าแล้ว';
    }
-   if (r.isAdvanceHalf || r.end <= 12) {
-     return 'ครึ่งราคา + คอมโบ ' + cr + '% ของค่างวด';
-   }
-   return 'ราคาปกติหักคอมโบ ' + cr + '%';
+   return 'หักคอมโบ ' + cr + '% แล้ว';
  },
  advanceComboFootnote(item, qty) {
-   const q = qty || 1;
-   const adv = ((item && item.advancePayment) || 0) * q;
-   const prepaid = this.advancePrepaidMonths(item);
-   const head = 'เงินจ่ายล่วงหน้า ฿' + adv.toLocaleString() + ' เก็บเต็ม';
-   if (prepaid >= 12) return head + ' · งวด 1–12 ครึ่งราคา+คอมโบของค่างวด · งวดถัดไปราคาปกติหักคอมโบ';
-   return head + ' · งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 ครึ่งราคา+วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ';
+   const adv = ((item && item.advancePayment) || 0) * (qty || 1);
+   const head = 'จ่ายครั้งแรก ฿' + this.fmtMoney(adv) + ' เป็นเงินล่วงหน้า ไม่รวมค่างวดที่ 1';
+   if (this.comboRate() <= 0) return head + ' จากนั้นชำระรายเดือนตามตาราง';
+   const extra = this.advancePrepaidMonths(item) === 6
+     ? ' ส่วนลดคอมโบของเงินล่วงหน้านำไปลดเพิ่มในงวด 7–12'
+     : ' งวด 1–12 ใช้ส่วนลดคอมโบอัตราเดียวกัน';
+   return head + ' เงินล่วงหน้าไม่หักคอมโบ' + extra + ' ราคาค่างวดที่แสดงหักส่วนลดแล้ว ไม่ต้องหักซ้ำ';
  },
  cartAdvanceComboIntro() {
-   const cr = Math.round(this.comboRate() * 100);
-   const bits = ['ราคาด้านล่างรวมส่วนลด Combo ' + cr + '% แล้ว — บิลแรก/เงินจ่ายล่วงหน้าเก็บราคาเต็ม (ยังไม่หัก) · สินค้าไม่มี Advance นำ combo บิลแรกไปลดทั้งหมดที่งวดที่ 2'];
-   const kinds = new Set((this.cart || []).filter(it => it.advancePayment > 0 && !it.outright).map(it => this.advancePrepaidMonths(it) >= 12 ? 12 : 6));
-   if (kinds.has(6)) bits.push('ล่วงหน้า 6 เดือน: งวด 1–6 ครึ่งราคา+คอมโบของค่างวด · งวด 7–12 วนลด Advance · งวด 13+ ราคาปกติหักคอมโบ');
-   if (kinds.has(12)) bits.push('ล่วงหน้า 12 เดือน: งวด 1–12 ครึ่งราคา+คอมโบของค่างวดเท่ากันทั้งช่วง · งวดถัดไปราคาปกติหักคอมโบ');
+   const bits = ['ค่างวดในตารางหักส่วนลดคอมโบ ' + Math.round(this.comboRate() * 100) + '% แล้ว ไม่ต้องหักซ้ำ'];
+   if (this.hasTvAdvance()) bits.push('ทีวี จอมอนิเตอร์ และเครื่องเสียง: จ่ายเงินล่วงหน้าครั้งแรกตามยอดที่ระบุ แล้วชำระรายเดือนแยกตามช่วงงวด');
+   if (this.cartHasRegularSubscribe()) bits.push('สินค้าที่ไม่มีเงินล่วงหน้า: งวดแรกจ่ายเต็ม ส่วนลดคอมโบของงวดแรกนำไปลดเพิ่มในงวดที่ 2');
    return bits.join(' · ');
  },
  cartTvAdvanceLabel() {
@@ -3668,7 +3605,7 @@ function lgCalculator() {
  firstPaymentHintText() {
    const bits = [];
    if (this.cartHasRegularSubscribe()) bits.push('สินค้าทั่วไป = งวดที่ 1');
-   if (this.hasTvAdvance()) bits.push('TV/จอ/ลำโพง = จ่ายล่วงหน้าอย่างเดียว');
+   if (this.hasTvAdvance()) bits.push('ทีวี/จอมอนิเตอร์/เครื่องเสียง: จ่ายเงินล่วงหน้า ไม่รวมค่างวดที่ 1');
    if (this.hasOutright()) bits.push('ซื้อขาด = ราคาซื้อขาด');
    return bits.join(' · ');
  },
@@ -4638,7 +4575,9 @@ function lgCalculator() {
       const lowHead = lowest.bill <= 1 ? 'ค่างวดแรก' : ('ค่างวดต่ำสุด (งวดที่ ' + lowest.bill + ')');
       txt += '<div style="font-size:0.78em;color:#9ca3af;margin-bottom:1px">' + lowHead + '</div>';
       txt += '<div style="font-size:1.6em;font-weight:700;color:#a50034;line-height:1.1">฿' + this.fmtMoney(lowest.price) + '<span style="font-size:0.5em;font-weight:400;color:#6b7280">/เดือน</span></div>';
-      if (this.hasPromoFirstMonths()) {
+      if (this.hasTvAdvance()) {
+        txt += '<div style="margin-top:5px;font-size:0.85em">จ่ายเงินล่วงหน้าครั้งแรก แล้วชำระรายเดือนตามช่วงงวดด้านล่าง</div>';
+      } else if (this.hasPromoFirstMonths()) {
         const maxM = Math.max(...this.cart.map(it => it.promoMonths));
         txt += '<div style="margin-top:5px;font-size:0.85em"><strong>' + maxM + ' เดือนแรก</strong>: ฿' + this.promoMonthly().toLocaleString() + '/เดือน &nbsp;→&nbsp; <strong>หลังหมดโปร</strong>: ฿' + this.netMonthly().toLocaleString() + '/เดือน</div>';
       } else {
@@ -4686,6 +4625,7 @@ function lgCalculator() {
             txt += '<strong style="color:' + (line.kind === 'advance' ? '#7c3aed' : '#a50034') + ';white-space:nowrap">' + priceShow + '</strong>';
             txt += '</div>';
           });
+          if (it.advancePayment > 0) txt += '<div style="margin-top:5px;font-size:0.8em;color:#6b7280">' + this.advanceComboFootnote(it, qty) + '</div>';
           if (it.totalSaving > 0) {
             txt += '<div style="margin-top:2px;font-size:0.8em;color:#15803d">ประหยัด ฿' + (it.totalSaving * qty).toLocaleString() + (qty > 1 ? (' (฿' + it.totalSaving.toLocaleString() + ' × ' + qty + ')') : '') + '</div>';
           }
@@ -4803,11 +4743,10 @@ function lgCalculator() {
           lines.push('ซื้อขาด');
           lines.push('ราคาซื้อขาด ' + this.fmtMoney(advance * qty) + ' บาท' + (qty > 1 ? (' (฿' + this.fmtMoney(advance) + ' × ' + qty + ')') : '') + ' (รวมเครื่อง + บริการ 2 ปี · ลด 10%)');
         } else {
-          lines.push('ค่าเช่ารายงวด' + (qty > 1 ? (' (รวม ' + qty + ' ชิ้น)') : ''));
+          lines.push((advance > 0 ? 'การชำระเงิน' : 'ค่าเช่ารายงวด') + (qty > 1 ? (' (รวม ' + qty + ' ชิ้น)') : ''));
           if (advance > 0) {
-            lines.push('จ่ายล่วงหน้า ' + this.fmtMoney(advance * qty) + ' บาท' + (qty > 1 ? (' (฿' + this.fmtMoney(advance) + ' × ' + qty + ')') : '') + ' (' + this.tvAdvanceLabel(it) + ')');
-            const promo = this.planPromoDisplay(it);
-            if (promo) lines.push(promo);
+            lines.push('1) จ่ายครั้งแรก: ' + this.fmtMoney(advance * qty) + ' บาท (เงินล่วงหน้า ไม่รวมค่างวดที่ 1)');
+            lines.push('2) ชำระรายเดือนตามช่วงงวด' + (hasCombo ? ' (หักคอมโบแล้ว)' : '') + ':');
           }
           ranges.forEach(r => {
             let tag = '';
@@ -4819,16 +4758,17 @@ function lgCalculator() {
             const linePrice = unitPrice * qty;
             // โปร/ครึ่งราคา: ติด tag กับราคา · ปกติ: เว้นวรรค 2 ช่อง ไม่ใส่ (ปกติ)
             const pricePart = tag
-              ? (tag + this.fmtBillPrice(linePrice) + ' บาท/เดือน')
+              ? (this.fmtBillPrice(linePrice) + ' บาท/เดือน ' + tag)
               : ('  ' + this.fmtBillPrice(linePrice) + ' บาท/เดือน');
             const qtyNote = qty > 1 ? (' (฿' + this.fmtBillPrice(unitPrice) + ' × ' + qty + ')') : '';
             lines.push('  ' + r.rangeLabel + (tag ? ' ' + pricePart : pricePart) + qtyNote);
           });
+          if (advance > 0) lines.push('หมายเหตุ: ' + this.advanceComboFootnote(it, qty));
         }
 
         if (this.quoteShowGrandTotal) {
           lines.push('');
-          let totalLine = 'รวม ' + months + ' งวด = ' + this.fmtMoney(totalItem) + ' บาท';
+          let totalLine = (advance > 0 ? 'รวมเงินล่วงหน้าและค่างวด ' : 'รวม ') + months + ' งวด = ' + this.fmtMoney(totalItem) + ' บาท';
           if (it.totalSaving > 0) {
             totalLine += ' | ประหยัด ' + (it.totalSaving * qty).toLocaleString() + ' บาท';
           }
@@ -5237,6 +5177,7 @@ function lgCalculator() {
         }
         detailLines += careLine;
         detailLines += '<div class="pkg">' + esc(pkgLine) + '</div>';
+        if (it.advancePayment > 0 && !it.outright) detailLines += '<div class="spec">' + esc(this.advanceComboFootnote(it, qty)) + '</div>';
         if (this.hasFreeGift(it)) {
           detailLines += '<div class="spec" style="margin-top:2px;color:#6b7280">' + esc(this.freeGiftWarrantyNote(it)) + '</div>';
         }
