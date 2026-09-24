@@ -1765,7 +1765,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.24-v2',
+ buildVersion: '2026.09.24-v3',
  quoteCustomer: {
    name: '',
    address: '',
@@ -3398,7 +3398,8 @@ function lgCalculator() {
  postPromoPrice: match.postPromoPrice, promo: match.promo,
  advancePayment: match.advancePayment || 0,
  billSchedule: match.billSchedule || null, outright: !!match.outright,
- totalContractMonths: match.totalContractMonths, totalSaving: match.totalSaving
+ totalContractMonths: match.totalContractMonths, totalSaving: match.totalSaving,
+ freeGift: match.freeGift || ''
  };
  this.cart = this.cart.filter(it => this.quoteGroupKey(it) !== groupKey);
  for (let i = 0; i < q; i++) this.cart.push({ ...template, billSchedule: template.billSchedule ? template.billSchedule.slice() : null });
@@ -3471,6 +3472,7 @@ function lgCalculator() {
  comboRate() {
  const n = this.cart.length;
  const promo = this.activePromo();
+ if (!this.isBeRangeActive(promo)) return 0;
  const tiers = (this.customerType === 'exist' ? promo?.existTiers : promo?.newTiers) || [];
  // หา tier สูงสุดที่ n ผ่านเกณฑ์ (min)
  let rate = 0;
@@ -3526,8 +3528,15 @@ function lgCalculator() {
  this.promoConfig[promoKey][custKey].splice(idx, 1);
  },
  totalMonthly() { return this.cart.reduce((s, it) => s + (it.outright ? 0 : it.postPromoPrice), 0); },
- comboDiscount() { const x = this.totalMonthly() * this.comboRate(); const f = Math.floor(x); return (x - f) > 0.5 ? f + 1 : f; },
- netMonthly() { return this.totalMonthly() - this.comboDiscount(); },
+ comboDiscount() { return Math.round((this.totalMonthly() - this.netMonthly()) * 100) / 100; },
+ // Use each item's final bill so summary and billing share the same rounding.
+ netMonthly() {
+ return Math.round(this.cart.reduce((sum, item) => {
+ if (item.outright) return sum;
+ const bills = this.itemComboSchedule(item).bills;
+ return sum + (bills.length ? bills[bills.length - 1].price : 0);
+ }, 0) * 100) / 100;
+ },
  // ═══════════════════════════════════════════════════════════
  // ANNUAL BREAKDOWN — ค่าใช้จ่ายเฉลี่ยต่อปี + สิ่งที่ลูกค้าได้
  // ═══════════════════════════════════════════════════════════
