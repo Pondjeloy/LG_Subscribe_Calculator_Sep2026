@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- LG Subscribe Calculator build 2026.09.22-v6 · combo bill rounds up to next baht -->
+<!-- LG Subscribe Calculator build 2026.09.24-v1 · 3Y first on TV monitor audio -->
 <html lang="th">
 <head>
 <meta charset="UTF-8" />
@@ -1763,7 +1763,7 @@ function lgCalculator() {
  compareB: { term: '5Y', serviceType: 'Visit', modelIndices: [] },
  cart: [],
  toast: { show: false, msg: '' },
- buildVersion: '2026.09.22-v6',
+ buildVersion: '2026.09.24-v1',
  quoteCustomer: {
    name: '',
    address: '',
@@ -1886,6 +1886,25 @@ function lgCalculator() {
  if (plan.serviceType === 'No Service') return '';
  return 'รอบบริการ: ' + plan.serviceCycle;
  },
+ /** ทีวี / มอนิเตอร์ / ลำโพง — โชว์สัญญา 3 ปีก่อน · หมวดอื่นเรียงปกติแล้วค่อย 3 ปี */
+ prefers3YFirst(cat) {
+   const c = cat || this.picker.category || '';
+   return c.indexOf('โทรทัศน์') === 0 || c === 'มอนิเตอร์' || c === 'ลำโพง / ซาวด์บาร์';
+ },
+ planTermOrder() {
+   return this.prefers3YFirst(this.picker.category)
+     ? ['3Y', '5Y', '6Y', '7Y', '2Y']
+     : ['5Y', '6Y', '7Y', '2Y', '3Y'];
+ },
+ compareBTermOrder() {
+   return this.prefers3YFirst(this.picker.category)
+     ? ['3Y', '2Y', '5Y', '6Y', '7Y']
+     : ['2Y', '5Y', '6Y', '7Y', '3Y'];
+ },
+ planTermSortRank(term) {
+   const i = this.planTermOrder().indexOf(term);
+   return i < 0 ? 50 : i;
+ },
  /** จัดกลุ่มแพ็คตามรอบบริการ — ถ้ามีหลายรอบ (เช่น 6 เดือน + 12 เดือน) จะตีกรอบแยก */
  planPickerGroups() {
    const plans = this.currentModel()?.plans || [];
@@ -1900,6 +1919,9 @@ function lgCalculator() {
        order.push(g);
      }
      map.get(cycle).plans.push({ plan, idx });
+   });
+   order.forEach((g) => {
+     g.plans.sort((a, b) => this.planTermSortRank(a.plan.term) - this.planTermSortRank(b.plan.term) || a.idx - b.idx);
    });
    // เรียง: 12 เดือนก่อน · 6 เดือน · อื่นๆ · ไม่มีบริการท้าย
    const rank = (c) => {
@@ -3226,6 +3248,7 @@ function lgCalculator() {
  isRecommended: this.isRecommendedPlan(this.picker.category, plan, m),
  };
  });
+ rows.sort((a, b) => this.planTermSortRank(a.plan.term) - this.planTermSortRank(b.plan.term) || a.idx - b.idx);
  return this.applyCompareWorthHighlight(rows);
  },
  pickPlanFromCompare(idx) {
@@ -3239,7 +3262,7 @@ function lgCalculator() {
  },
  compareBTerms() {
  const terms = new Set();
- const order = ['2Y', '3Y', '5Y', '6Y', '7Y'];
+ const order = this.compareBTermOrder();
  this.categoryModels().forEach(m => (m.plans || []).forEach(p => terms.add(p.term)));
  return [...terms].sort((a, b) => {
  const ai = order.indexOf(a), bi = order.indexOf(b);
@@ -3261,7 +3284,8 @@ function lgCalculator() {
  },
  initCompareBForCategory() {
  const terms = this.compareBTerms();
- this.compareB.term = terms.includes('5Y') ? '5Y' : (terms[0] || '5Y');
+ const prefer3 = this.prefers3YFirst(this.picker.category) && terms.includes('3Y');
+ this.compareB.term = prefer3 ? '3Y' : (terms.includes('5Y') ? '5Y' : (terms[0] || '5Y'));
  this.onCompareBFilterChange();
  this.compareB.modelIndices = [];
  },
